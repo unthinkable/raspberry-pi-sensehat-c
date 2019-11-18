@@ -33,15 +33,19 @@ To run the example code, you'll need to connect a Raspberry Pi Sense HAT to your
 
 Building the binaries from source requires installing a development environment on a Raspberry Pi. The code can be built using the provided `bash`-based build system (recommended), or using the traditional `make` command with a `makefile`. 
 
+*NOTE:* If you've downloaded the zip archive of the sources from GitHub, when you unzip it, the default name for the folder is `raspberry-pi-sensehat-c-master`. Please rename this folder to `raspberry-pi-sensehat-c` in order to make sure everything builds and runs properly (apologies, I'll fix this soon).
+
 ### Building with the bash-Based Build System
 
 I'll be honest, `cmake` makes my head hurt. Despite multiple attempts, I've never mastered its art and intricacies, and that's been frustrating because it seems to offer so much utility. As a consequence, I've developed a `bash`-based build system that I repurpose for use in a number of projects, and while it's not a standardized mechanism, it's made my life easier, and hopefully it won't prove too difficult for others to use.
 
 The build system automates the process of building the various versions of the library (static and shared libraries in debug or release configurations), running code quality checks, running unit tests, and building the example program. It also simplifies management of the various build configuration parameters (e.g., `Debug` vs. `Release`).
 
-Begin by opening a terminal window in the `raspberry-pi-sensehat-c/build directory` (it's _important_ that your current working directory is `raspberry-pi-sensehat-c/build`) and typing:
+Begin by opening a terminal window in the `raspberry-pi-sensehat-c/build` directory and typing:
 
     ./build.sh --help
+    
+*NOTE:* It's important that your current working directory is `raspberry-pi-sensehat-c/build`.
 
 This will display the various options of the build system, as shown below:
 
