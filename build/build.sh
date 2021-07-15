@@ -18,17 +18,17 @@ SECONDS=0
 BUILD_START="$(date)"
 
 # Include bash utilities
-source "./bash-architecture-utils.sh"
-source "./bash-console-utils.sh"
-source "./bash-c-build-utils.sh"
-source "./bash-c-code-quality-utils.sh"
-source "./bash-docs-utils.sh"
-source "./bash-file-system-utils.sh"
-source "./bash-os-utils.sh"
-source "./bash-python-utils.sh"
-source "./bash-shell-utils.sh"
-source "./bash-string-utils.sh"
-source "./bash-unit-test-utils.sh"
+source "./bash_architecture_utils.sh"
+source "./bash_console_utils.sh"
+source "./bash_c_build_utils.sh"
+source "./bash_c_code_quality_utils.sh"
+source "./bash_docs_utils.sh"
+source "./bash_file_system_utils.sh"
+source "./bash_os_utils.sh"
+source "./bash_python_utils.sh"
+source "./bash_shell_utils.sh"
+source "./bash_string_utils.sh"
+source "./bash_unit_test_utils.sh"
 
 # Set background color 
 setBackgroundColor $NORMAL_BACKCOLOR

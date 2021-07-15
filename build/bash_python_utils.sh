@@ -1,7 +1,7 @@
 #!/bin/bash
 # =================================================================================================
 #
-#   bash-python-utils.sh
+#   bash_python_utils.sh
 #
 #   Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 #
@@ -13,7 +13,7 @@
 #
 # =================================================================================================
 
-source "./bash-shell-utils.sh"
+source "./bash_shell_utils.sh"
 
 # Function to check for Python
 function hasPython () {

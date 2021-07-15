@@ -1,7 +1,7 @@
 #!/bin/bash
 # =================================================================================================
 #
-#   bash-os-utils.sh
+#   bash_os_utils.sh
 #
 #   Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 #

@@ -1,7 +1,7 @@
 #!/bin/bash
 # =================================================================================================
 #
-#   bash-c-build-utils.sh
+#   bash_c_build_utils.sh
 #
 #   Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 #
@@ -13,9 +13,9 @@
 #
 # =================================================================================================
 
-source "./bash-shell-utils.sh"
-source "./bash-console-utils.sh"
-source "./bash-file-system-utils.sh"
+source "./bash_shell_utils.sh"
+source "./bash_console_utils.sh"
+source "./bash_file_system_utils.sh"
 
 # Function to check for clang
 function hasClang () {

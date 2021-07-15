@@ -1,7 +1,7 @@
 #!/bin/bash
 # =================================================================================================
 #
-#   bash-file-system-utils.sh
+#   bash_file_system_utils.sh
 #
 #   Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 #

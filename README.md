@@ -1,4 +1,4 @@
-# Raspberry Pi Sense HAT C Library v0.1.0 {#mainpage}
+# Raspberry Pi Sense HAT C Library v0.2.0 {#mainpage}
 #### [Gary Woodcock](mailto:gary.woodcock@unthinkable.com) – Unthinkable Research LLC
 
 ## Introduction

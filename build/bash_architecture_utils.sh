@@ -1,7 +1,7 @@
 #!/bin/bash
 # =================================================================================================
 #
-#   bash-architecture-utils.sh
+#   bash_architecture_utils.sh
 #
 #   Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 #

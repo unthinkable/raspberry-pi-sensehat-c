@@ -33,8 +33,7 @@
 #ifndef __SENSEHAT_H__
 #define __SENSEHAT_H__
 
-#include <stdint.h>
-#include <stdbool.h>
+#include "unthink_types.h"
 
 // =================================================================================================
 //  Types
@@ -191,7 +190,7 @@ extern "C"
     //!
     //! For example, a value of 0x00010000 translates to a version of 1.0.0.
     //!
-    uint32_t    SenseHAT_Version    (void);
+    uint32_t SenseHAT_Version (void);
 
     //! @brief Call SenseHAT_Open to create an instance of the Sense HAT C library.
     //! 
@@ -204,7 +203,7 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_Open       (tSenseHAT_Instance*    instance);
+    int32_t SenseHAT_Open (tSenseHAT_Instance* instance);
 
     //! @brief Call SenseHAT_Close to close an instance of the Sense HAT C library.
     //! 
@@ -216,7 +215,7 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_Close      (tSenseHAT_Instance*    instance);
+    int32_t SenseHAT_Close (tSenseHAT_Instance* instance);
 
     // =============================================================================================
     //  High level LED matrix functions
@@ -234,9 +233,9 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_LEDSetRotation     (const tSenseHAT_Instance      instance,
-                                             tSenseHAT_LEDRotation         rotation,
-                                             bool                          redraw);
+    int32_t SenseHAT_LEDSetRotation (const tSenseHAT_Instance instance,
+                                     tSenseHAT_LEDRotation    rotation,
+                                     bool                     redraw);
 
     //! @brief Call SenseHAT_LEDFlipHorizontal to flip the LED matrix horizontally.
     //! 
@@ -247,9 +246,9 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_LEDFlipHorizontal  (const tSenseHAT_Instance      instance,
-                                             bool                          redraw,
-                                             tSenseHAT_LEDPixelArray       pixels);
+    int32_t SenseHAT_LEDFlipHorizontal (const tSenseHAT_Instance instance,
+                                        bool                     redraw,
+                                        tSenseHAT_LEDPixelArray  pixels);
 
     //! @brief Call SenseHAT_LEDFlipVertical to flip the LED matrix vertically.
     //! 
@@ -260,9 +259,9 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_LEDFlipVertical    (const tSenseHAT_Instance      instance,
-                                             bool                          redraw,
-                                             tSenseHAT_LEDPixelArray       pixels);
+    int32_t SenseHAT_LEDFlipVertical (const tSenseHAT_Instance instance,
+                                      bool                     redraw,
+                                      tSenseHAT_LEDPixelArray  pixels);
 
     //! @brief Call SenseHAT_LEDSetPixels to set the color of every LED in the LED matrix.
     //! 
@@ -273,8 +272,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_LEDSetPixels       (const tSenseHAT_Instance      instance,
-                                             const tSenseHAT_LEDPixelArray pixels);
+    int32_t SenseHAT_LEDSetPixels (const tSenseHAT_Instance      instance,
+                                   const tSenseHAT_LEDPixelArray pixels);
 
     //! @brief Call SenseHAT_LEDGetPixels to get the color of every LED in the display.
     //! 
@@ -284,8 +283,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_LEDGetPixels       (const tSenseHAT_Instance      instance,
-                                             tSenseHAT_LEDPixelArray       pixels);
+    int32_t SenseHAT_LEDGetPixels (const tSenseHAT_Instance instance,
+                                   tSenseHAT_LEDPixelArray  pixels);
 
     //! @brief Call SenseHAT_LEDSetPixel to set the color of a specific LED in the LED matrix.
     //! 
@@ -299,10 +298,10 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_LEDSetPixel        (const tSenseHAT_Instance      instance,
-                                             int32_t                       xPosition,
-                                             int32_t                       yPosition,
-                                             const tSenseHAT_LEDPixel*     color);
+    int32_t SenseHAT_LEDSetPixel (const tSenseHAT_Instance  instance,
+                                  int32_t                   xPosition,
+                                  int32_t                   yPosition,
+                                  const tSenseHAT_LEDPixel* color);
 
     //! @brief Call SenseHAT_LEDGetPixel to get the color of a specific LED in the display.
     //! 
@@ -315,10 +314,10 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_LEDGetPixel        (const tSenseHAT_Instance      instance,
-                                             int32_t                       xPosition,
-                                             int32_t                       yPosition,
-                                             tSenseHAT_LEDPixel*           color);
+    int32_t SenseHAT_LEDGetPixel (const tSenseHAT_Instance instance,
+                                  int32_t                  xPosition,
+                                  int32_t                  yPosition,
+                                  tSenseHAT_LEDPixel*      color);
 
     //! @brief Call SenseHAT_LEDLoadImage to display a 8x8 pixel images on the LED display.
     //! 
@@ -330,10 +329,10 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_LEDLoadImage       (const tSenseHAT_Instance      instance,
-                                             const char*                   imageFilePath,
-                                             bool                          redraw,
-                                             tSenseHAT_LEDPixelArray       pixels);
+    int32_t SenseHAT_LEDLoadImage (const tSenseHAT_Instance instance,
+                                   const char*              imageFilePath,
+                                   bool                     redraw,
+                                   tSenseHAT_LEDPixelArray  pixels);
 
     //! @brief Call SenseHAT_LEDClear to reset all the pixels of the LED display to a specific color.
     //! 
@@ -343,8 +342,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_LEDClear           (const tSenseHAT_Instance      instance,
-                                             const tSenseHAT_LEDPixel*     color);
+    int32_t SenseHAT_LEDClear (const tSenseHAT_Instance  instance,
+                               const tSenseHAT_LEDPixel* color);
 
     //! @brief Call SenseHAT_LEDShowMessage to scroll a message from right to left on the LED 
     //! display at the specified speed, with the specified text and background colors.
@@ -359,11 +358,11 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_LEDShowMessage     (const tSenseHAT_Instance      instance,
-                                             const char*                   message,
-                                             double                        scrollSpeed,
-                                             const tSenseHAT_LEDPixel*     textColor,
-                                             const tSenseHAT_LEDPixel*     backColor);
+    int32_t SenseHAT_LEDShowMessage (const tSenseHAT_Instance  instance,
+                                     const char*               message,
+                                     double                    scrollSpeed,
+                                     const tSenseHAT_LEDPixel* textColor,
+                                     const tSenseHAT_LEDPixel* backColor);
 
     //! @brief Call SenseHAT_LEDShowLetter to show a letter on the LED display with the specified
     //! text and background colors.
@@ -378,10 +377,10 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_LEDShowLetter      (const tSenseHAT_Instance      instance,
-                                             const char*                   letter,
-                                             const tSenseHAT_LEDPixel*     textColor,
-                                             const tSenseHAT_LEDPixel*     backColor);
+    int32_t SenseHAT_LEDShowLetter (const tSenseHAT_Instance  instance,
+                                    const char*               letter,
+                                    const tSenseHAT_LEDPixel* textColor,
+                                    const tSenseHAT_LEDPixel* backColor);
 
     // =============================================================================================
     //  Low level LED matrix functions
@@ -394,7 +393,7 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_LEDGammaReset  (const tSenseHAT_Instance   instance);
+    int32_t SenseHAT_LEDGammaReset (const tSenseHAT_Instance instance);
 
     // =============================================================================================
     //  High level environmental functions
@@ -408,8 +407,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetHumidity    (const tSenseHAT_Instance   instance,
-                                         double*                    percentRelativeHumidity);
+    int32_t SenseHAT_GetHumidity (const tSenseHAT_Instance instance,
+                                  double*                  percentRelativeHumidity);
 
     //! @brief Call SenseHAT_GetTemperature to read the temperature in degrees Celsius.
     //! 
@@ -418,8 +417,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetTemperature (const tSenseHAT_Instance   instance,
-                                         double*                    degreesCelsius);
+    int32_t SenseHAT_GetTemperature (const tSenseHAT_Instance instance,
+                                     double*                  degreesCelsius);
 
     //! @brief Call SenseHAT_GetPressure to read the pressure in millibars.
     //! 
@@ -428,8 +427,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetPressure    (const tSenseHAT_Instance   instance,
-                                         double*                    millibars);
+    int32_t SenseHAT_GetPressure (const tSenseHAT_Instance instance,
+                                  double*                  millibars);
 
     //! @brief Call SenseHAT_GetCompass to read the compass heading in degrees.
     //! 
@@ -438,8 +437,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetCompass     (const tSenseHAT_Instance   instance,
-                                         double*                    degrees);
+    int32_t SenseHAT_GetCompass (const tSenseHAT_Instance instance,
+                                 double*                  degrees);
 
     // =============================================================================================
     //  Low level environmental functions
@@ -453,8 +452,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetAccelerometer           (const tSenseHAT_Instance   instance,
-                                                     tSenseHAT_Orientation*     orientation);
+    int32_t SenseHAT_GetAccelerometer (const tSenseHAT_Instance instance,
+                                       tSenseHAT_Orientation*   orientation);
 
     //! @brief Call SenseHAT_GetAccelerometerRaw to get the raw x, y and z accelerometer data.
     //! 
@@ -464,8 +463,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetAccelerometerRaw        (const tSenseHAT_Instance   instance,
-                                                     tSenseHAT_RawData*         rawData);
+    int32_t SenseHAT_GetAccelerometerRaw (const tSenseHAT_Instance instance,
+                                          tSenseHAT_RawData*       rawData);
 
     //! @brief Call SenseHAT_GetCompassRaw to get the raw x, y and z magnetometer data.
     //! 
@@ -475,8 +474,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetCompassRaw              (const tSenseHAT_Instance   instance,
-                                                     tSenseHAT_RawData*         rawData);
+    int32_t SenseHAT_GetCompassRaw (const tSenseHAT_Instance instance,
+                                    tSenseHAT_RawData*       rawData);
 
     //! @brief Call SenseHAT_GetGyroscope to get the current orientation from the gyroscope
     //! only by disabling the magnetometer and the accelerometer.
@@ -486,8 +485,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetGyroscope               (const tSenseHAT_Instance   instance,
-                                                     tSenseHAT_Orientation*     orientation);
+    int32_t SenseHAT_GetGyroscope (const tSenseHAT_Instance instance,
+                                   tSenseHAT_Orientation*   orientation);
 
     //! @brief Call SenseHAT_GetGyroscopeRaw to get the raw x, y, and z gyroscope data.
     //! 
@@ -497,8 +496,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetGyroscopeRaw            (const tSenseHAT_Instance   instance,
-                                                     tSenseHAT_RawData*         rawData);
+    int32_t SenseHAT_GetGyroscopeRaw (const tSenseHAT_Instance instance,
+                                      tSenseHAT_RawData*       rawData);
 
     //! @brief Call SenseHAT_GetOrientation to get the current orientation in degrees.
     //! 
@@ -507,8 +506,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetOrientation             (const tSenseHAT_Instance   instance,
-                                                     tSenseHAT_Orientation*     orientation);
+    int32_t SenseHAT_GetOrientation (const tSenseHAT_Instance instance,
+                                     tSenseHAT_Orientation*   orientation);
 
     //! @brief Call SenseHAT_GetOrientationDegrees to get the current orientation in degrees
     //! using the aircraft principal axes of pitch, roll, and yaw.
@@ -518,8 +517,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetOrientationDegrees      (const tSenseHAT_Instance   instance,
-                                                     tSenseHAT_Orientation*     orientation);
+    int32_t SenseHAT_GetOrientationDegrees (const tSenseHAT_Instance instance,
+                                            tSenseHAT_Orientation*   orientation);
 
     //! @brief Call SenseHAT_GetOrientationRadians to get the current orientation in radians
     //! using the aircraft principal axes of pitch, roll, and yaw.
@@ -529,8 +528,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetOrientationRadians      (const tSenseHAT_Instance   instance,
-                                                     tSenseHAT_Orientation*     orientation);
+    int32_t SenseHAT_GetOrientationRadians (const tSenseHAT_Instance instance,
+                                            tSenseHAT_Orientation*   orientation);
 
     //! @brief Call SenseHAT_GetTemperatureFromHumidity to read the temperature in degrees Celsius
     //! from the humidity sensor.
@@ -540,8 +539,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetTemperatureFromHumidity (const tSenseHAT_Instance   instance,
-                                                     double*                    degreesCelsius);
+    int32_t SenseHAT_GetTemperatureFromHumidity (const tSenseHAT_Instance instance,
+                                                 double*                  degreesCelsius);
 
     //! @brief Call SenseHAT_GetTemperatureFromPressure to read the temperature in degrees Celsius
     //! from the pressure sensor.
@@ -551,8 +550,8 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetTemperatureFromPressure (const tSenseHAT_Instance   instance,
-                                                     double*                    degreesCelsius);
+    int32_t SenseHAT_GetTemperatureFromPressure (const tSenseHAT_Instance instance,
+                                                 double*                  degreesCelsius);
 
     //! @brief Call SenseHAT_SetIMUConfiguration to enable and/or disable the magnetometer,
     //! gyroscope, and accelerometer contributions to the "get orientation" functions.
@@ -564,10 +563,10 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_SetIMUConfiguration        (const tSenseHAT_Instance   instance,
-                                                     bool                       enableCompass,
-                                                     bool                       enableGyroscope,
-                                                     bool                       enableAccelerometer);
+    int32_t SenseHAT_SetIMUConfiguration (const tSenseHAT_Instance instance,
+                                          bool                     enableCompass,
+                                          bool                     enableGyroscope,
+                                          bool                     enableAccelerometer);
 
     // =============================================================================================
     //  Event functions
@@ -582,9 +581,9 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t     SenseHAT_GetEvents      (const tSenseHAT_Instance   instance,
-							             int32_t*                   eventCount,
-                                         tSenseHAT_JoystickEvent**  events);
+    int32_t SenseHAT_GetEvents (const tSenseHAT_Instance  instance,
+							    int32_t*                  eventCount,
+                                tSenseHAT_JoystickEvent** events);
 
     //! @brief Call SenseHAT_WaitForEvent to block and wait for an event to occur.
     //! 
@@ -594,9 +593,9 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //! 
-    int32_t     SenseHAT_WaitForEvent   (const tSenseHAT_Instance   instance,
-                                         bool                       flushPendingEvents,
-                                         tSenseHAT_JoystickEvent*   event);
+    int32_t SenseHAT_WaitForEvent (const tSenseHAT_Instance instance,
+                                   bool                     flushPendingEvents,
+                                   tSenseHAT_JoystickEvent* event);
 
 #ifdef __cplusplus
 }

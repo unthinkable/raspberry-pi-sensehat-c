@@ -1,6 +1,6 @@
 // =================================================================================================
 //
-//  sensehat-example.c
+//  sensehat_example.c
 //
 //  Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 //
@@ -17,6 +17,8 @@
 //  Includes
 // =================================================================================================
 #include "sensehat.h"
+#include "unthink_utils.h"
+#include <libgen.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,39 +30,91 @@
 //  Constants
 // =================================================================================================
 
-static const char* kColorCycleExampleCmd    = "--color-cycle-example";
-static const char* kCompassExampleCmd       = "--compass-example";
-static const char* kEnvironmentCmd          = "--environment";
-static const char* kFlashCmd                = "--flash";
-static const char* kHeadingCmd              = "--heading";
-static const char* kHelpCmd                 = "--help";
-static const char* kLoadImageCmd            = "--load-image";
-static const char* kRainbowExampleCmd       = "--rainbow-example";
-static const char* kRotationExampleCmd      = "--rotation-example";
-static const char* kShowLetterCmd           = "--show-letter";
-static const char* kShowMessageCmd          = "--show-message";
-static const char* kTextScrollExampleCmd    = "--text-scroll-example";
-static const char* kVersionCmd              = "--version";
-static const char* kWaitForEventCmd         = "--wait-for-event";
+//  Command line strings
+#define COLOR_CYCLE_EXAMPLE_CMD "color-cycle-example"
+#define COMPASS_EXAMPLE_CMD     "compass"
+#define ENVIRONMENT_CMD         "environment"
+#define FLASH_CMD               "flash"
+#define HEADING_CMD             "heading"
+#define HELP_CMD                "help"
+#define LOAD_IMAGE_CMD          "load-image"
+#define RAINBOW_EXAMPLE_CMD     "rainbow-example"
+#define ROTATION_EXAMPLE_CMD    "rotation-example"
+#define SHOW_LETTER_CMD         "show-letter"
+#define SHOW_MESSAGE_CMD        "show-message"
+#define TEXT_SCROLL_EXAMPLE_CMD "text-scroll-example"
+#define VERSION_CMD             "version"
+#define WAIT_FOR_EVENT_CMD      "wait-for-event"
 
-#define kHelpCmdNum                 1
-#define kVersionCmdNum              2
-#define kColorCycleExampleCmdNum    3
-#define kCompassExampleCmdNum       4
-#define kRainbowExampleCmdNum       5
-#define kRotationExampleCmdNum      6
-#define kTextScrollExampleCmdNum    7
-#define kFlashCmdNum                8
-#define kLoadImageCmdNum            9
-#define kRotateCmdNum               10
-#define kShowLetterCmdNum           11
-#define kShowMessageCmdNum          12
-#define kFlipHorizontalCmdNum       13
-#define kFlipVerticalCmdNum         14
-#define kHeadingCmdNum              15
-#define kEnvironmentCmdNum          16
-#define kWaitForEventCmdNum         17
-#define kQuitCmdNum                 18
+//  Command line options
+#define COLOR_CYCLE_EXAMPLE_OPTION  0
+#define COMPASS_EXAMPLE_OPTION      1
+#define ENVIRONMENT_OPTION          2
+#define FLASH_OPTION                3
+#define HEADING_OPTION              4
+#define HELP_OPTION                 5
+#define LOAD_IMAGE_OPTION           6
+#define RAINBOW_EXAMPLE_OPTION      7
+#define ROTATION_EXAMPLE_OPTION     8
+#define SHOW_LETTER_OPTION          9
+#define SHOW_MESSAGE_OPTION         10
+#define TEXT_SCROLL_EXAMPLE_OPTION  11
+#define VERSION_OPTION              12
+#define WAIT_FOR_EVENT_OPTION       13
+
+//  Short command line strings
+#define COLOR_CYCLE_EXAMPLE_SHORT_CMD   'c'
+#define COMPASS_EXAMPLE_SHORT_CMD       'C'
+#define ENVIRONMENT_SHORT_CMD           'e'
+#define FLASH_SHORT_CMD                 'f'
+#define HEADING_SHORT_CMD               'H'
+#define HELP_SHORT_CMD                  'h'
+#define LOAD_IMAGE_SHORT_CMD            'i'
+#define RAINBOW_EXAMPLE_SHORT_CMD       'r'
+#define ROTATION_EXAMPLE_SHORT_CMD      'R'
+#define SHOW_LETTER_SHORT_CMD           's'
+#define SHOW_MESSAGE_SHORT_CMD          'S'
+#define TEXT_SCROLL_EXAMPLE_SHORT_CMD   't'
+#define VERSION_SHORT_CMD               'v'
+#define WAIT_FOR_EVENT_SHORT_CMD        'w'
+#define UNKNOWN_SHORT_CMD               '?'
+
+//  Options array
+static const char kShortOptions[] = { COLOR_CYCLE_EXAMPLE_SHORT_CMD,
+                                      COMPASS_EXAMPLE_SHORT_CMD,
+                                      ENVIRONMENT_SHORT_CMD,
+                                      FLASH_SHORT_CMD,
+                                      HEADING_SHORT_CMD,
+                                      HELP_SHORT_CMD,
+                                      LOAD_IMAGE_SHORT_CMD, ":",
+                                      RAINBOW_EXAMPLE_SHORT_CMD,
+                                      ROTATION_EXAMPLE_SHORT_CMD,
+                                      SHOW_LETTER_SHORT_CMD, ":",
+                                      SHOW_MESSAGE_SHORT_CMD, ":",
+                                      TEXT_SCROLL_EXAMPLE_SHORT_CMD,
+                                      VERSION_SHORT_CMD,
+                                      WAIT_FOR_EVENT_SHORT_CMD, ":",
+                                      0x00 };
+
+// Interactive commands
+#define HELP_CMD_NUM                1
+#define VERSION_CMD_NUM             2
+#define COLOR_CYCLE_EXAMPLE_CMD_NUM 3
+#define COMPASS_EXAMPLE_CMD_NUM     4
+#define RAINBOW_EXAMPLE_CMD_NUM     5
+#define ROTATION_EXAMPLE_CMD_NUM    6
+#define TEXT_SCROLL_EXAMPLE_CMD_NUM 7
+#define FLASH_CMD_NUM               8
+#define LOAD_IMAGE_CMD_NUM          9
+#define ROTATE_CMD_NUM              10
+#define SHOW_LETTER_CMD_NUM         11
+#define SHOW_MESSAGE_CMD_NUM        12
+#define FLIP_HORIZONTAL_CMD_NUM     13
+#define FLIP_VERTICAL_CMD_NUM       14
+#define HEADING_CMD_NUM             15
+#define ENVIRONMENT_CMD_NUM         16
+#define WAIT_FOR_EVENT_CMD_NUM      17
+#define QUIT_CMD_NUM                18
 
 static const char* kUpEvent     = "up";
 static const char* kDownEvent   = "down";
@@ -143,7 +197,7 @@ static tSenseHAT_Instance gInstance = NULL;
 // =================================================================================================
 
 static void SimpleSignalHandler (int signo);
-static void PrintCmdLineHelp (void);
+static void PrintCmdLineHelp (const char* programName);
 static void PrintCmdNumHelp (void);
 static void GetVersion (void);
 static void Flash (void);
@@ -169,25 +223,27 @@ void SimpleSignalHandler (int signo)
 {
     switch (signo)
     {
-        case SIGINT:    // Interrupt (ctrl-c)
+        case SIGINT:    // Interrupt
         {
-            gDone = true;
+            fprintf(stdout, "\nSIGINT received\n");
+            gAbort = true;
             break;
         }
         case SIGQUIT:   // Quit
         {
-            printf("\n\n*** SIGQUIT received! ***\n\n");
+            fprintf(stdout, "\nSIGQUIT received\n");
+            gDone = true;
             break;
         }
         case SIGABRT:   // abort()
         {
-            printf("\n\n*** SIGABRT received! ***\n\n");
+            fprintf(stdout, "\nSIGABRT received\n");
             gAbort = true;
             break;
         }
         case SIGTERM:   // Software termination signal from kill
         {
-            printf("\n\n*** SIGTERM received! ***\n\n");
+            fprintf(stdout, "\nSIGTERM received\n");
             gAbort = true;
             break;
         }
@@ -199,23 +255,53 @@ void SimpleSignalHandler (int signo)
 // =================================================================================================
 //  PrintCmdLineHelp
 // =================================================================================================
-void PrintCmdLineHelp (void)
+void PrintCmdLineHelp (const char* programName)
 {
-    printf("Available command line arguments are:\n\n");
-    printf("--color-cycle-example                       Color cycle example.\n");
-    printf("--compass-example                           Compass example.\n");
-    printf("--environment                               Get environmental conditions.\n");
-    printf("--flash                                     Flash LEDs.\n");
-    printf("--heading                                   Get compass heading in degrees.\n");
-    printf("--help                                      Prints this usage notice.\n");
-    printf("--load-image=<path>                         Load image in file <path>.\n");
-    printf("--rainbow-example                           Rainbow example.\n");
-    printf("--rotation-example                          Rotation example.\n");
-    printf("--show-letter=<letter>                      Show letter.\n");
-    printf("--show-message=<message>                    Show message.\n");
-    printf("--text-scroll-example                       Text scroll example.\n");
-    printf("--version                                   Returns C library version.\n");
-    printf("--wait-for-event=<up|down|left|right|push>  Wait for event.\n");
+    fprintf(stdout, "\nUsage: %s <arguments>\n\n", basename((char*)programName));
+    fprintf(stdout, "\tAvailable command line arguments are:\n\n");
+    fprintf(stdout, "\t-%c, --%s\tRun the color cycle example.\n", 
+           COLOR_CYCLE_EXAMPLE_SHORT_CMD, 
+           COLOR_CYCLE_EXAMPLE_CMD);
+    fprintf(stdout, "\t-%c, --%s\tRun the compass example.\n",
+           COMPASS_EXAMPLE_SHORT_CMD,
+           COMPASS_EXAMPLE_CMD);
+    fprintf(stdout, "\t-%c, --%s\tGet the current environmental conditions.\n",
+           ENVIRONMENT_SHORT_CMD,
+           ENVIRONMENT_CMD);
+    fprintf(stdout, "\t-%c, --%s\tFlash the LEDs.\n",
+           FLASH_SHORT_CMD,
+           FLASH_CMD);
+    fprintf(stdout, "\t-%c, --%s\tGet the compass heading in degrees.\n",
+           HEADING_SHORT_CMD, 
+           HEADING_CMD);
+    fprintf(stdout, "\t-%c, --%s\tPrints this usage notice.\n",
+           HELP_SHORT_CMD,
+           HELP_CMD);
+    fprintf(stdout, "\t-%c, --%s <path>\tLoad an image from <path>.\n",
+           LOAD_IMAGE_SHORT_CMD,
+           LOAD_IMAGE_CMD);
+    fprintf(stdout, "\t-%c, --%s\tRun the rainbow example.\n",
+           RAINBOW_EXAMPLE_SHORT_CMD,
+           RAINBOW_EXAMPLE_CMD);
+    fprintf(stdout, "\t-%c, --%s\tRun the rotation example.\n",
+           ROTATION_EXAMPLE_SHORT_CMD,
+           ROTATION_EXAMPLE_CMD);
+    fprintf(stdout, "\t-%c, --%s <letter>\tShow a letter.\n",
+           SHOW_LETTER_SHORT_CMD,
+           SHOW_LETTER_CMD);
+    fprintf(stdout, "\t-%c, --%s <letter>\tShow a message.\n",
+           SHOW_MESSAGE_SHORT_CMD,
+           SHOW_MESSAGE_CMD);
+    fprintf(stdout, "\t-%c, --%s\tRun the text scroll example.\n",
+           TEXT_SCROLL_EXAMPLE_SHORT_CMD,
+           TEXT_SCROLL_EXAMPLE_CMD);
+    fprintf(stdout, "\t-%c, --%s\tPrint the version of the SenseHAT C library.\n",
+           VERSION_SHORT_CMD,
+           VERSION_CMD);
+    fprintf(stdout, "\t-%c, --%s <up|down|left|right|push>\tWait for an event.\n",
+           WAIT_FOR_EVENT_SHORT_CMD,
+           WAIT_FOR_EVENT_CMD);
+    return;
 }
 
 // =================================================================================================
@@ -223,26 +309,26 @@ void PrintCmdLineHelp (void)
 // =================================================================================================
 void PrintCmdNumHelp (void)
 {
-    printf("\nChoose one of the following commands:\n\n");
-    printf(" 1 - Prints this help notice.\n");
-    printf(" 2 - Get C library version.\n");
-    printf(" 3 - Color cycle example.\n");
-    printf(" 4 - Compass example.\n");
-    printf(" 5 - Rainbow example.\n");
-    printf(" 6 - Rotation example.\n");
-    printf(" 7 - Text scroll example.\n");
-    printf(" 8 - Flash LEDs.\n");
-    printf(" 9 - Load image.\n");
-    printf("10 - Rotate LEDs.\n");
-    printf("11 - Show letter.\n");
-    printf("12 - Show message.\n");
-    printf("13 - Flip LEDs horizontally.\n");
-    printf("14 - Flip LEDs vertically.\n");
-    printf("15 - Get compass heading in degrees.\n");
-    printf("16 - Get environmental conditions.\n");
-    printf("17 - Wait for event.\n");
-    printf("18 - Quit (default).\n");
-    printf("\nEnter your choice: ");
+    fprintf(stdout, "\nChoose one of the following commands:\n\n");
+    fprintf(stdout, "\t%s - Prints this help notice.\n", HELP_CMD_NUM);
+    fprintf(stdout, "\t%s - Get C library version.\n", VERSION_CMD);
+    fprintf(stdout, "\t%s - Color cycle example.\n", COLOR_CYCLE_EXAMPLE_CMD_NUM);
+    fprintf(stdout, "\t%s - Compass example.\n", COMPASS_EXAMPLE_CMD_NUM);
+    fprintf(stdout, "\t%s - Rainbow example.\n", RAINBOW_EXAMPLE_CMD_NUM);
+    fprintf(stdout, "\t%s - Rotation example.\n", ROTATION_EXAMPLE_CMD_NUM);
+    fprintf(stdout, "\t%s - Text scroll example.\n", TEXT_SCROLL_EXAMPLE_CMD_NUM);
+    fprintf(stdout, "\t%s - Flash LEDs.\n", FLASH_CMD_NUM);
+    fprintf(stdout, "\t%s - Load image.\n", LOAD_IMAGE_CMD_NUM);
+    fprintf(stdout, "\t%s - Rotate LEDs.\n", ROTATE_CMD_NUM);
+    fprintf(stdout, "\t%s - Show letter.\n", SHOW_LETTER_CMD_NUM);
+    fprintf(stdout, "\t%s - Show message.\n", SHOW_MESSAGE_CMD_NUM);
+    fprintf(stdout, "\t%s - Flip LEDs horizontally.\n", FLIP_HORIZONTAL_CMD_NUM);
+    fprintf(stdout, "\t%s - Flip LEDs vertically.\n", FLIP_VERTICAL_CMD_NUM);
+    fprintf(stdout, "\t%s - Get compass heading in degrees.\n", HEADING_CMD_NUM);
+    fprintf(stdout, "\t%s - Get environmental conditions.\n", ENVIRONMENT_CMD_NUM);
+    fprintf(stdout, "\t%s - Wait for event.\n", WAIT_FOR_EVENT_CMD_NUM);
+    fprintf(stdout, "\t%s - Quit (default).\n", QUIT_CMD_NUM);
+    fprintf(stdout, "\nEnter your choice: ");
 }
 
 // =================================================================================================
@@ -256,144 +342,222 @@ int main(int argc, const char * argv[])
 
     // Setup signal handler for interesting signals
     if (signal(SIGINT, SimpleSignalHandler) == SIG_ERR)
-        printf("Can't catch SIGINT!\n\n");
+        fprintf(stderr, "Can't catch SIGINT.\n");
     
     if (signal(SIGABRT, SimpleSignalHandler) == SIG_ERR)
-        printf("Can't catch SIGABRT!\n\n");
+        fprintf(stderr, "Can't catch SIGABRT.\n");
     
     if (signal(SIGTERM, SimpleSignalHandler) == SIG_ERR)
-        printf("Can't catch SIGABRT!\n\n");
+        fprintf(stderr, "Can't catch SIGABRT.\n");
     
     if (signal(SIGQUIT, SimpleSignalHandler) == SIG_ERR)
-        printf("Can't catch SIGABRT!\n\n");
+        fprintf(stderr, "Can't catch SIGABRT.\n");
 
     // Print banner
-    printf("\n ************************************************\n");
-    printf(" *** Raspberry Pi Sense HAT C Library Example ***\n");
-    printf(" ************************************************\n");
+    fprintf(stdout, "\n ************************************************\n");
+    fprintf(stdout, " *** Raspberry Pi Sense HAT C Library Example ***\n");
+    fprintf(stdout, " ************************************************\n");
 
     // Open an instance
     int32_t result = SenseHAT_Open(&gInstance);
-    if (result == 0)
+    if (result == UNTHINK_SUCCESS)
     {
         // Check for arguments
         if (argc != 1)
         {
-            size_t cmdLen = strlen(argv[1]);
+            int32_t cmdLineOption = 0;
+            int32_t optionIndex = 0;
+            char* str = NULL;
 
-            printf("\n");
+            // Define command line options
+            static struct option longOptions[] =
+            {
+                { COLOR_CYCLE_EXAMPLE_CMD,  no_argument,        0, 0 }, // Run the color cycle example
+                { COMPASS_EXAMPLE_CMD,      no_argument,        0, 0 }, // Run the compass example
+                { ENVIRONMENT_CMD,          no_argument,        0, 0 }, // Get the current environmental conditions
+                { FLASH_CMD,                no_argument,        0, 0 }, // Flash the LEDs
+                { HEADING_CMD,              no_argument,        0, 0 }, // Get the compass heading in degrees
+                { HELP_CMD,                 no_argument,        0, 0 }, // Prints this usage notice
+                { LOAD_IMAGE_CMD,           required_argument,  0, 0 }, // Load an image from <path>
+                { RAINBOW_EXAMPLE_CMD,      no_argument,        0, 0 }, // Run the rainbow example
+                { ROTATION_EXAMPLE_CMD,     no_argument,        0, 0 }, // Run the rotation example
+                { SHOW_LETTER_CMD,          required_argument,  0, 0 }, // Show a letter
+                { SHOW_MESSAGE_CMD,         required_argument,  0, 0 }, // Show a message
+                { TEXT_SCROLL_EXAMPLE_CMD,  no_argument,        0, 0 }, // Run the text scroll example
+                { VERSION_CMD,              no_argument,        0, 0 }, // Print the version of the SenseHAT C library
+                { WAIT_FOR_EVENT_CMD,       required_argument,  0, 0 }, // Wait for an event
+                { 0,                        0,                  0, 0 }
+            };
 
-            // Check command line arguments
-            if (strncmp(argv[1], kHeadingCmd, (cmdLen > strlen(kHeadingCmd) ? strlen(kHeadingCmd) : cmdLen)) == 0)
+            while (cmdLineOption != -1)
             {
-                GetHeading();
-            }
-            else if (strncmp(argv[1], kEnvironmentCmd, (cmdLen > strlen(kEnvironmentCmd) ? strlen(kEnvironmentCmd) : cmdLen)) == 0)
-            {
-                GetEnvironment();
-            }
-            else if (strncmp(argv[1], kFlashCmd, (cmdLen > strlen(kFlashCmd) ? strlen(kFlashCmd) : cmdLen)) == 0)
-            {
-                Flash();
-            }
-            else if (strncmp(argv[1], kColorCycleExampleCmd, (cmdLen > strlen(kColorCycleExampleCmd) ? strlen(kColorCycleExampleCmd) : cmdLen)) == 0)
-            {
-                ColorCycleExample();
-            }
-            else if (strncmp(argv[1], kCompassExampleCmd, (cmdLen > strlen(kCompassExampleCmd) ? strlen(kCompassExampleCmd) : cmdLen)) == 0)
-            {
-                CompassExample();
-            }
-            else if (strncmp(argv[1], kRainbowExampleCmd, (cmdLen > strlen(kRainbowExampleCmd) ? strlen(kRainbowExampleCmd) : cmdLen)) == 0)
-            {
-                RainbowExample();
-            }
-            else if (strncmp(argv[1], kRotationExampleCmd, (cmdLen > strlen(kRotationExampleCmd) ? strlen(kRotationExampleCmd) : cmdLen)) == 0)
-            {
-                RotationExample();
-            }
-            else if (strncmp(argv[1], kTextScrollExampleCmd, (cmdLen > strlen(kTextScrollExampleCmd) ? strlen(kTextScrollExampleCmd) : cmdLen)) == 0)
-            {
-                TextScrollExample();
-            }
-            else if (strncmp(argv[1], kHelpCmd, (cmdLen > strlen(kHelpCmd) ? strlen(kHelpCmd) : cmdLen)) == 0)
-            {
-                PrintCmdLineHelp();
-            }
-            else if (strncmp(argv[1], kLoadImageCmd, (cmdLen > strlen(kLoadImageCmd) ? strlen(kLoadImageCmd) : cmdLen)) == 0)
-            {
-                optionLen = strlen(kLoadImageCmd) + 1;
-                option = (char*)&((argv[1])[optionLen]);
-                if (strlen(option) > 0)
-                {
-                    LoadImage(option);
-                }
-            }
-            else if (strncmp(argv[1], kShowLetterCmd, (cmdLen > strlen(kShowLetterCmd) ? strlen(kShowLetterCmd) : cmdLen)) == 0)
-            {
-                optionLen = strlen(kShowLetterCmd) + 1;
-                option = (char*)&((argv[1])[optionLen]);
-                if (strlen(option) == 1)
-                {
-                    ShowLetter(option);
-                }
-                else    // Not a letter
-                {
-                    printf("Argument is not a single letter!\n");
-                }
-            }
-            else if (strncmp(argv[1], kShowMessageCmd, (cmdLen > strlen(kShowMessageCmd) ? strlen(kShowMessageCmd) : cmdLen)) == 0)
-            {
-                optionLen = strlen(kShowMessageCmd) + 1;
-                option = (char*)&((argv[1])[optionLen]);
-                if (strlen(option) > 0)
-                {
-                    ShowMessage(option);
-                }
-                else
-                {
-                    printf("Argument is a zero-length string!\n");
-                }
-            }
-            else if (strncmp(argv[1], kVersionCmd, (cmdLen > strlen(kVersionCmd) ? strlen(kVersionCmd) : cmdLen)) == 0)
-            {
-                GetVersion();
-            }
-            else if (strncmp(argv[1], kWaitForEventCmd, (cmdLen > strlen(kWaitForEventCmd) ? strlen(kWaitForEventCmd) : cmdLen)) == 0)
-            {
-                optionLen = strlen(kWaitForEventCmd) + 1;
-                option = (char*)&((argv[1])[optionLen]);
-                if (strncmp(option, kUpEvent, strlen(kUpEvent)) == 0)
-                {
-                    WaitForEvent(eSenseHAT_JoystickDirectionUp);
-                }
-                else if (strncmp(option, kDownEvent, strlen(kDownEvent)) == 0)
-                {
-                    WaitForEvent(eSenseHAT_JoystickDirectionDown);
-                }
-                else if (strncmp(option, kLeftEvent, strlen(kLeftEvent)) == 0)
-                {
-                    WaitForEvent(eSenseHAT_JoystickDirectionLeft);
-                }
-                else if (strncmp(option, kRightEvent, strlen(kRightEvent)) == 0)
-                {
-                    WaitForEvent(eSenseHAT_JoystickDirectionRight);
-                }
-                else if (strncmp(option, kPushEvent, strlen(kPushEvent)) == 0)
-                {
-                    WaitForEvent(eSenseHAT_JoystickDirectionPush);
-                }
-                else
-                {
-                    printf("Invalid command line argument!\n");
-                }
-            }
-            else    // Invalid command
-            {
-                printf("Invalid command line argument!\n");
-            }
+                cmdLineOption = getopt_long(argc, 
+                                            (char *const *)argv, 
+                                            kShortOptions, 
+                                            longOptions, 
+                                            &optionIndex);
 
-            printf("\nQuitting...\n\n");
+                // Case on command line option
+                switch (cmdLineOption)
+                {
+                    case 0: // Long option found
+
+                        // Color cycle example
+                        if (optionIndex == COLOR_CYCLE_EXAMPLE_OPTION)
+                            ColorCycleExample();
+
+                        // Compass example
+                        else (optionIndex == COMPASS_EXAMPLE_OPTION)
+                            CompassExample();
+
+                        // Environment 
+                        else if (optionIndex == ENVIRONMENT_OPTION)
+                            GetEnvironment();
+
+                        // Flash
+                        else if (optionIndex == FLASH_OPTION)
+                            Flash();
+
+                        // Heading
+                        else if (optionIndex == HEADING_OPTION)
+                            GetHeading();
+
+                        // Help
+                        else if (optionIndex == HELP_OPTION)
+                            PrintCmdLineHelp(argv[0]);
+
+                        // Load image
+                        else if (optionIndex == LOAD_IMAGE_OPTION)
+                            LoadImage(optarg);
+
+                        // Rainbow example
+                        else if (optionIndex == RAINBOW_EXAMPLE_OPTION)
+                            RainbowExample();
+
+                        // Rotation example
+                        else if (optionIndex == ROTATION_EXAMPLE_OPTION)
+                            RotationExample();
+
+                        // Show letter
+                        else if (optionIndex == SHOW_LETTER_OPTION)
+                            ShowLetter(optarg);
+
+                        // Show message
+                        else if (optionIndex == SHOW_MESSAGE_OPTION)
+                            ShowMessage(optarg);
+
+                        // Text scroll example
+                        else if (optionIndex == TEXT_SCROLL_EXAMPLE_OPTION)
+                            TextScrollExample();
+
+                        // Version
+                        else if (optionIndex == VERSION_OPTION)
+                            GetVersion();
+                        
+                        // Wait for event
+                        else if (optionIndex == WAIT_FOR_EVENT_OPTION)
+                        {
+                            if (strncmp(optarg, kUpEvent, strlen(kUpEvent)) == 0)
+                                WaitForEvent(eSenseHAT_JoystickDirectionUp);
+                            else if (strncmp(optarg, kDownEvent, strlen(kDownEvent)) == 0)
+                                WaitForEvent(eSenseHAT_JoystickDirectionDown);
+                            else if (strncmp(optarg, kLeftEvent, strlen(kLeftEvent)) == 0)
+                                WaitForEvent(eSenseHAT_JoystickDirectionLeft);
+                            else if (strncmp(optarg, kRightEvent, strlen(kRightEvent)) == 0)
+                                WaitForEvent(eSenseHAT_JoystickDirectionRight);
+                            else if (strncmp(optarg, kPushEvent, strlen(kPushEvent)) == 0)
+                                WaitForEvent(eSenseHAT_JoystickDirectionPush);
+                            else
+                                fprintf(stdout, "Invalid command line argument: %s\n", optarg);
+                        }
+
+                        // Unknown
+                        else
+                        {
+                            PrintCmdLineHelp(argv[0]);
+                            fprintf(stdout, "\n");
+                            gDone = true;
+                        }
+                        break;
+
+                    case COLOR_CYCLE_EXAMPLE_SHORT_CMD:
+                        ColorCycleExample();
+                        break;
+
+                    case COMPASS_EXAMPLE_SHORT_CMD:
+                        CompassExample();
+                        break;
+
+                    case ENVIRONMENT_SHORT_CMD:
+                        GetEnvironment();
+                        break;
+
+                    case FLASH_SHORT_CMD:
+                        Flash();
+                        break;
+
+                    case HEADING_SHORT_CMD:
+                        GetHeading();
+                        break;
+
+                    case HELP_SHORT_CMD:
+                        PrintCmdNumHelp();
+                        break;
+
+                    case LOAD_IMAGE_SHORT_CMD:
+                        LoadImage(optarg);
+                        break;
+
+                    case RAINBOW_EXAMPLE_SHORT_CMD:
+                        RainbowExample();
+                        break;
+
+                    case ROTATION_EXAMPLE_SHORT_CMD:
+                        RotationExample();
+                        break;
+
+                    case SHOW_LETTER_SHORT_CMD:
+                        ShowLetter(optarg);
+                        break;
+
+                    case SHOW_MESSAGE_SHORT_CMD:
+                        ShowMessage(optarg);
+                        break;
+
+                    case TEXT_SCROLL_EXAMPLE_SHORT_CMD:
+                        TextScrollExample();
+                        break;
+
+                    case VERSION_SHORT_CMD:
+                        GetVersion();
+                        break;
+
+                    case WAIT_FOR_EVENT_SHORT_CMD:
+                        if (strncmp(optarg, kUpEvent, strlen(kUpEvent)) == 0)
+                            WaitForEvent(eSenseHAT_JoystickDirectionUp);
+                        else if (strncmp(optarg, kDownEvent, strlen(kDownEvent)) == 0)
+                            WaitForEvent(eSenseHAT_JoystickDirectionDown);
+                        else if (strncmp(optarg, kLeftEvent, strlen(kLeftEvent)) == 0)
+                            WaitForEvent(eSenseHAT_JoystickDirectionLeft);
+                        else if (strncmp(optarg, kRightEvent, strlen(kRightEvent)) == 0)
+                            WaitForEvent(eSenseHAT_JoystickDirectionRight);
+                        else if (strncmp(optarg, kPushEvent, strlen(kPushEvent)) == 0)
+                            WaitForEvent(eSenseHAT_JoystickDirectionPush);
+                        else
+                            fprintf(stdout, "Invalid command line argument: %s\n", optarg);
+                        break;
+
+                    // Unknown
+                    case UNKNOWN_SHORT_CMD:
+                    {
+                        PrintCmdLineHelp(argv[0]);
+                        fprintf(stdout, "\n");
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
         }
         else
         {
@@ -409,85 +573,74 @@ int main(int argc, const char * argv[])
                 PrintCmdNumHelp();
                 fgets(cmdBuf, sizeof(cmdBuf), stdin);
                 scanResult = sscanf(cmdBuf, "%d", &cmdNum);
-                printf("\n");
+                fprintf(stdout, "\n");
                 if (scanResult == EOF)
                 {
                     done = true;
-                    printf("\nQuitting...\n\n");
+                    fprintf(stdout, "\nQuitting...\n\n");
                 }
                 else if (scanResult == 0)
-                {
-                    printf("Invalid command.\n\n");
-                }
+                    fprintf(stdout, "Invalid command.\n\n");
+
                 else
                 {
                     switch (cmdNum)
                     {
-                        case kHelpCmdNum:
-                        {
+                        case HELP_CMD_NUM:
                             break;
-                        }
-                        case kVersionCmdNum:
-                        {
+
+                        case VERSION_CMD_NUM:
                             GetVersion();
                             break;
-                        }
-                        case kFlashCmdNum:
-                        {
+
+                        case FLASH_CMD_NUM:
                             Flash();
                             break;
-                        }
-                        case kColorCycleExampleCmdNum:
-                        {
+
+                        case COLOR_CYCLE_EXAMPLE_CMD_NUM:
                             ColorCycleExample();
                             break;
-                        }
-                        case kCompassExampleCmdNum:
-                        {
+
+                        case COMPASS_EXAMPLE_CMD_NUM:
                             CompassExample();
                             break;
-                        }
-                        case kRainbowExampleCmdNum:
-                        {
+
+                        case RAINBOW_EXAMPLE_CMD_NUM:
                             RainbowExample();
                             break;
-                        }
-                        case kRotationExampleCmdNum:
-                        {
+
+                        case ROTATION_EXAMPLE_CMD_NUM:
                             RotationExample();
                             break;
-                        }
-                        case kTextScrollExampleCmdNum:
-                        {
+
+                        case TEXT_SCROLL_EXAMPLE_CMD_NUM:
                             TextScrollExample();
                             break;
-                        }
-                        case kLoadImageCmdNum:
+
+                        case LOAD_IMAGE_CMD_NUM:
                         {
                             // Prompt for file path
                             memset(&(cmdBuf[0]), 0, 128);
-                            printf("Enter image file path: ");
+                            fprintf(stdout, "Enter image file path: ");
                             fgets(cmdBuf, sizeof(cmdBuf), stdin);
                             scanResult = sscanf(cmdBuf, "%s", cmdBuf);
                             LoadImage(cmdBuf);
                             break;
                         }
-                        case kRotateCmdNum:
+                        case ROTATE_CMD_NUM:
                         {
                             // Prompt for degrees of rotation
                             memset(&(cmdBuf[0]), 0, 128);
-                            printf("Available rotations:\n");
-                            printf("1 - 0\n");
-                            printf("2 - 90\n");
-                            printf("3 - 180\n");
-                            printf("4 - 270\n");
-                            printf("Enter rotation: ");
+                            fprintf(stdout, "Available rotations:\n");
+                            fprintf(stdout, "1 - 0\n");
+                            fprintf(stdout, "2 - 90\n");
+                            fprintf(stdout, "3 - 180\n");
+                            fprintf(stdout, "4 - 270\n");
+                            fprintf(stdout, "Enter rotation: ");
                             fgets(cmdBuf, sizeof(cmdBuf), stdin);
                             scanResult = sscanf(cmdBuf, "%d", &cmdNum);
                             if ((scanResult == EOF) || (scanResult == 0))
-                            {
-                                printf("Invalid rotation!\n\n");
-                            }
+                                fprintf(stdout, "Invalid rotation!\n\n");
                             else
                             {
                                 switch (cmdNum)
@@ -505,75 +658,66 @@ int main(int argc, const char * argv[])
                                         Rotate(eSenseHAT_LEDRotation270);
                                         break;
                                     default:
-                                        printf("Invalid rotation!\n");
+                                        fprintf(stdout, "Invalid rotation!\n");
                                         break;
                                 }
                             }
                             break;
                         }
-                        case kShowLetterCmdNum:
+                        case SHOW_LETTER_CMD_NUM:
                         {
                             // Prompt for letter
                             memset(&(cmdBuf[0]), 0, 128);
-                            printf("Enter letter: ");
+                            fprintf(stdout, "Enter letter: ");
                             fgets(cmdBuf, sizeof(cmdBuf), stdin);
                             scanResult = sscanf(cmdBuf, "%s", cmdBuf);
                             if (scanResult == 1)
-                            {
                                 ShowLetter(cmdBuf);
-                            }
                             else
-                            {
-                                printf("Invalid input!\n");
-                            }
+                                fprintf(stdout, "Invalid input!\n");
                             break;
                         }
-                        case kShowMessageCmdNum:
+                        case SHOW_MESSAGE_CMD_NUM:
                         {
                             // Prompt for message
                             memset(&(cmdBuf[0]), 0, 128);
-                            printf("Enter message: ");
+                            fprintf(stdout, "Enter message: ");
                             fgets(cmdBuf, sizeof(cmdBuf), stdin);
                             ShowMessage(cmdBuf);
                             break;
                         }
-                        case kFlipHorizontalCmdNum:
-                        {
+                        case FLIP_HORIZONTAL_CMD_NUM:
                             FlipHorizontal(true);
                             break;
-                        }
-                        case kFlipVerticalCmdNum:
-                        {
+
+                        case FLIP_VERTICAL_CMD_NUM:
                             FlipVertical(true);
                             break;
-                        }
-                        case kHeadingCmdNum:
-                        {
+
+                        case HEADING_CMD_NUM:
                             GetHeading();
                             break;
-                        }
-                        case kEnvironmentCmdNum:
-                        {
+
+                        case ENVIRONMENT_CMD_NUM:
                             GetEnvironment();
                             break;
-                        }
-                        case kWaitForEventCmdNum:
+
+                        case WAIT_FOR_EVENT_CMD_NUM:
                         {
                             // Prompt for event
                             memset(&(cmdBuf[0]), 0, 128);
-                            printf("Available events:\n");
-                            printf("1 - Up\n");
-                            printf("2 - Down\n");
-                            printf("3 - Left\n");
-                            printf("4 - Right\n");
-                            printf("5 - Push\n");
-                            printf("Enter event: ");
+                            fprintf(stdout, "Available events:\n");
+                            fprintf(stdout, "1 - Up\n");
+                            fprintf(stdout, "2 - Down\n");
+                            fprintf(stdout, "3 - Left\n");
+                            fprintf(stdout, "4 - Right\n");
+                            fprintf(stdout, "5 - Push\n");
+                            fprintf(stdout, "Enter event: ");
                             fgets(cmdBuf, sizeof(cmdBuf), stdin);
                             scanResult = sscanf(cmdBuf, "%d", &cmdNum);
                             if ((scanResult == EOF) || (scanResult == 0))
-                            {
-                                printf("Invalid event.\n\n");
-                            }
+                                fprintf(stdout, "Invalid event.\n\n");
+
                             else
                             {
                                 switch (cmdNum)
@@ -594,23 +738,20 @@ int main(int argc, const char * argv[])
                                         WaitForEvent(eSenseHAT_JoystickDirectionPush);
                                         break;
                                     default:
-                                        printf("Invalid event.\n\n");
+                                        fprintf(stdout, "Invalid event.\n\n");
                                         break;
                                 }
                             }
                             break;
                         }
-                        case kQuitCmdNum:
-                        {
+                        case QUIT_CMD_NUM:
                             done = true;
-                            printf("\nQuitting...\n\n");
+                            fprintf(stdout, "\nQuitting...\n\n");
                             break;
-                        }
+
                         default:
-                        {
-                            printf("Invalid command.\n\n");
+                            fprintf(stdout, "Invalid command.\n\n");
                             break;
-                        }
                     }
                 }
             }
@@ -623,9 +764,8 @@ int main(int argc, const char * argv[])
         result = SenseHAT_Close(&gInstance);
     }
     else    // SenseHAT_Open failed
-    {
-        printf("SenseHAT_Open failed!\n");
-    } 
+        fprintf(stdout, "SenseHAT_Open failed!\n");
+
     return retValue;
 }
 
@@ -635,7 +775,7 @@ int main(int argc, const char * argv[])
 void GetVersion (void)
 {
     uint32_t version = SenseHAT_Version();
-    printf("Raspberry Pi Sense HAT C library version is %d.%d.%d.\n", 
+    fprintf(stdout, "Raspberry Pi Sense HAT C library version is %d.%d.%d.\n", 
         ((version & 0xFFFF0000) >> 16),
         ((version & 0x0000FF00) >> 8),
         (version & 0x000000FF)); 
@@ -648,7 +788,7 @@ void GetVersion (void)
 void Flash (void)
 {
     int32_t result = 0;
-    printf("Flashing LEDs... Enter ctrl-c to stop.\n");
+    fprintf(stdout, "Flashing LEDs... Enter ctrl-c to stop.\n");
 
     while (!gDone)
     {
@@ -667,7 +807,7 @@ void Flash (void)
                     result = SenseHAT_LEDClear(gInstance, &kBackColor);
                     if (result != 0)
                     {
-                        printf("SenseHAT_LEDClear failed!\n");
+                        fprintf(stdout, "SenseHAT_LEDClear failed!\n");
                         gDone = true;
                     }
                 }
@@ -691,9 +831,7 @@ void Flash (void)
     }
 
     if (result == 0)
-    {
         result = SenseHAT_LEDClear(gInstance, NULL);
-    }
 
     gDone = false;
 
@@ -706,7 +844,7 @@ void Flash (void)
 void ColorCycleExample (void)
 {
     int32_t result = 0;
-    printf("Color cycling LEDs... Enter ctrl-c to stop.\n");
+    fprintf(stdout, "Color cycling LEDs... Enter ctrl-c to stop.\n");
     result = SenseHAT_LEDClear(gInstance, NULL);
     if (result == 0)
     {
@@ -734,22 +872,19 @@ void ColorCycleExample (void)
             }
             else
             {
-                printf("SenseHAT_LEDClear failed!\n");
+                fprintf(stdout, "SenseHAT_LEDClear failed!\n");
                 gDone = true;
             }
         }
 
         if (result == 0)
-        {
             result = SenseHAT_LEDClear(gInstance, NULL);
-        }
 
         gDone = false;
     }
     else
-    {
-        printf("SenseHAT_LEDClear failed!\n");
-    }
+        fprintf(stdout, "SenseHAT_LEDClear failed!\n");
+
     return;
 }
 
@@ -759,7 +894,7 @@ void ColorCycleExample (void)
 void RainbowExample (void)
 {
     int32_t result = 0;
-    printf("Animating rainbow on LEDs... Enter ctrl-c to stop.\n");
+    fprintf(stdout, "Animating rainbow on LEDs... Enter ctrl-c to stop.\n");
     result = SenseHAT_LEDClear(gInstance, NULL);
     if (result == 0)
     {
@@ -805,21 +940,16 @@ void RainbowExample (void)
             }
 
             if (result == 0)
-            {
                 result = SenseHAT_LEDClear(gInstance, NULL);
-            }
 
             gDone = false;
         }
         else    // SenseHAT_LEDSetPixels failed
-        {
-            printf("SenseHAT_LEDSetPixels failed!\n");
-        }
+            fprintf(stdout, "SenseHAT_LEDSetPixels failed!\n");
     }
     else    // SenseHAT_LEDClear failed
-    {
-        printf("SenseHAT_LEDClear failed!\n");
-    }
+        fprintf(stdout, "SenseHAT_LEDClear failed!\n");
+
     return;
 }
 
@@ -850,7 +980,7 @@ void RotationExample (void)
                     if (result == 0)
                     {
                         uint32_t i = 0;
-                        printf("Rotating... Enter ctrl-c to stop.\n");
+                        fprintf(stdout, "Rotating... Enter ctrl-c to stop.\n");
                         while (!gDone)
                         {
                             result = SenseHAT_LEDSetRotation(gInstance, (tSenseHAT_LEDRotation)i, true);
@@ -865,40 +995,28 @@ void RotationExample (void)
                             }
                             else
                             {
-                                printf("SenseHAT_LEDSetRotation failed!\n");
+                                fprintf(stdout, "SenseHAT_LEDSetRotation failed!\n");
                                 gDone = true;
                             }
                         }
                     }
                     else
-                    {
-                        printf("SenseHAT_LEDSetPixel failed!\n");
-                    }
+                        fprintf(stdout, "SenseHAT_LEDSetPixel failed!\n");
                 }
                 else
-                {
-                    printf("SenseHAT_LEDSetPixel failed!\n");
-                }
+                    fprintf(stdout, "SenseHAT_LEDSetPixel failed!\n");
             }
             else
-            {
-                printf("SenseHAT_LEDSetPixel failed!\n");
-            }
+                fprintf(stdout, "SenseHAT_LEDSetPixel failed!\n");
         }
         else
-        {
-            printf("SenseHAT_LEDSetPixel failed!\n");
-        }
+            fprintf(stdout, "SenseHAT_LEDSetPixel failed!\n");
     }
     else
-    {
-        printf("SenseHAT_LEDSetPixels failed!\n");
-    }
+        fprintf(stdout, "SenseHAT_LEDSetPixels failed!\n");
 
     if (result == 0)
-    {
         result = SenseHAT_LEDClear(gInstance, NULL);
-    }
 
     gDone = false;
 
@@ -911,12 +1029,11 @@ void RotationExample (void)
 void LoadImage (char* imageFilePath)
 {
     int32_t result = 0;
-    printf("Loading image...\n");
+    fprintf(stdout, "Loading image...\n");
     result = SenseHAT_LEDLoadImage(gInstance, imageFilePath, true, NULL);
     if (result != 0)
-    {
-        printf("SenseHAT_LEDLoadImage failed!\n");
-    }
+        fprintf(stdout, "SenseHAT_LEDLoadImage failed!\n");
+
     return;
 }
 
@@ -926,12 +1043,11 @@ void LoadImage (char* imageFilePath)
 void Rotate (tSenseHAT_LEDRotation rotation)
 {
     int32_t result = 0;
-    printf("Rotating...\n");
+    fprintf(stdout, "Rotating...\n");
     result = SenseHAT_LEDSetRotation(gInstance, rotation, true);
     if (result != 0)
-    {
-        printf("SenseHAT_LEDSetRotation failed!\n");
-    }
+        fprintf(stdout, "SenseHAT_LEDSetRotation failed!\n");
+
     return;
 }
 
@@ -941,16 +1057,13 @@ void Rotate (tSenseHAT_LEDRotation rotation)
 void ShowLetter (char* letter)
 {
     int32_t result = 0;
-    printf("Showing letter...\n");
+    fprintf(stdout, "Showing letter...\n");
     result = SenseHAT_LEDShowLetter(gInstance, letter, &kTextColor, &kBackColor);
     if (result == 0)
-    {
         sleep(1);
-    }
     else
-    {
-        printf("SenseHAT_LEDShowLetter failed!\n");
-    }
+        fprintf(stdout, "SenseHAT_LEDShowLetter failed!\n");
+
     return;
 }
 
@@ -960,16 +1073,13 @@ void ShowLetter (char* letter)
 void ShowMessage (char* message)
 {
     int32_t result = 0;
-    printf("Showing message...\n");
+    fprintf(stdout, "Showing message...\n");
     result = SenseHAT_LEDShowMessage(gInstance, message, 0.05, &kTextColor, &kBackColor);
     if (result == 0)
-    {
         sleep(1);
-    }
     else
-    {
-        printf("SenseHAT_LEDShowMessage failed!\n");
-    }    
+        fprintf(stdout, "SenseHAT_LEDShowMessage failed!\n");
+
     return;
 }
 
@@ -979,12 +1089,11 @@ void ShowMessage (char* message)
 void FlipHorizontal (bool flip)
 {
     int32_t result = 0;
-    printf("Flipping horizontally...\n");
+    fprintf(stdout, "Flipping horizontally...\n");
     result = SenseHAT_LEDFlipHorizontal(gInstance, flip, NULL);
     if (result != 0)
-    {
-        printf("SenseHAT_LEDFlipHorizontal failed!\n");
-    }
+        fprintf(stdout, "SenseHAT_LEDFlipHorizontal failed!\n");
+
     return;
 }
 
@@ -994,12 +1103,11 @@ void FlipHorizontal (bool flip)
 void FlipVertical (bool flip)
 {
     int32_t result = 0;
-    printf("Flipping vertically...\n");
+    fprintf(stdout, "Flipping vertically...\n");
     result = SenseHAT_LEDFlipVertical(gInstance, flip, NULL);
     if (result != 0)
-    {
-        printf("SenseHAT_LEDFlipVertical failed!\n");
-    }
+        fprintf(stdout, "SenseHAT_LEDFlipVertical failed!\n");
+
     return;
 }
 
@@ -1016,13 +1124,12 @@ void GetHeading (void)
         char msg[128];
         memset((void*)msg, 0, 128);
         sprintf(msg, "Compass heading is %.2f degrees.\n", heading);
-        printf(msg);
+        fprintf(stdout, msg);
         (void)ShowMessage(msg);
     }
     else
-    {
-        printf("SenseHAT_GetCompass failed!\n");
-    }
+        fprintf(stdout, "SenseHAT_GetCompass failed!\n");
+
     return;
 }
 
@@ -1040,7 +1147,7 @@ void GetEnvironment (void)
         char msg[128];
         memset((void*)msg, 0, 128);
         sprintf(msg, "Humidity is %.2f percent relative humidity.\n", humidity);
-        printf(msg);
+        fprintf(stdout, msg);
 
         result = SenseHAT_GetPressure(gInstance, &pressure);
         if (result == 0)
@@ -1049,7 +1156,7 @@ void GetEnvironment (void)
 
             memset((void*)msg, 0, 128);
             sprintf(msg, "Pressure is %.2f millibars.\n", pressure);
-            printf(msg);
+            fprintf(stdout, msg);
 
             result = SenseHAT_GetTemperature(gInstance, &temperature);
             if (result == 0)
@@ -1058,22 +1165,17 @@ void GetEnvironment (void)
                 char msg[128];
                 memset((void*)msg, 0, 128);
                 sprintf(msg, "Temperature is %.2f degrees Celsius, %.2f degrees Fahrenheit.\n", temperature, tempF);
-                printf(msg);
+                fprintf(stdout, msg);
             }
             else
-            {
                 printf("SenseHAT_GetTemperature failed!\n");
-            }
         }
         else
-        {
-            printf("SenseHAT_GetPressure failed!\n");
-        }
+            fprintf(stdout, "SenseHAT_GetPressure failed!\n");
     }
     else
-    {
-        printf("SenseHAT_GetHumidity failed!\n");
-    }
+        fprintf(stdout, "SenseHAT_GetHumidity failed!\n");
+
     return;
 }
 
@@ -1086,7 +1188,7 @@ void WaitForEvent (tSenseHAT_JoystickDirection direction)
     bool gotEvent = false;
     int32_t result = 0;
 
-    printf("Waiting for event... Enter ctrl-c to stop.\n");
+    fprintf(stdout, "Waiting for event... Enter ctrl-c to stop.\n");
     while (!gotEvent && !gDone)
     {
         result = SenseHAT_WaitForEvent(gInstance, true, &event);
@@ -1100,7 +1202,7 @@ void WaitForEvent (tSenseHAT_JoystickDirection direction)
         }
         else
         {
-            printf("SenseHAT_WaitForEvent failed!\n");
+            fprintf(stdout, "SenseHAT_WaitForEvent failed!\n");
             break;
         }
     }   
@@ -1132,7 +1234,7 @@ void CompassExample (void)
             int32_t y = 0;
             tSenseHAT_LEDPixel color = kBlueColor;
 
-            printf("Tracking compass... Enter ctrl-c to stop.\n");
+            fprintf(stdout, "Tracking compass... Enter ctrl-c to stop.\n");
             while (!gDone)
             {
                 result = SenseHAT_GetCompass(gInstance, &degrees);
@@ -1150,7 +1252,7 @@ void CompassExample (void)
                         result = SenseHAT_LEDSetPixel(gInstance, prevX, prevY, NULL);
                         if (result != 0)
                         {
-                            printf("SenseHAT_LEDSetPixel failed!\n");
+                            fprintf(stdout, "SenseHAT_LEDSetPixel failed!\n");
                             gDone = true;
                         }
                     }
@@ -1165,7 +1267,7 @@ void CompassExample (void)
                         }
                         else
                         {
-                            printf("SenseHAT_LEDSetPixel failed!\n");
+                            fprintf(stdout, "SenseHAT_LEDSetPixel failed!\n");
                             gDone = true;
                         }
                     }
@@ -1173,14 +1275,10 @@ void CompassExample (void)
             }
         }
         else
-        {
-            printf("SenseHAT_LEDClear failed!\n");
-        }
+            fprintf(stdout, "SenseHAT_LEDClear failed!\n");
     }
     else
-    {
-        printf("SenseHAT_LEDSetRotation failed!\n");
-    }
+        fprintf(stdout, "SenseHAT_LEDSetRotation failed!\n");
 
     gDone = false;
 
@@ -1208,19 +1306,14 @@ void TextScrollExample (void)
         {
             result = SenseHAT_LEDSetRotation(gInstance, eSenseHAT_LEDRotation0, true);
             if (result != 0)
-            {
-                printf("SenseHAT_LEDSetRotation failed!\n");
-            }
+                fprintf(stdout, "SenseHAT_LEDSetRotation failed!\n");
         }
         else
-        {
-            printf("SenseHAT_LEDShowMessage failed!\n");
-        }
+            fprintf(stdout, "SenseHAT_LEDShowMessage failed!\n");
     }
     else 
-    {
-        printf("SenseHAT_LEDSetRotation failed!\n");
-    }
+        fprintf(stdout, "SenseHAT_LEDSetRotation failed!\n");
+
     return;
 }
 // =================================================================================================

@@ -1,6 +1,6 @@
 // ==================================================================================================
 //
-//  python-support.h
+//  python_support.h
 //
 //  Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 //
@@ -32,8 +32,8 @@
 #ifndef __PYTHONSUPPORT_H__
 #define __PYTHONSUPPORT_H__
 
+#include "unthink_types"
 #include <Python.h>
-#include <stdint.h>
 
 #if PY_MAJOR_VERSION == 2
 #define PYSTRING_AS_STRING  PyString_AsString
@@ -75,7 +75,7 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    void    Python_ReleaseFunctionReference (PyObject** const   functionReference);
+    int32_t Python_ReleaseFunctionReference (PyObject** const   functionReference);
 
     //! @brief Call Python_Error to determine whether a Python/C API function call succeeded.
     //!

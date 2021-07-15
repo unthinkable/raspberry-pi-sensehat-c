@@ -1,6 +1,6 @@
 // ==================================================================================================
 //
-//  sensehat-test.c
+//  sensehat_test.c
 //
 //  Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 //
@@ -596,7 +596,7 @@ int main (int argc, const char * argv[])
             printf("CU_add_suite failed with error code %d!\n", status);
         }
 
-        // Check for success
+        // Check status
         if (status == CUE_SUCCESS)
         {
             CU_set_output_filename("./Sense-HAT-C-Library-Unit-Test");

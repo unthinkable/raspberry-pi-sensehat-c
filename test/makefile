@@ -55,7 +55,7 @@ BINDIR="$(BUILD_ROOT)/$(BUILD_PRODUCTS_DIR_NAME)/$(BUILD_PRODUCTS_BIN_DIR)/$(BUI
 OBJDIR="$(BUILD_ROOT)/$(BUILD_PRODUCTS_DIR_NAME)/$(BUILD_PRODUCTS_OBJ_DIR)/$(BUILD_ARCH_DIR)/$(BUILD_CFG)"
 
 # Define output executable path/name
-OUTFILE=$(BINDIR)/sensehat-test
+OUTFILE=$(BINDIR)/sensehat_test
 
 # Create bin and obj directories
 $(shell $(MKDIR) -p $(BINDIR))
@@ -76,7 +76,7 @@ CFG_LIB_INC=-L. \
 
 # Define object files
 CFG_OBJ=
-COMMON_OBJ=$(OBJDIR)/sensehat-test.o 
+COMMON_OBJ=$(OBJDIR)/sensehat_test.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 
 #

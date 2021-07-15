@@ -1,7 +1,7 @@
 #!/bin/bash
 # =================================================================================================
 #
-#   bash-c-code-quality-utils.sh
+#   bash_c_code_quality_utils.sh
 #
 #   Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 #
@@ -13,8 +13,8 @@
 #
 # =================================================================================================
 
-source "./bash-console-utils.sh"
-source "./bash-file-system-utils.sh"
+source "./bash_console_utils.sh"
+source "./bash_file_system_utils.sh"
 
 # Function to check for cppcheck
 function hasCppcheck () {

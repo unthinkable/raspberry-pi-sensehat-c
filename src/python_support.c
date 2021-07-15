@@ -23,6 +23,7 @@
 //! 
 //  Includes
 // =================================================================================================
+#include "unthink_utils.h"
 #include "python-support.h"
 #include <stdlib.h>
 
@@ -33,26 +34,36 @@ int32_t Python_GetFunctionReference (const PyObject* subModule,
                                      const char* functionName,
                                      PyObject** const functionReference)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
 
     // Check arguments
-    if ((subModule != NULL) &&
-        (functionName != NULL) &&
-        (functionReference != NULL))
+    result = UNTHINK_CHECK_CONDITION((subModule != NULL), EINVAL);
+    if (result == UNTHINK_SUCCESS)
+    {
+        result = UNTHINK_CHECK_CONDITION((functionName != NULL), EINVAL);
+        if (result == UNTHINK_SUCCESS)
+        {
+            result = UNTHINK_CHECK_CONDITION((strlen(functionName) > 0), EINVAL);
+            if (result == UNTHINK_SUCCESS)
+                result = UNTHINK_CHECK_CONDITION((functionReference != NULL), EINVAL);
+        }
+    }
+
+    // Check status
+    if (result == UNTHINK_SUCCESS)
     {
         // Setup
         *functionReference = NULL;
 
         // Get a reference to the function
         PyObject* pyFunc = PyObject_GetAttrString((PyObject*) subModule, functionName);
-        if (pyFunc != NULL)
+        result = UNTHINK_CHECK_CONDITION((pyFunc != NULL), EFAULT);
+        if (result == UNTHINK_SUCCESS)
         {
             // Is the function callable?
             if (PyCallable_Check(pyFunc))
-            {
-                // Return the function reference
-                *functionReference = pyFunc;
-            }
+                *functionReference = pyFunc; // Return the function reference
+
             else    // The function isn't callable
             {
                 // Release reference
@@ -61,13 +72,7 @@ int32_t Python_GetFunctionReference (const PyObject* subModule,
             }
         }
         else    // PyObject_GetAttrString failed
-        {
-            result = Python_Error("PyObject_GetAttrString failed!");
-        }
-    }
-    else    // Invalid argument
-    {
-        result = EINVAL;
+            (void)Python_Error("PyObject_GetAttrString failed!");
     }
     return result;
 }
@@ -75,20 +80,22 @@ int32_t Python_GetFunctionReference (const PyObject* subModule,
 // =================================================================================================
 //  Python_ReleaseFunctionReference
 // =================================================================================================
-void Python_ReleaseFunctionReference (PyObject** const functionReference)
+int32_t Python_ReleaseFunctionReference (PyObject** const functionReference)
 {
+    int32_t result = UNTHINK_SUCCESS;
+
     // Check arguments
-    if ((functionReference != NULL) && (*functionReference != NULL))
+    result = UNTHINK_CHECK_CONDITION((functionReference != NULL), EINVAL);
+    if (result == UNTHINK_SUCCESS)
+        result = UNTHINK_CHECK_CONDITION((*functionReference != NULL), EINVAL);
+    
+    if (result == UNTHINK_SUCCESS)
     {
         // Release reference
         Py_DECREF(*functionReference);
         *functionReference = NULL;
     }
-    else    // Invalid argument
-    {
-        fprintf(stderr, "Python_ReleaseFunctionReference: Invalid argument!\n");
-    }
-    return;
+    return result;
 }
 
 // =================================================================================================
@@ -96,20 +103,27 @@ void Python_ReleaseFunctionReference (PyObject** const functionReference)
 // =================================================================================================
 int32_t Python_Error (const char* context)
 {
-    int32_t err = -1;
+    int32_t err = UNTHINK_FAILURE;
 
-    // Get the Python interpreter error object (note this is a borrowed reference)
-    PyObject* pyErr = PyErr_Occurred();
-    if (pyErr != NULL)
-    {
-        // Print it
-        PyErr_Print();
-    }
+    // Check argument
+    result = UNTHINK_CHECK_CONDITION((context != NULL), EINVAL);
+    if (result == UNTHINK_SUCCESS)
+        result = UNTHINK_CHECK_CONDITION((strlen(context) > 0), EINVAL);
 
-    // Print error context to stderr
-    if (strlen(context) > 0)
+    // Check status
+    if (result == UNTHINK_SUCCESS)
     {
-        fprintf(stderr, "%s\n", context);
+        // Get the Python interpreter error object (note this is a borrowed reference)
+        PyObject* pyErr = PyErr_Occurred();
+        if (pyErr != NULL)
+        {
+            // Print it
+            PyErr_Print();
+        }
+
+        // Print error context to stderr
+        if (strlen(context) > 0)
+            fprintf(stderr, "%s\n", context);
     }
     return err;
 }

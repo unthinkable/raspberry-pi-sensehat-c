@@ -1,7 +1,7 @@
 #!/bin/bash
 # =================================================================================================
 #
-#   bash-unit-test-utils.sh
+#   bash_unit_test_utils.sh
 #
 #   Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 #
@@ -13,8 +13,8 @@
 #
 # =================================================================================================
 
-source "./bash-console-utils.sh"
-source "./bash-string-utils.sh"
+source "./bash_console_utils.sh"
+source "./bash_string_utils.sh"
 
 # Function to check for CUnit
 function hasCUnit () {
