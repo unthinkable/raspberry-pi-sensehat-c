@@ -62,9 +62,8 @@ function parseCUnitResults()
         echo "$line"
 		if [ $SUITES_TAG_FOUND == 0 ]
 		then
-            echo "***SUITES TAG NOT FOUND"
 			SUITES_TAG="$(echo $line | grep "Suites" | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-            echo "$SUITES_TAG"
+            echo "Tag is $SUITES_TAG"
 			if [ "$SUITES_TAG" == " Suites " ]
 			then
 				SUITES_TAG_FOUND=1
