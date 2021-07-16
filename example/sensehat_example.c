@@ -757,10 +757,10 @@ int main(int argc, const char * argv[])
         }
 
         // Clear the LEDs 
-        result = SenseHAT_LEDClear(gInstance, &kBackColor);
+        (void)SenseHAT_LEDClear(gInstance, &kBackColor);
 
         // Close the instance
-        result = SenseHAT_Close(&gInstance);
+        (void)SenseHAT_Close(&gInstance);
     }
     else    // SenseHAT_Open failed
         fprintf(stdout, "SenseHAT_Open failed!\n");
@@ -786,25 +786,25 @@ void GetVersion (void)
 // =================================================================================================
 void Flash (void)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
     fprintf(stdout, "Flashing LEDs... Enter ctrl-c to stop.\n");
 
     while (!gDone)
     {
         result = SenseHAT_LEDSetPixels(gInstance, kRedArray);
-        if (result == 0)
+        if (result == UNTHINK_SUCCESS)
         {
             sleep(1);
             result = SenseHAT_LEDSetPixels(gInstance, kGreenArray);
-            if (result == 0)
+            if (result == UNTHINK_SUCCESS)
             {
                 sleep(1);
                 result = SenseHAT_LEDSetPixels(gInstance, kBlueArray);
-                if (result == 0)
+                if (result == UNTHINK_SUCCESS)
                 {
                     sleep(1);
                     result = SenseHAT_LEDClear(gInstance, &kBackColor);
-                    if (result != 0)
+                    if (result != UNTHINK_SUCCESS)
                     {
                         fprintf(stdout, "SenseHAT_LEDClear failed!\n");
                         gDone = true;
@@ -829,8 +829,8 @@ void Flash (void)
         }  
     }
 
-    if (result == 0)
-        result = SenseHAT_LEDClear(gInstance, NULL);
+    if (result == UNTHINK_SUCCESS)
+        (void)SenseHAT_LEDClear(gInstance, NULL);
 
     gDone = false;
 
@@ -842,10 +842,10 @@ void Flash (void)
 // =================================================================================================
 void ColorCycleExample (void)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
     fprintf(stdout, "Color cycling LEDs... Enter ctrl-c to stop.\n");
     result = SenseHAT_LEDClear(gInstance, NULL);
-    if (result == 0)
+    if (result == UNTHINK_SUCCESS)
     {
         useconds_t sleepTime = 2;
         tSenseHAT_LEDPixel color = {255, 0, 0};
@@ -853,7 +853,7 @@ void ColorCycleExample (void)
         while (!gDone)
         {
             result = SenseHAT_LEDClear(gInstance, &color);
-            if (result == 0)
+            if (result == UNTHINK_SUCCESS)
             {
                 if ((color.red == 255) && (color.green < 255) && (color.blue == 0))
                     color.green += 1;
@@ -876,8 +876,8 @@ void ColorCycleExample (void)
             }
         }
 
-        if (result == 0)
-            result = SenseHAT_LEDClear(gInstance, NULL);
+        if (result == UNTHINK_SUCCESS)
+            (void)SenseHAT_LEDClear(gInstance, NULL);
 
         gDone = false;
     }
@@ -892,10 +892,10 @@ void ColorCycleExample (void)
 // =================================================================================================
 void RainbowExample (void)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
     fprintf(stdout, "Animating rainbow on LEDs... Enter ctrl-c to stop.\n");
     result = SenseHAT_LEDClear(gInstance, NULL);
-    if (result == 0)
+    if (result == UNTHINK_SUCCESS)
     {
         useconds_t sleepTime = 2;
         tSenseHAT_LEDPixelArray pixels;
@@ -907,7 +907,7 @@ void RainbowExample (void)
         memcpy((void*)pixels, (void*)kRainbowSeedArray, sizeof(tSenseHAT_LEDPixelArray));
 
         result = SenseHAT_LEDSetPixels(gInstance, pixels);
-        if (result == 0)
+        if (result == UNTHINK_SUCCESS)
         {
             while (!gDone)
             {
@@ -938,8 +938,8 @@ void RainbowExample (void)
                 usleep(sleepTime);
             }
 
-            if (result == 0)
-                result = SenseHAT_LEDClear(gInstance, NULL);
+            if (result == UNTHINK_SUCCESS)
+                (void)SenseHAT_LEDClear(gInstance, NULL);
 
             gDone = false;
         }
@@ -957,33 +957,33 @@ void RainbowExample (void)
 // =================================================================================================
 void RotationExample (void)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
 
     result = SenseHAT_LEDSetPixels(gInstance, kQuestionMarkArray);
-    if (result == 0)
+    if (result == UNTHINK_SUCCESS)
     {
         tSenseHAT_LEDPixel redColor = kRedColor;
         result = SenseHAT_LEDSetPixel(gInstance, 0, 0, &redColor);
-        if (result == 0)
+        if (result == UNTHINK_SUCCESS)
         {
             tSenseHAT_LEDPixel blueColor = kBlueColor;
             result = SenseHAT_LEDSetPixel(gInstance, 0, 7, &blueColor);
-            if (result == 0)
+            if (result == UNTHINK_SUCCESS)
             {
                 tSenseHAT_LEDPixel greenColor = kGreenColor;
                 result = SenseHAT_LEDSetPixel(gInstance, 7, 0, &greenColor);
-                if (result == 0)
+                if (result == UNTHINK_SUCCESS)
                 {
                     tSenseHAT_LEDPixel purpleColor = kPurpleColor;
                     result = SenseHAT_LEDSetPixel(gInstance, 7, 7, &purpleColor);
-                    if (result == 0)
+                    if (result == UNTHINK_SUCCESS)
                     {
                         uint32_t i = 0;
                         fprintf(stdout, "Rotating... Enter ctrl-c to stop.\n");
                         while (!gDone)
                         {
                             result = SenseHAT_LEDSetRotation(gInstance, (tSenseHAT_LEDRotation)i, true);
-                            if (result == 0)
+                            if (result == UNTHINK_SUCCESS)
                             {
                                 i += 90;
                                 if (i > 270)
@@ -1014,8 +1014,8 @@ void RotationExample (void)
     else
         fprintf(stdout, "SenseHAT_LEDSetPixels failed!\n");
 
-    if (result == 0)
-        result = SenseHAT_LEDClear(gInstance, NULL);
+    if (result == UNTHINK_SUCCESS)
+        (void)SenseHAT_LEDClear(gInstance, NULL);
 
     gDone = false;
 
@@ -1027,10 +1027,10 @@ void RotationExample (void)
 // =================================================================================================
 void LoadImage (char* imageFilePath)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
     fprintf(stdout, "Loading image...\n");
     result = SenseHAT_LEDLoadImage(gInstance, imageFilePath, true, NULL);
-    if (result != 0)
+    if (result != UNTHINK_SUCCESS)
         fprintf(stdout, "SenseHAT_LEDLoadImage failed!\n");
 
     return;
@@ -1041,10 +1041,10 @@ void LoadImage (char* imageFilePath)
 // =================================================================================================
 void Rotate (tSenseHAT_LEDRotation rotation)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
     fprintf(stdout, "Rotating...\n");
     result = SenseHAT_LEDSetRotation(gInstance, rotation, true);
-    if (result != 0)
+    if (result != UNTHINK_SUCCESS)
         fprintf(stdout, "SenseHAT_LEDSetRotation failed!\n");
 
     return;
@@ -1055,10 +1055,10 @@ void Rotate (tSenseHAT_LEDRotation rotation)
 // =================================================================================================
 void ShowLetter (char* letter)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
     fprintf(stdout, "Showing letter...\n");
     result = SenseHAT_LEDShowLetter(gInstance, letter, &kTextColor, &kBackColor);
-    if (result == 0)
+    if (result == UNTHINK_SUCCESS)
         sleep(1);
     else
         fprintf(stdout, "SenseHAT_LEDShowLetter failed!\n");
@@ -1071,10 +1071,10 @@ void ShowLetter (char* letter)
 // =================================================================================================
 void ShowMessage (char* message)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
     fprintf(stdout, "Showing message...\n");
     result = SenseHAT_LEDShowMessage(gInstance, message, 0.05, &kTextColor, &kBackColor);
-    if (result == 0)
+    if (result == UNTHINK_SUCCESS)
         sleep(1);
     else
         fprintf(stdout, "SenseHAT_LEDShowMessage failed!\n");
@@ -1087,10 +1087,10 @@ void ShowMessage (char* message)
 // =================================================================================================
 void FlipHorizontal (bool flip)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
     fprintf(stdout, "Flipping horizontally...\n");
     result = SenseHAT_LEDFlipHorizontal(gInstance, flip, NULL);
-    if (result != 0)
+    if (result != UNTHINK_SUCCESS)
         fprintf(stdout, "SenseHAT_LEDFlipHorizontal failed!\n");
 
     return;
@@ -1101,10 +1101,10 @@ void FlipHorizontal (bool flip)
 // =================================================================================================
 void FlipVertical (bool flip)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
     fprintf(stdout, "Flipping vertically...\n");
     result = SenseHAT_LEDFlipVertical(gInstance, flip, NULL);
-    if (result != 0)
+    if (result != UNTHINK_SUCCESS)
         fprintf(stdout, "SenseHAT_LEDFlipVertical failed!\n");
 
     return;
@@ -1116,9 +1116,9 @@ void FlipVertical (bool flip)
 void GetHeading (void)
 {
     double heading = 0.0;
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
     result = SenseHAT_GetCompass(gInstance, &heading);
-    if (result == 0)
+    if (result == UNTHINK_SUCCESS)
     {
         char msg[128];
         memset((void*)msg, 0, 128);
@@ -1138,7 +1138,7 @@ void GetHeading (void)
 void GetEnvironment (void)
 {
     double humidity = 0.0;
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
     result = SenseHAT_GetHumidity(gInstance, &humidity);
     if (result == 0)
     {
@@ -1149,7 +1149,7 @@ void GetEnvironment (void)
         fprintf(stdout, msg);
 
         result = SenseHAT_GetPressure(gInstance, &pressure);
-        if (result == 0)
+        if (result == UNTHINK_SUCCESS)
         {
             double temperature = 0.0;
 
@@ -1158,7 +1158,7 @@ void GetEnvironment (void)
             fprintf(stdout, msg);
 
             result = SenseHAT_GetTemperature(gInstance, &temperature);
-            if (result == 0)
+            if (result == UNTHINK_SUCCESS)
             {
                 double tempF = ((temperature * 9.0) / 5.0) + 32.0;
                 char msg[128];
@@ -1185,13 +1185,13 @@ void WaitForEvent (tSenseHAT_JoystickDirection direction)
 {
     tSenseHAT_JoystickEvent event;
     bool gotEvent = false;
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
 
     fprintf(stdout, "Waiting for event... Enter ctrl-c to stop.\n");
     while (!gotEvent && !gDone)
     {
         result = SenseHAT_WaitForEvent(gInstance, true, &event);
-        if (result == 0)
+        if (result == UNTHINK_SUCCESS)
         {
             if (event.direction == direction)
             {
@@ -1214,13 +1214,13 @@ void WaitForEvent (tSenseHAT_JoystickDirection direction)
 void CompassExample (void)
 {
     int32_t ledLoop[28] = {4, 5, 6, 7, 15, 23, 31, 39, 47, 55, 63, 62, 61, 60, 59, 58, 57, 56, 48, 40, 32, 24, 16, 8, 0, 1, 2, 3};
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
 
     result = SenseHAT_LEDSetRotation(gInstance, eSenseHAT_LEDRotation0, true);
-    if (result == 0)
+    if (result == UNTHINK_SUCCESS)
     {
         result = SenseHAT_LEDClear(gInstance, NULL);
-        if (result == 0)
+        if (result == UNTHINK_SUCCESS)
         {
             int32_t prevX = 0;
             int32_t prevY = 0;
@@ -1237,7 +1237,7 @@ void CompassExample (void)
             while (!gDone)
             {
                 result = SenseHAT_GetCompass(gInstance, &degrees);
-                if (result == 0)
+                if (result == UNTHINK_SUCCESS)
                 {
                     degreesInverted = 360 - degrees;
                     ledIndex = (int32_t)(ledDegreeRatio * degreesInverted);
@@ -1249,7 +1249,7 @@ void CompassExample (void)
                     if ((x != prevX) || (y != prevY))
                     {
                         result = SenseHAT_LEDSetPixel(gInstance, prevX, prevY, NULL);
-                        if (result != 0)
+                        if (result != UNTHINK_SUCCESS)
                         {
                             fprintf(stdout, "SenseHAT_LEDSetPixel failed!\n");
                             gDone = true;
@@ -1259,7 +1259,7 @@ void CompassExample (void)
                     if (!gDone)
                     {
                         result = SenseHAT_LEDSetPixel(gInstance, x, y, &color);
-                        if (result == 0)
+                        if (result == UNTHINK_SUCCESS)
                         {   
                             prevX = x; 
                             prevY = y;
@@ -1289,10 +1289,10 @@ void CompassExample (void)
 // =================================================================================================
 void TextScrollExample (void)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
 
     result = SenseHAT_LEDSetRotation(gInstance, eSenseHAT_LEDRotation180, true);
-    if (result == 0)
+    if (result == UNTHINK_SUCCESS)
     {
         tSenseHAT_LEDPixel color = kRedColor;
 
@@ -1301,10 +1301,10 @@ void TextScrollExample (void)
                                          0.05,
                                          &color,
                                          NULL);
-        if (result == 0)
+        if (result == UNTHINK_SUCCESS)
         {
             result = SenseHAT_LEDSetRotation(gInstance, eSenseHAT_LEDRotation0, true);
-            if (result != 0)
+            if (result != UNTHINK_SUCCESS)
                 fprintf(stdout, "SenseHAT_LEDSetRotation failed!\n");
         }
         else
