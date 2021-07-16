@@ -59,7 +59,7 @@ ROOT_DIRECTORY_PATH_CMD="--root-directory-path"
 TEST_CMD="--test"
 VERBOSE_CMD="--verbose"
 WITH_CONSOLE_LOGGING_CMD="--with-console-logging"
-WITH_SHARED_LIBS_CMD="--with-shared-libs"
+WITH_SHARED_LIB_CMD="--with-shared-lib"
 
 # Analyze options
 ANALYZE_OPTION_CPPCHECK="cppcheck"
@@ -265,7 +265,7 @@ function printUsage {
 	printIt "\t$TEST_CMD\tRuns unit tests after build."
 	printIt "\t$VERBOSE_CMD\tPrints all log output to console."
     printIt "\t$WITH_CONSOLE_LOGGING\t\t\tLog progress and debug information to the console."
-	printIt "\t$WITH_SHARED_LIBS_CMD\t\t\t\tBuild and link with shared libraries instead of static libraries."
+	printIt "\t$WITH_SHARED_LIB_CMD\t\t\t\tBuild and link with a shared library instead of a static library."
 	printIt " "
 	printIt "\tPrerequisites for running this build script include:"
 	printIt " "
@@ -347,7 +347,7 @@ function parseCommandLineArgument {
     elif [ "$CMD_LINE_ARG" == $WITH_CONSOLE_LOGGING_CMD ]
     then
         BUILD_WITH_CONSOLE_LOGGING=1
-	elif [ "$CMD_LINE_ARG" == $WITH_SHARED_LIBS_CMD ]
+	elif [ "$CMD_LINE_ARG" == $WITH_SHARED_LIB_CMD ]
 	then	
 		BUILD_SHARED_LIB=1
 	else
@@ -374,7 +374,7 @@ else
 
 # Set build defaults
 BUILD_ROOT="$HOME"
-BUILD_ANALYZE_OPTION=ANALYZE_OPTION_NONE
+BUILD_ANALYZE_OPTION=ANALYZE_OPTION_CPPCHECK
 BUILD_CFG=Debug
 BUILD_CLEAN=0
 BUILD_DEBUG=1
