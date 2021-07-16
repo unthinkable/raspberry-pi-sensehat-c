@@ -310,24 +310,24 @@ void PrintCmdLineHelp (const char* programName)
 void PrintCmdNumHelp (void)
 {
     fprintf(stdout, "\nChoose one of the following commands:\n\n");
-    fprintf(stdout, "\t%s - Prints this help notice.\n", HELP_CMD_NUM);
-    fprintf(stdout, "\t%s - Get C library version.\n", VERSION_CMD);
-    fprintf(stdout, "\t%s - Color cycle example.\n", COLOR_CYCLE_EXAMPLE_CMD_NUM);
-    fprintf(stdout, "\t%s - Compass example.\n", COMPASS_EXAMPLE_CMD_NUM);
-    fprintf(stdout, "\t%s - Rainbow example.\n", RAINBOW_EXAMPLE_CMD_NUM);
-    fprintf(stdout, "\t%s - Rotation example.\n", ROTATION_EXAMPLE_CMD_NUM);
-    fprintf(stdout, "\t%s - Text scroll example.\n", TEXT_SCROLL_EXAMPLE_CMD_NUM);
-    fprintf(stdout, "\t%s - Flash LEDs.\n", FLASH_CMD_NUM);
-    fprintf(stdout, "\t%s - Load image.\n", LOAD_IMAGE_CMD_NUM);
-    fprintf(stdout, "\t%s - Rotate LEDs.\n", ROTATE_CMD_NUM);
-    fprintf(stdout, "\t%s - Show letter.\n", SHOW_LETTER_CMD_NUM);
-    fprintf(stdout, "\t%s - Show message.\n", SHOW_MESSAGE_CMD_NUM);
-    fprintf(stdout, "\t%s - Flip LEDs horizontally.\n", FLIP_HORIZONTAL_CMD_NUM);
-    fprintf(stdout, "\t%s - Flip LEDs vertically.\n", FLIP_VERTICAL_CMD_NUM);
-    fprintf(stdout, "\t%s - Get compass heading in degrees.\n", HEADING_CMD_NUM);
-    fprintf(stdout, "\t%s - Get environmental conditions.\n", ENVIRONMENT_CMD_NUM);
-    fprintf(stdout, "\t%s - Wait for event.\n", WAIT_FOR_EVENT_CMD_NUM);
-    fprintf(stdout, "\t%s - Quit (default).\n", QUIT_CMD_NUM);
+    fprintf(stdout, "\t%d - Prints this help notice.\n", HELP_CMD_NUM);
+    fprintf(stdout, "\t%d - Get C library version.\n", VERSION_CMD);
+    fprintf(stdout, "\t%d - Color cycle example.\n", COLOR_CYCLE_EXAMPLE_CMD_NUM);
+    fprintf(stdout, "\t%d - Compass example.\n", COMPASS_EXAMPLE_CMD_NUM);
+    fprintf(stdout, "\t%d - Rainbow example.\n", RAINBOW_EXAMPLE_CMD_NUM);
+    fprintf(stdout, "\t%d - Rotation example.\n", ROTATION_EXAMPLE_CMD_NUM);
+    fprintf(stdout, "\t%d - Text scroll example.\n", TEXT_SCROLL_EXAMPLE_CMD_NUM);
+    fprintf(stdout, "\t%d - Flash LEDs.\n", FLASH_CMD_NUM);
+    fprintf(stdout, "\t%d - Load image.\n", LOAD_IMAGE_CMD_NUM);
+    fprintf(stdout, "\t%d - Rotate LEDs.\n", ROTATE_CMD_NUM);
+    fprintf(stdout, "\t%d - Show letter.\n", SHOW_LETTER_CMD_NUM);
+    fprintf(stdout, "\t%d - Show message.\n", SHOW_MESSAGE_CMD_NUM);
+    fprintf(stdout, "\t%d - Flip LEDs horizontally.\n", FLIP_HORIZONTAL_CMD_NUM);
+    fprintf(stdout, "\t%d - Flip LEDs vertically.\n", FLIP_VERTICAL_CMD_NUM);
+    fprintf(stdout, "\t%d - Get compass heading in degrees.\n", HEADING_CMD_NUM);
+    fprintf(stdout, "\t%d - Get environmental conditions.\n", ENVIRONMENT_CMD_NUM);
+    fprintf(stdout, "\t%d - Wait for event.\n", WAIT_FOR_EVENT_CMD_NUM);
+    fprintf(stdout, "\t%d - Quit (default).\n", QUIT_CMD_NUM);
     fprintf(stdout, "\nEnter your choice: ");
 }
 
@@ -404,7 +404,7 @@ int main(int argc, const char * argv[])
                             ColorCycleExample();
 
                         // Compass example
-                        else (optionIndex == COMPASS_EXAMPLE_OPTION)
+                        else if (optionIndex == COMPASS_EXAMPLE_OPTION)
                             CompassExample();
 
                         // Environment 
