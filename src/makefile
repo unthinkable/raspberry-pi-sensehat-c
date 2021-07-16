@@ -96,7 +96,7 @@ CFG_LIB_INC=-L. \
 CFG_OBJ=
 COMMON_OBJ=$(OBJDIR)/sensehat.o \
 	$(OBJDIR)/unthink_utils.o \
-	$(OBJDIR)/python-support.o 
+	$(OBJDIR)/python_support.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 
 #
