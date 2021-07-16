@@ -599,7 +599,7 @@ int main (int argc, const char * argv[])
         // Check status
         if (status == CUE_SUCCESS)
         {
-            CU_set_output_filename("./Sense-HAT-C-Library-Unit-Test");
+            CU_set_output_filename("./libsensehat_unit_test");
             CU_automated_run_tests();
         }
 
