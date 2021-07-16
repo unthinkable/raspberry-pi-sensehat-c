@@ -404,7 +404,9 @@ then
 	BUILD_CFG=Release
 fi
 
-BUILD_ARCH_DIR="linux/armhf"
+BUILD_LINUX=1
+BUILD_OPERATING_ENV="linux"
+BUILD_ARCH_DIR="armhf"
 
 if fileExists "../include/sensehat_console_logging.h"
 then
