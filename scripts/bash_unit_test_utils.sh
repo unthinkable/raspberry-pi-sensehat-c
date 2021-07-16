@@ -59,7 +59,7 @@ function parseCUnitResults()
 	MSG=""
 
 	while read line; do
-        echo "$LINE"
+        echo "$line"
 		if [ $SUITES_TAG_FOUND == 0 ]
 		then
             echo "***SUITES TAG NOT FOUND"
