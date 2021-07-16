@@ -58,17 +58,14 @@ function parseCUnitResults()
 	ASSERTIONS_FAILED=-1
 	MSG=""
 
-    echo "I'm alive"
-
 	while read line; do
 		if [ $SUITES_TAG_FOUND == 0 ]
 		then
+            echo "I'M ALIVE"
 			SUITES_TAG="$(echo $line | grep "Suites" | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
 			if [ "$SUITES_TAG" == " Suites " ]
 			then
 				SUITES_TAG_FOUND=1
-
-                echo "Found a suite tag"
 			fi
 		elif [ $SUITES_TAG_FOUND == 1 ]
 		then
@@ -106,8 +103,6 @@ function parseCUnitResults()
 			if [ "$TEST_CASES_TAG" == " Test Cases " ]
 			then
 				TEST_CASES_TAG_FOUND=1
-
-                echo "Found a tests tag"
 			fi
 		elif [ $TEST_CASES_TAG_FOUND == 1 ]
 		then
