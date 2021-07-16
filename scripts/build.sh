@@ -81,7 +81,7 @@ function printSummary () {
 	printBanner "SENSE HAT C LIBRARY BUILD SUMMARY"
 	printWithRightJustification "Build started at: " $INDENT_LEN
     printIt "$BUILD_START."
-	printWithRightJustification "Build finished at: "
+	printWithRightJustification "Build finished at: " $INDENT_LEN
     printIt "$BUILD_STOP."
     printDuration $BUILD_DURATION $INDENT_LEN
 
