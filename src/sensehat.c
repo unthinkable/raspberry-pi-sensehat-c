@@ -216,7 +216,7 @@ int32_t SenseHAT_Open (tSenseHAT_Instance* instance)
             {
                 // Import the module
                 instancePrivate->senseHATModule = PyImport_Import(pName);
-                result = UNTHINK_CHECK_CONDITION((instancePrivate->senseHATModule != NULL), EFAULT)
+                result = UNTHINK_CHECK_CONDITION((instancePrivate->senseHATModule != NULL), EFAULT);
                 if (result == UNTHINK_SUCCESS) 
                 {
                      // Get a reference to the Sense HAT submodule
@@ -594,7 +594,7 @@ int32_t SenseHAT_LEDSetRotation (const tSenseHAT_Instance instance,
                                                                      NULL);
                     // Check status
                     result = UNTHINK_CHECK_CONDITION((pResult != NULL), UNTHINK_FAILURE);
-                    if (result == UNTHINK_SUCCESS);
+                    if (result == UNTHINK_SUCCESS)
                     {
                         // Release reference
                         Py_DECREF(pResult);
