@@ -103,7 +103,7 @@ int32_t Python_ReleaseFunctionReference (PyObject** const functionReference)
 // =================================================================================================
 int32_t Python_Error (const char* context)
 {
-    int32_t err = UNTHINK_FAILURE;
+    int32_t result = UNTHINK_SUCCESS;
 
     // Check argument
     result = UNTHINK_CHECK_CONDITION((context != NULL), EINVAL);
@@ -125,7 +125,7 @@ int32_t Python_Error (const char* context)
         if (strlen(context) > 0)
             fprintf(stdout, "%s\n", context);
     }
-    return err;
+    return result;
 }
 
 // =================================================================================================
