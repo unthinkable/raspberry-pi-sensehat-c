@@ -59,20 +59,14 @@ function parseCUnitResults()
 	MSG=""
 
 	while read line; do
-        #echo "$line"
 		if [ $SUITES_TAG_FOUND == 0 ]
 		then
-			# SUITES_TAG="$(echo $line | grep "Suites" | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-            # echo "Tag is $SUITES_TAG"
-			# if [ "$SUITES_TAG" == " Suites " ]
             if [[ "$line" =~ .*" Suites ".* ]]
 			then
 				SUITES_TAG_FOUND=1
-                echo "***SUITES TAG FOUND"
 			fi
 		elif [ $SUITES_TAG_FOUND == 1 ]
 		then
-            echo "***SUITES TAG FOUND"
 			if [ $SUITES_COUNT == -1 ]
 			then
 				SUITES_COUNT="$(echo $line | grep '<TOTAL>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
@@ -103,17 +97,12 @@ function parseCUnitResults()
 		
 		if [ $TEST_CASES_TAG_FOUND == 0 ]
 		then
-            # echo "***TEST CASES TAG NOT FOUND"
-			# TEST_CASES_TAG="$(echo $line | grep "Test Cases" | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-			# if [ "$TEST_CASES_TAG" == " Test Cases " ]
             if [[ "$line" =~ .*" Test Cases ".* ]]
 			then
 				TEST_CASES_TAG_FOUND=1
-                echo "***TEST CASES TAG FOUND"
 			fi
 		elif [ $TEST_CASES_TAG_FOUND == 1 ]
 		then
-            echo "***TEST CASES TAG FOUND"
 			if [ $TEST_CASES_COUNT == -1 ]
 			then
 				TEST_CASES_COUNT="$(echo $line | grep '<TOTAL>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
@@ -175,17 +164,12 @@ function parseCUnitResults()
 
 		if [ $ASSERTIONS_TAG_FOUND == 0 ]
 		then
-            # echo "***ASSERTIONS TAG NOT FOUND"
-			# ASSERTIONS_TAG="$(echo $line | grep "Assertions" | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-			# if [ "$ASSERTIONS_TAG" == " Assertions " ]
             if [[ "$line" =~ .*" Assertions ".* ]]
 			then
 				ASSERTIONS_TAG_FOUND=1
-                echo "***ASSERTIONS TAG FOUND"
 			fi
 		elif [ $ASSERTIONS_TAG_FOUND == 1 ]
 		then
-            echo "***ASSERTIONS TAG FOUND"
 			if [ $ASSERTIONS_COUNT == -1 ]
 			then
 				ASSERTIONS_COUNT="$(echo $line | grep '<TOTAL>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
