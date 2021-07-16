@@ -41,9 +41,14 @@ ifndef BUILD_PRODUCTS_OBJ_DIR
 BUILD_PRODUCTS_OBJ_DIR=obj
 endif
 
-# If no architecture directory is specified, "linux/armhf" will be used
-ifndef BUILD_ARCH_DIR
-BUILD_ARCH_DIR=linux/armhf
+# If no operating environment is specified, "darwin" will be used
+ifndef BUILD_OPERATING_ENV
+BUILD_OPERATING_ENV=linux
+endif
+
+# If no architecture is specified, "x64" will be used
+ifndef BUILD_ARCH
+BUILD_ARCH=armhf
 endif
 
 # If no configuration is specified, "Debug" will be used
@@ -57,8 +62,8 @@ BUILD_SHARED_LIB=0
 endif
 
 # Define build and obj directories
-BINDIR="$(BUILD_ROOT)/$(BUILD_PRODUCTS_DIR_NAME)/$(BUILD_PRODUCTS_BIN_DIR)/$(BUILD_ARCH_DIR)/$(BUILD_CFG)"
-OBJDIR="$(BUILD_ROOT)/$(BUILD_PRODUCTS_DIR_NAME)/$(BUILD_PRODUCTS_OBJ_DIR)/$(BUILD_ARCH_DIR)/$(BUILD_CFG)"
+BINDIR="$(BUILD_ROOT)/$(BUILD_PRODUCTS_DIR_NAME)/$(BUILD_PRODUCTS_BIN_DIR)/$(BUILD_OPERATING_ENV)/$(BUILD_ARCH)/$(BUILD_CFG)"
+OBJDIR="$(BUILD_ROOT)/$(BUILD_PRODUCTS_DIR_NAME)/$(BUILD_PRODUCTS_OBJ_DIR)/$(BUILD_OPERATING_ENV)/$(BUILD_ARCH)/$(BUILD_CFG)"
 
 # Define output library path/name
 ifeq ($(BUILD_SHARED_LIB),0)

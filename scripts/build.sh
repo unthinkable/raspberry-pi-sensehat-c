@@ -444,7 +444,7 @@ export BUILD_PRODUCTS_DIR_NAME
 export BUILD_PRODUCTS_BIN_DIR
 export BUILD_PRODUCTS_OBJ_DIR
 export BUILD_OPERATING_ENV
-export BUILD_ARCH_DIR
+export BUILD_ARCH
 export BUILD_PROFILE
 export BUILD_SHARED_LIB
 
@@ -476,9 +476,9 @@ then
 	if [ $BUILD_TEST -eq 1 ]
 	then
 		cleanIt "sensehat_test" "../test" makefile $BUILD_VERBOSE "$BUILD_LOGS_DIR/sensehat_test$CLEAN_LOG_PREFIX$CLEAN_TS$LOG_POSTFIX"
-		if fileExists "../$BUILD_PRODUCTS_BIN_DIR/$BUILD_ARCH_DIR/$BUILD_CFG/Sense-HAT-C-Library-Unit-Test-Results.xml"
+		if fileExists "../$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG/Sense-HAT-C-Library-Unit-Test-Results.xml"
 		then
-			rm -f "../$BUILD_PRODUCTS_BIN_DIR/$BUILD_ARCH_DIR/$BUILD_CFG/Sense-HAT-C-Library-Unit-Test-Results.xml"
+			rm -f "../$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG/Sense-HAT-C-Library-Unit-Test-Results.xml"
 		fi
 	fi
 	if [ $BUILD_DOCS -eq 1 ]
@@ -610,7 +610,7 @@ then
 
 	printBanner "UNIT TEST"
 
-	pushPath "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_ARCH_DIR/$BUILD_CFG" $BUILD_VERBOSE
+	pushPath "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG" $BUILD_VERBOSE
 	if fileExists "./Sense-HAT-C-Library-Unit-Test-Results.xml"
 	then
 		rm -f "./Sense-HAT-C-Library-Unit-Test-Results.xml"
