@@ -128,7 +128,7 @@ void TestLEDFunctions (void)
     result = SenseHAT_LEDSetPixel(gInstance, 0, 8, &redColor);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_LEDSetPixel(gInstance, 0, 0, &badLowRedPixel);
-    CU_ASSERT_EQUAL(result, ENOTSUP);
+    CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_LEDSetPixel(gInstance, 0, 0, &badHighRedPixel);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_LEDSetPixel(gInstance, 0, 0, &badLowGreenPixel);
