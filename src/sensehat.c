@@ -148,7 +148,7 @@ static int32_t SenseHAT_ValidateLEDPixelPosition (int32_t xPosition,
                                                   int32_t yPosition);
 
 // SenseHAT_ValidateLEDPixelValue
-static int32_t SenseHAT_ValidateLEDPixelValue (tSenseHAT_LEDPixel* pixel)
+static int32_t SenseHAT_ValidateLEDPixelValue (tSenseHAT_LEDPixel* pixel);
 
 // SenseHAT_ConvertPixelToLEDPixel
 static int32_t SenseHAT_ConvertPixelToLEDPixel (const PyObject* pixel,
