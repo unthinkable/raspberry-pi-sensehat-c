@@ -633,14 +633,14 @@ then
 	printBanner "UNIT TEST"
 
 	pushPath "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG" $BUILD_VERBOSE
-	if fileExists "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG/libsensehat_unit_test-Results.xml"
+	if fileExists "./libsensehat_unit_test-Results.xml"
 	then
-		rm -f "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG/libsensehat_unit_test-Results.xml"
+		rm -f "./libsensehat_unit_test-Results.xml"
 	fi
-	"$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG/sensehat_test"
+	"./sensehat_test"
 	printIt "Parsing libsensehat unit test results..."
-	parseCUnitResults "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG/libsensehat_unit_test-Results.xml"
-    mv "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG/libsensehat_unit_test-Results.xml" "$BUILD_LOGS_DIR/libsensehat_unit_test_results.xml"
+	parseCUnitResults "./libsensehat_unit_test-Results.xml"
+    mv "./libsensehat_unit_test-Results.xml" "$BUILD_LOGS_DIR/libsensehat_unit_test_results.xml"
 	popPath $BUILD_VERBOSE
 	printIt " "
 
