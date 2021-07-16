@@ -123,7 +123,7 @@ int32_t Python_Error (const char* context)
 
         // Print error context to stderr
         if (strlen(context) > 0)
-            fprintf(stderr, "%s\n", context);
+            fprintf(stdout, "%s\n", context);
     }
     return err;
 }

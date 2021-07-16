@@ -340,16 +340,16 @@ int main(int argc, const char * argv[])
 
     // Setup signal handler for interesting signals
     if (signal(SIGINT, SimpleSignalHandler) == SIG_ERR)
-        fprintf(stderr, "Can't catch SIGINT.\n");
+        fprintf(stdout, "Can't catch SIGINT.\n");
     
     if (signal(SIGABRT, SimpleSignalHandler) == SIG_ERR)
-        fprintf(stderr, "Can't catch SIGABRT.\n");
+        fprintf(stdout, "Can't catch SIGABRT.\n");
     
     if (signal(SIGTERM, SimpleSignalHandler) == SIG_ERR)
-        fprintf(stderr, "Can't catch SIGABRT.\n");
+        fprintf(stdout, "Can't catch SIGABRT.\n");
     
     if (signal(SIGQUIT, SimpleSignalHandler) == SIG_ERR)
-        fprintf(stderr, "Can't catch SIGABRT.\n");
+        fprintf(stdout, "Can't catch SIGABRT.\n");
 
     // Print banner
     fprintf(stdout, "\n ************************************************\n");
