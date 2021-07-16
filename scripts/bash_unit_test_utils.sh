@@ -65,6 +65,8 @@ function parseCUnitResults()
 			if [ "$SUITES_TAG" == " Suites " ]
 			then
 				SUITES_TAG_FOUND=1
+
+                echo "Found a suite tag"
 			fi
 		elif [ $SUITES_TAG_FOUND == 1 ]
 		then
@@ -102,6 +104,8 @@ function parseCUnitResults()
 			if [ "$TEST_CASES_TAG" == " Test Cases " ]
 			then
 				TEST_CASES_TAG_FOUND=1
+
+                echo "Found a tests tag"
 			fi
 		elif [ $TEST_CASES_TAG_FOUND == 1 ]
 		then

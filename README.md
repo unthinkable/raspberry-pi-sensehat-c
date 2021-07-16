@@ -45,7 +45,7 @@ Begin by opening a terminal window in the `raspberry-pi-sensehat-c/build` direct
 
     ./build.sh --help
     
-*NOTE:* It's important that your current working directory is `raspberry-pi-sensehat-c/build`.
+*NOTE:* It's important that your current working directory is `raspberry-pi-sensehat-c/scripts`.
 
 This will display the various options of the build system, as shown below:
 
