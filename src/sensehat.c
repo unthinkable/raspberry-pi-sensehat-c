@@ -632,7 +632,7 @@ int32_t SenseHAT_LEDFlipHorizontal (const tSenseHAT_Instance instance,
 
     // Check arguments
     result = UNTHINK_CHECK_CONDITION((instance != NULL), EINVAL);
-    if (result = UNTHINK_SUCCESS)
+    if (result == UNTHINK_SUCCESS)
     {
         // Get private data
         tSenseHAT_InstancePrivate* instancePrivate = (tSenseHAT_InstancePrivate*)instance;
