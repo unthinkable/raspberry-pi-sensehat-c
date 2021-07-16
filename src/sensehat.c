@@ -823,7 +823,7 @@ int32_t SenseHAT_LEDSetPixels (const tSenseHAT_Instance instance,
                     if (!useDefault)
                     {
                         // No, using a user specified pixel color; check for validity
-                        result = SenseHAT_ValidateLEDPixelValue(pixel);
+                        result = SenseHAT_ValidateLEDPixelValue(&pixel);
                         if (result == UNTHINK_SUCCESS)
                         {
                             pixel.red = pixels[index].red;
@@ -1040,7 +1040,7 @@ int32_t SenseHAT_LEDSetPixel (const tSenseHAT_Instance instance,
             {
                 // Convert y argument
                 PyObject* pYPos = Py_BuildValue("i", yPosition);
-                result = UNTHINK_SUCCESS((pYPos != NULL), UNTHINK_FAILURE);
+                result = UNTHINK_CHECK_CONDITION((pYPos != NULL), UNTHINK_FAILURE);
                 if (result == UNTHINK_SUCCESS)
                 {
                     // Convert color argument
