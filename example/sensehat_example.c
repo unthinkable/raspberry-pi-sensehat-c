@@ -621,7 +621,9 @@ int main(int argc, const char * argv[])
                             fprintf(stdout, "Enter image file path: ");
                             fgets(cmdBuf, sizeof(cmdBuf), stdin);
                             scanResult = sscanf(cmdBuf, "%s", cmdBuf);
-                            LoadImage(cmdBuf);
+                            result = UNTHINK_CHECK_CONDITION((scanResult == 1), EINVAL);
+                            if (result == UNTHINK_SUCCESS)
+                                LoadImage(cmdBuf);
                             break;
                         }
                         case ROTATE_CMD_NUM:

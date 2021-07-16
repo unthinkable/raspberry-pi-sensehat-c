@@ -637,6 +637,7 @@ int32_t SenseHAT_LEDFlipHorizontal (const tSenseHAT_Instance instance,
         // Get private data
         tSenseHAT_InstancePrivate* instancePrivate = (tSenseHAT_InstancePrivate*)instance;
         result = UNTHINK_CHECK_CONDITION((instancePrivate->flipHorizontalFunction != NULL), EFAULT);
+        if (result == UNTHINK_SUCCESS)
         {
             // Get a lock
             PyGILState_STATE state = PyGILState_Ensure();
