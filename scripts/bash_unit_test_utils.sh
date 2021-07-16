@@ -70,7 +70,6 @@ function parseCUnitResults()
 				SUITES_TAG_FOUND=1
                 echo "***SUITES TAG FOUND"
 			fi
-        fi
 		elif [ $SUITES_TAG_FOUND == 1 ]
 		then
             echo "***SUITES TAG FOUND"
