@@ -29,7 +29,7 @@
         if (condition == false)                         \
         {                                               \
             status = errcode;                           \
-            fprintf(stderr,                             \
+            fprintf(stdout,                             \
                     "At line %d in file %s: %s\n",      \
                     __LINE__,                           \
                     __FILE__,                           \
@@ -42,7 +42,7 @@
     ({                                                  \
         if (errcode != UNTHINK_SUCCESS)                 \
         {                                               \
-            fprintf(stderr,                             \
+            fprintf(stdout,                             \
                     "At line %d in file %s: %s\n",      \
                     __LINE__,                           \
                     __FILE__,                           \
