@@ -311,7 +311,7 @@ void PrintCmdNumHelp (void)
 {
     fprintf(stdout, "\nChoose one of the following commands:\n\n");
     fprintf(stdout, "\t%d - Prints this help notice.\n", HELP_CMD_NUM);
-    fprintf(stdout, "\t%d - Get C library version.\n", VERSION_CMD);
+    fprintf(stdout, "\t%d - Get C library version.\n", VERSION_CMD_NUM);
     fprintf(stdout, "\t%d - Color cycle example.\n", COLOR_CYCLE_EXAMPLE_CMD_NUM);
     fprintf(stdout, "\t%d - Compass example.\n", COMPASS_EXAMPLE_CMD_NUM);
     fprintf(stdout, "\t%d - Rainbow example.\n", RAINBOW_EXAMPLE_CMD_NUM);
