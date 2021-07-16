@@ -406,7 +406,7 @@ fi
 
 BUILD_LINUX=1
 BUILD_OPERATING_ENV="linux"
-BUILD_ARCH_DIR="armhf"
+BUILD_ARCH="armhf"
 
 if fileExists "../include/sensehat_console_logging.h"
 then
