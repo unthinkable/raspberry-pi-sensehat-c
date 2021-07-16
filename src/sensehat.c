@@ -2528,7 +2528,7 @@ int32_t SenseHAT_GetEvents (const tSenseHAT_Instance instance,
                             *events = NULL;
 
                             result = Unthink_AllocateMemory(sizeof(tSenseHAT_JoystickEvent) * numEvents,
-                                                            (void**)&list)
+                                                            (void**)&list);
                             if (result == UNTHINK_SUCCESS)
                             {
                                 uint_fast32_t i = 0;
@@ -2952,7 +2952,7 @@ int32_t SenseHAT_ConvertDictToRawData (const PyObject* dict,
             {
                 // Make sure it's a float
                 result = UNTHINK_CHECK_CONDITION((PyFloat_Check(pValue)), UNTHINK_FAILURE);
-                if (result == STRAT_SUCCESS)
+                if (result == UNTHINK_SUCCESS)
                 {
                     // Get the value
                     rawData->x = PyFloat_AsDouble(pValue);
@@ -2963,7 +2963,7 @@ int32_t SenseHAT_ConvertDictToRawData (const PyObject* dict,
                 pValue = NULL;
 
                 // Check status
-                if (result == UNTHINK_SUCCESS))
+                if (result == UNTHINK_SUCCESS)
                 {
                     // Get the y item
                     pValue = PyDict_GetItemString((PyObject*)dict, kRawY);
