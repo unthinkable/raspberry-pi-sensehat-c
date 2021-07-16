@@ -101,76 +101,77 @@ function parseCUnitResults()
 			fi
 		fi
 		
-		# if [ $TEST_CASES_TAG_FOUND == 0 ]
-		# then
-        #     echo "***TEST CASES TAG NOT FOUND"
-		# 	TEST_CASES_TAG="$(echo $line | grep "Test Cases" | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-		# 	if [ "$TEST_CASES_TAG" == " Test Cases " ]
-		# 	then
-		# 		TEST_CASES_TAG_FOUND=1
-        #         echo "***TEST CASES TAG FOUND"
-		# 	fi
-		# elif [ $TEST_CASES_TAG_FOUND == 1 ]
-		# then
-        #     echo "***TEST CASES TAG FOUND"
-		# 	if [ $TEST_CASES_COUNT == -1 ]
-		# 	then
-		# 		TEST_CASES_COUNT="$(echo $line | grep '<TOTAL>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-		# 		TEST_CASES_COUNT="$(echo -e "${TEST_CASES_COUNT}" | tr -d '[:space:]')"
-		# 		if [ $TEST_CASES_COUNT == 1 ]
-		# 		then
-		# 			MSG="$TEST_CASES_COUNT CUnit test case total."
-		# 		else
-		# 			MSG="$TEST_CASES_COUNT CUnit test cases total."
-		# 		fi
-		# 		printIt "$MSG"
-		# 	elif [ $TEST_CASES_COUNT != -1 ]
-		# 	then
-		# 		if [ $TEST_CASES_RUN == -1 ]
-		# 		then
-		# 			TEST_CASES_RUN="$(echo $line | grep '<RUN>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-		# 			TEST_CASES_RUN="$(echo -e "${TEST_CASES_RUN}" | tr -d '[:space:]')"
-		# 			if [ $TEST_CASES_RUN == 1 ]
-		# 			then
-		# 				MSG="$TEST_CASES_RUN CUnit test case run."
-		# 			else
-		# 				MSG="$TEST_CASES_RUN CUnit test cases run."
-		# 			fi
-		# 			printIt "$MSG"
-		# 		elif [ $TEST_CASES_RUN != -1 ]
-		# 		then
-		# 			if [ $TEST_CASES_SUCCEEDED == -1 ]
-		# 			then
-		# 				TEST_CASES_SUCCEEDED="$(echo $line | grep '<SUCCEEDED>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-		# 				TEST_CASES_SUCCEEDED="$(echo -e "${TEST_CASES_SUCCEEDED}" | tr -d '[:space:]')"
-		# 				if [ $TEST_CASES_SUCCEEDED == 1 ]
-		# 				then
-		# 					MSG="$TEST_CASES_SUCCEEDED CUnit test case succeeded."
-		# 				else
-		# 					MSG="$TEST_CASES_SUCCEEDED CUnit test cases succeeded."
-		# 				fi
-		# 				printSuccess "$MSG"
-		# 			elif [ $TEST_CASES_SUCCEEDED != -1 ]
-		# 			then
-		# 				if [ $TEST_CASES_FAILED == -1 ]
-		# 				then
-		# 					TEST_CASES_FAILED="$(echo $line | grep '<FAILED>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-		# 					TEST_CASES_FAILED="$(echo -e "${TEST_CASES_FAILED}" | tr -d '[:space:]')"
-		# 					if [ $TEST_CASES_FAILED == 1 ]
-		# 					then
-		# 						MSG="$TEST_CASES_FAILED CUnit test case failed."
-		# 					else
-		# 						MSG="$TEST_CASES_FAILED CUnit test cases failed."
-		# 					fi
-		# 					if [ $TEST_CASES_FAILED != 0 ]
-		# 					then
-		# 						printError "$MSG"
-		# 					fi
-		# 				fi
-		# 			fi
-		# 		fi
-		# 	fi
-		# fi 
+		if [ $TEST_CASES_TAG_FOUND == 0 ]
+		then
+            # echo "***TEST CASES TAG NOT FOUND"
+			# TEST_CASES_TAG="$(echo $line | grep "Test Cases" | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
+			# if [ "$TEST_CASES_TAG" == " Test Cases " ]
+            if [[ "$line" =~ .*" Test Cases ".* ]]
+			then
+				TEST_CASES_TAG_FOUND=1
+                echo "***TEST CASES TAG FOUND"
+			fi
+		elif [ $TEST_CASES_TAG_FOUND == 1 ]
+		then
+            echo "***TEST CASES TAG FOUND"
+			if [ $TEST_CASES_COUNT == -1 ]
+			then
+				TEST_CASES_COUNT="$(echo $line | grep '<TOTAL>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
+				TEST_CASES_COUNT="$(echo -e "${TEST_CASES_COUNT}" | tr -d '[:space:]')"
+				if [ $TEST_CASES_COUNT == 1 ]
+				then
+					MSG="$TEST_CASES_COUNT CUnit test case total."
+				else
+					MSG="$TEST_CASES_COUNT CUnit test cases total."
+				fi
+				printIt "$MSG"
+			elif [ $TEST_CASES_COUNT != -1 ]
+			then
+				if [ $TEST_CASES_RUN == -1 ]
+				then
+					TEST_CASES_RUN="$(echo $line | grep '<RUN>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
+					TEST_CASES_RUN="$(echo -e "${TEST_CASES_RUN}" | tr -d '[:space:]')"
+					if [ $TEST_CASES_RUN == 1 ]
+					then
+						MSG="$TEST_CASES_RUN CUnit test case run."
+					else
+						MSG="$TEST_CASES_RUN CUnit test cases run."
+					fi
+					printIt "$MSG"
+				elif [ $TEST_CASES_RUN != -1 ]
+				then
+					if [ $TEST_CASES_SUCCEEDED == -1 ]
+					then
+						TEST_CASES_SUCCEEDED="$(echo $line | grep '<SUCCEEDED>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
+						TEST_CASES_SUCCEEDED="$(echo -e "${TEST_CASES_SUCCEEDED}" | tr -d '[:space:]')"
+						if [ $TEST_CASES_SUCCEEDED == 1 ]
+						then
+							MSG="$TEST_CASES_SUCCEEDED CUnit test case succeeded."
+						else
+							MSG="$TEST_CASES_SUCCEEDED CUnit test cases succeeded."
+						fi
+						printSuccess "$MSG"
+					elif [ $TEST_CASES_SUCCEEDED != -1 ]
+					then
+						if [ $TEST_CASES_FAILED == -1 ]
+						then
+							TEST_CASES_FAILED="$(echo $line | grep '<FAILED>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
+							TEST_CASES_FAILED="$(echo -e "${TEST_CASES_FAILED}" | tr -d '[:space:]')"
+							if [ $TEST_CASES_FAILED == 1 ]
+							then
+								MSG="$TEST_CASES_FAILED CUnit test case failed."
+							else
+								MSG="$TEST_CASES_FAILED CUnit test cases failed."
+							fi
+							if [ $TEST_CASES_FAILED != 0 ]
+							then
+								printError "$MSG"
+							fi
+						fi
+					fi
+				fi
+			fi
+		fi 
 
 		# if [ $ASSERTIONS_TAG_FOUND == 0 ]
 		# then
