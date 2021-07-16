@@ -349,13 +349,8 @@ else
 #	Setup
 # =================================================================================================
 
-# Define build root
-if ! shellVarDefined "$BUILD_ROOT"
-then
-	BUILD_ROOT="$HOME"
-fi
-
 # Set build defaults
+BUILD_ROOT="$HOME"
 BUILD_ANALYZE_OPTION=ANALYZE_OPTION_NONE
 BUILD_CFG=Debug
 BUILD_CLEAN=0
