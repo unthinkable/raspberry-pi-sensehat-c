@@ -16,6 +16,7 @@
 # =================================================================================================
 
 source "./bash_console_utils.sh"
+source "./bash_python_utils.sh"
 
 function bashCheck () {
     printWithRightJustification "bash: " "${1}"
