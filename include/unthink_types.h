@@ -28,7 +28,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "sensehat_console_logging.h"
+#include "unthink_console_logging.h"
 
 // =================================================================================================
 //  Constants
