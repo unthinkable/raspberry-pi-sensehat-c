@@ -633,14 +633,14 @@ then
 	printBanner "UNIT TEST"
 
 	pushPath "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG" $BUILD_VERBOSE
-	if fileExists "./libsensehat_unit_test_results.xml"
+	if fileExists "./Sense-HAT-C-Library-Unit-Test-Results.xml"
 	then
-		rm -f "./libsensehat_unit_test_results.xml"
+		rm -f "./Sense-HAT-C-Library-Unit-Test-Results.xml"
 	fi
 	./sensehat_test
 	printIt "Parsing libsensehat unit test results..."
-	parseCUnitResults "./libsensehat_unit_test_results.xml"
-    mv "./libsensehat_unit_test_results.xml" "$BUILD_LOGS_DIR/libsensehat_unit_test_results.xml"
+	parseCUnitResults "./Sense-HAT-C-Library-Unit-Test-Results.xml"
+    mv "./Sense-HAT-C-Library-Unit-Test-Results.xml" "$BUILD_LOGS_DIR/libsensehat_unit_test_results.xml"
 	popPath $BUILD_VERBOSE
 	printIt " "
 
