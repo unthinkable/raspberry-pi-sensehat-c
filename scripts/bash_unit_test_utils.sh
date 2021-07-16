@@ -173,76 +173,77 @@ function parseCUnitResults()
 			fi
 		fi 
 
-		# if [ $ASSERTIONS_TAG_FOUND == 0 ]
-		# then
-        #     echo "***ASSERTIONS TAG NOT FOUND"
-		# 	ASSERTIONS_TAG="$(echo $line | grep "Assertions" | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-		# 	if [ "$ASSERTIONS_TAG" == " Assertions " ]
-		# 	then
-		# 		ASSERTIONS_TAG_FOUND=1
-        #         echo "***ASSERTIONS TAG FOUND"
-		# 	fi
-		# elif [ $ASSERTIONS_TAG_FOUND == 1 ]
-		# then
-        #     echo "***ASSERTIONS TAG FOUND"
-		# 	if [ $ASSERTIONS_COUNT == -1 ]
-		# 	then
-		# 		ASSERTIONS_COUNT="$(echo $line | grep '<TOTAL>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-		# 		ASSERTIONS_COUNT="$(echo -e "${ASSERTIONS_COUNT}" | tr -d '[:space:]')"
-		# 		if [ $ASSERTIONS_COUNT == 1 ]
-		# 		then
-		# 			MSG="$ASSERTIONS_COUNT CUnit assertion total."
-		# 		else
-		# 			MSG="$ASSERTIONS_COUNT CUnit assertions total."
-		# 		fi
-		# 		printIt "$MSG"
-		# 	elif [ $ASSERTIONS_COUNT != -1 ]
-		# 	then
-		# 		if [ $ASSERTIONS_RUN == -1 ]
-		# 		then
-		# 			ASSERTIONS_RUN="$(echo $line | grep '<RUN>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-		# 			ASSERTIONS_RUN="$(echo -e "${ASSERTIONS_RUN}" | tr -d '[:space:]')"
-		# 			if [ $ASSERTIONS_RUN == 1 ]
-		# 			then
-		# 				MSG="$ASSERTIONS_RUN CUnit assertion run."
-		# 			else
-		# 				MSG="$ASSERTIONS_RUN CUnit assertions run."
-		# 			fi
-		# 			printIt "$MSG"
-		# 		elif [ $ASSERTIONS_RUN != -1 ]
-		# 		then
-		# 			if [ $ASSERTIONS_SUCCEEDED == -1 ]
-		# 			then
-		# 				ASSERTIONS_SUCCEEDED="$(echo $line | grep '<SUCCEEDED>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-		# 				ASSERTIONS_SUCCEEDED="$(echo -e "${ASSERTIONS_SUCCEEDED}" | tr -d '[:space:]')"
-		# 				if [ $ASSERTIONS_SUCCEEDED == 1 ]
-		# 				then
-		# 					MSG="$ASSERTIONS_SUCCEEDED CUnit assertion succeeded."
-		# 				else
-		# 					MSG="$ASSERTIONS_SUCCEEDED CUnit assertions succeeded."
-		# 				fi
-		# 				printSuccess "$MSG"
-		# 			elif [ $ASSERTIONS_SUCCEEDED != -1 ]
-		# 			then
-		# 				if [ $ASSERTIONS_FAILED == -1 ]
-		# 				then
-		# 					ASSERTIONS_FAILED="$(echo $line | grep '<FAILED>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-		# 					ASSERTIONS_FAILED="$(echo -e "${ASSERTIONS_FAILED}" | tr -d '[:space:]')"
-		# 					if [ $ASSERTIONS_FAILED == 1 ]
-		# 					then
-		# 						MSG="$ASSERTIONS_FAILED CUnit assertion failed."
-		# 					else
-		# 						MSG="$ASSERTIONS_FAILED CUnit assertions failed."
-		# 					fi
-		# 					if [ $ASSERTIONS_FAILED != 0 ]
-		# 					then
-		# 						printError "$MSG"
-		# 					fi
-		# 				fi
-		# 			fi
-		# 		fi
-		# 	fi
-		# fi
+		if [ $ASSERTIONS_TAG_FOUND == 0 ]
+		then
+            # echo "***ASSERTIONS TAG NOT FOUND"
+			# ASSERTIONS_TAG="$(echo $line | grep "Assertions" | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
+			# if [ "$ASSERTIONS_TAG" == " Assertions " ]
+            if [[ "$line" =~ .*" Assertions ".* ]]
+			then
+				ASSERTIONS_TAG_FOUND=1
+                echo "***ASSERTIONS TAG FOUND"
+			fi
+		elif [ $ASSERTIONS_TAG_FOUND == 1 ]
+		then
+            echo "***ASSERTIONS TAG FOUND"
+			if [ $ASSERTIONS_COUNT == -1 ]
+			then
+				ASSERTIONS_COUNT="$(echo $line | grep '<TOTAL>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
+				ASSERTIONS_COUNT="$(echo -e "${ASSERTIONS_COUNT}" | tr -d '[:space:]')"
+				if [ $ASSERTIONS_COUNT == 1 ]
+				then
+					MSG="$ASSERTIONS_COUNT CUnit assertion total."
+				else
+					MSG="$ASSERTIONS_COUNT CUnit assertions total."
+				fi
+				printIt "$MSG"
+			elif [ $ASSERTIONS_COUNT != -1 ]
+			then
+				if [ $ASSERTIONS_RUN == -1 ]
+				then
+					ASSERTIONS_RUN="$(echo $line | grep '<RUN>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
+					ASSERTIONS_RUN="$(echo -e "${ASSERTIONS_RUN}" | tr -d '[:space:]')"
+					if [ $ASSERTIONS_RUN == 1 ]
+					then
+						MSG="$ASSERTIONS_RUN CUnit assertion run."
+					else
+						MSG="$ASSERTIONS_RUN CUnit assertions run."
+					fi
+					printIt "$MSG"
+				elif [ $ASSERTIONS_RUN != -1 ]
+				then
+					if [ $ASSERTIONS_SUCCEEDED == -1 ]
+					then
+						ASSERTIONS_SUCCEEDED="$(echo $line | grep '<SUCCEEDED>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
+						ASSERTIONS_SUCCEEDED="$(echo -e "${ASSERTIONS_SUCCEEDED}" | tr -d '[:space:]')"
+						if [ $ASSERTIONS_SUCCEEDED == 1 ]
+						then
+							MSG="$ASSERTIONS_SUCCEEDED CUnit assertion succeeded."
+						else
+							MSG="$ASSERTIONS_SUCCEEDED CUnit assertions succeeded."
+						fi
+						printSuccess "$MSG"
+					elif [ $ASSERTIONS_SUCCEEDED != -1 ]
+					then
+						if [ $ASSERTIONS_FAILED == -1 ]
+						then
+							ASSERTIONS_FAILED="$(echo $line | grep '<FAILED>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
+							ASSERTIONS_FAILED="$(echo -e "${ASSERTIONS_FAILED}" | tr -d '[:space:]')"
+							if [ $ASSERTIONS_FAILED == 1 ]
+							then
+								MSG="$ASSERTIONS_FAILED CUnit assertion failed."
+							else
+								MSG="$ASSERTIONS_FAILED CUnit assertions failed."
+							fi
+							if [ $ASSERTIONS_FAILED != 0 ]
+							then
+								printError "$MSG"
+							fi
+						fi
+					fi
+				fi
+			fi
+		fi
 	done < "$1"
 }
 
