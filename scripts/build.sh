@@ -264,6 +264,8 @@ function printUsage {
     printIt "\t\t\t\t\t\t\tC library source code directory (defaults to the user's home directory)."
 	printIt "\t$TEST_CMD\tRuns unit tests after build."
 	printIt "\t$VERBOSE_CMD\tPrints all log output to console."
+    printIt "\t$WITH_CONSOLE_LOGGING\t\t\tLog progress and debug information to the console."
+	printIt "\t$WITH_SHARED_LIBS_CMD\t\t\t\tBuild and link with shared libraries instead of static libraries."
 	printIt " "
 	printIt "\tPrerequisites for running this build script include:"
 	printIt " "
@@ -284,7 +286,21 @@ function printUsage {
 
 # Function to parse command line arguments
 function parseCommandLineArgument {
-	if [ "$CMD_LINE_ARG" == "--check-env" ]
+    if stringBeginsWithSubstring "$CMD_LINE_ARG" "$ANALYZE_CMD"
+    then
+        BUILD_ANALYZE_OPTION=$(removeLeadingSubstring "$CMD_LINE_ARG" "$ANALYZE_CMD""=")
+    elif stringBeginsWithSubstring "$CMD_LINE_ARG" "$ROOT_DIRECTORY_PATH_CMD"
+	then
+		BUILD_ROOT=$(removeLeadingSubstring "$CMD_LINE_ARG" $ROOT_DIRECTORY_PATH_CMD"=")
+		if [ "$BUILD_ROOT" == "" ]
+		then
+			handleError "Root directory path must not be empty!"
+		fi
+		if ! stringEndsWithSubstring "$BUILD_ROOT" "/"
+		then
+			BUILD_ROOT="$BUILD_ROOT""/"
+		fi
+	elif [ "$CMD_LINE_ARG" == "--check-env" ]
 	then
 		checkHostEnvironment
 	elif [ "$CMD_LINE_ARG" == "--clean" ]
@@ -328,6 +344,12 @@ function parseCommandLineArgument {
 	elif [ "$CMD_LINE_ARG" == "--verbose" ]
 	then
 		BUILD_VERBOSE=1
+    elif [ "$CMD_LINE_ARG" == $WITH_CONSOLE_LOGGING_CMD ]
+    then
+        BUILD_WITH_CONSOLE_LOGGING=1
+	elif [ "$CMD_LINE_ARG" == $WITH_SHARED_LIBS_CMD ]
+	then	
+		BUILD_SHARED_LIB=1
 	else
 		printError "Unrecognized argument: '$CMD_LINE_ARG'."
 		printIt ""
