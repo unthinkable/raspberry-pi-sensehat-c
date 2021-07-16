@@ -71,36 +71,36 @@ function parseCUnitResults()
                 echo "***SUITES TAG FOUND"
 			fi
         fi
-		# elif [ $SUITES_TAG_FOUND == 1 ]
-		# then
-        #     echo "***SUITES TAG FOUND"
-		# 	if [ $SUITES_COUNT == -1 ]
-		# 	then
-		# 		SUITES_COUNT="$(echo $line | grep '<TOTAL>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-		# 		SUITES_COUNT="$(echo -e "${SUITES_COUNT}" | tr -d '[:space:]')"
-		# 		if [ $SUITES_COUNT == 1 ]
-		# 		then
-		# 			MSG="$SUITES_COUNT CUnit test suite total."
-		# 		else
-		# 			MSG="$SUITES_COUNT CUnit test suites total."
-		# 		fi
-		# 		printIt "$MSG"
-		# 	elif [ $SUITES_COUNT != -1 ]
-		# 	then
-		# 		if [ $SUITES_RUN == -1 ]
-		# 		then
-		# 			SUITES_RUN="$(echo $line | grep '<RUN>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
-		# 			SUITES_RUN="$(echo -e "${SUITES_RUN}" | tr -d '[:space:]')"
-		# 			if [ $SUITES_RUN == 1 ]
-		# 			then
-		# 				MSG="$SUITES_RUN CUnit test suite run."
-		# 			else
-		# 				MSG="$SUITES_RUN CUnit test suites run."
-		# 			fi
-		# 			printIt "$MSG"
-		# 		fi
-		# 	fi
-		# fi
+		elif [ $SUITES_TAG_FOUND == 1 ]
+		then
+            echo "***SUITES TAG FOUND"
+			if [ $SUITES_COUNT == -1 ]
+			then
+				SUITES_COUNT="$(echo $line | grep '<TOTAL>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
+				SUITES_COUNT="$(echo -e "${SUITES_COUNT}" | tr -d '[:space:]')"
+				if [ $SUITES_COUNT == 1 ]
+				then
+					MSG="$SUITES_COUNT CUnit test suite total."
+				else
+					MSG="$SUITES_COUNT CUnit test suites total."
+				fi
+				printIt "$MSG"
+			elif [ $SUITES_COUNT != -1 ]
+			then
+				if [ $SUITES_RUN == -1 ]
+				then
+					SUITES_RUN="$(echo $line | grep '<RUN>' | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
+					SUITES_RUN="$(echo -e "${SUITES_RUN}" | tr -d '[:space:]')"
+					if [ $SUITES_RUN == 1 ]
+					then
+						MSG="$SUITES_RUN CUnit test suite run."
+					else
+						MSG="$SUITES_RUN CUnit test suites run."
+					fi
+					printIt "$MSG"
+				fi
+			fi
+		fi
 		
 		# if [ $TEST_CASES_TAG_FOUND == 0 ]
 		# then
