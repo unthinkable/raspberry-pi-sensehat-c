@@ -430,11 +430,11 @@ BUILD_LINUX=1
 BUILD_OPERATING_ENV="linux"
 BUILD_ARCH="armhf"
 
-if fileExists "../include/sensehat_console_logging.h"
+if fileExists "../include/unthink_console_logging.h"
 then
-	forceDeleteFile "../include/sensehat_console_logging.h"
+	forceDeleteFile "../include/unthink_console_logging.h"
 fi
-echo "#define SENSEHAT_ENABLE_CONSOLE_LOGGING $BUILD_WITH_CONSOLE_LOGGING" >> "../include/sensehat_console_logging.h"
+echo "#define UNTHINK_ENABLE_CONSOLE_LOGGING $BUILD_WITH_CONSOLE_LOGGING" >> "../include/unthink_console_logging.h"
 
 # Create build directory if necessary
 if ! directoryExists "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/"

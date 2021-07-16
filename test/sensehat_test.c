@@ -48,7 +48,7 @@ int SenseHAT_SuiteInit (void)
         if (gInstance == NULL)
         {
             int32_t result = SenseHAT_Open(&gInstance);
-            if (result != 0)
+            if (result != UNTHINK_SUCCESS)
             {
                 CU_FAIL_FATAL("SenseHAT_Open failed!");
                 status = CUE_SINIT_FAILED;
@@ -72,7 +72,7 @@ int SenseHAT_SuiteCleanup (void)
     if (gInstance != NULL)
     {
         int32_t result = SenseHAT_Close(&gInstance);
-        if (result != 0)
+        if (result != UNTHINK_SUCCESS)
         {
             CU_FAIL_FATAL("SenseHAT_Close failed!");
             status = CUE_SCLEAN_FAILED;
@@ -102,21 +102,21 @@ void TestLEDFunctions (void)
     tSenseHAT_LEDPixelArray pixels;
     uint16_t i = 0;
     uint16_t j = 0;
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
 
     // Test SenseHAT_LEDClear
     result = SenseHAT_LEDClear(gInstance, &clearColor);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDClear(gInstance, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDClear(NULL, &clearColor);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     // Test SenseHAT_LEDSetPixel
     result = SenseHAT_LEDSetPixel(gInstance, 0, 0, &clearColor);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDSetPixel(gInstance, 0, 0, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDSetPixel(NULL, 0, 0, &redColor);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_LEDSetPixel(gInstance, -1, 0, &redColor);
@@ -142,7 +142,7 @@ void TestLEDFunctions (void)
 
     // Test SenseHAT_LEDGetPixel
     result = SenseHAT_LEDGetPixel(gInstance, 0, 0, &pixel);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDGetPixel(NULL, 0, 0, &pixel);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_LEDGetPixel(gInstance, -1, 0, &pixel);
@@ -161,13 +161,13 @@ void TestLEDFunctions (void)
         {
             // Set the pixel color
             result = SenseHAT_LEDSetPixel(gInstance, i, j, &redColor); 
-            CU_ASSERT_EQUAL(result, 0);
+            CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
             usleep(100000);
 
             // Get the pixel color
             pixel.red = pixel.green = pixel.blue = 0;
             result = SenseHAT_LEDGetPixel(gInstance, i, j, &pixel);
-            CU_ASSERT_EQUAL(result, 0);
+            CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
 
             // Make sure the pixel color was set properly
             CU_ASSERT_EQUAL(pixel.red, (redColor.red & 0xF8));
@@ -178,7 +178,7 @@ void TestLEDFunctions (void)
 
     // Test SenseHAT_LEDGetPixels
     result = SenseHAT_LEDGetPixels(gInstance, pixels);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDGetPixels(NULL, pixels);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_LEDGetPixels(gInstance, NULL);
@@ -186,7 +186,7 @@ void TestLEDFunctions (void)
 
     // Use SenseHAT_LEDGetPixels to check state of LED pixels 
     result = SenseHAT_LEDGetPixels(gInstance, pixels);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     for (i = 0; i < 64; i++)
     {
         CU_ASSERT_EQUAL(pixels[i].red, (redColor.red & 0xF8));
@@ -202,10 +202,10 @@ void TestLEDFunctions (void)
             pixels[i].blue = 255;
     }
     result = SenseHAT_LEDSetPixels(gInstance, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     usleep(500000);
     result = SenseHAT_LEDSetPixels(gInstance, pixels);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     usleep(500000);
     result = SenseHAT_LEDSetPixels(NULL, pixels);
     CU_ASSERT_EQUAL(result, EINVAL);
@@ -232,16 +232,16 @@ void TestLEDFunctions (void)
 
     // Test SenseHAT_LEDShowLetter
     result = SenseHAT_LEDShowLetter(gInstance, "1", &redColor, &clearColor);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDShowLetter(gInstance, "2", &greenColor, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDShowLetter(gInstance, "3", NULL, &clearColor);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDShowLetter(gInstance, "4", NULL, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDShowLetter(NULL, "0", &redColor, &clearColor);
     CU_ASSERT_EQUAL(result, EINVAL);
@@ -274,69 +274,69 @@ void TestLEDFunctions (void)
 
     // Test SenseHAT_LEDFlipHorizontal
     result = SenseHAT_LEDFlipHorizontal(gInstance, false, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDFlipHorizontal(gInstance, true, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDFlipHorizontal(gInstance, true, pixels);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDFlipHorizontal(NULL, false, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     // Test SenseHAT_LEDFlipVertical
     result = SenseHAT_LEDFlipVertical(gInstance, false, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDFlipVertical(gInstance, true, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDFlipVertical(gInstance, true, pixels);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDFlipVertical(NULL, false, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     // Test SenseHAT_LEDSetRotation
     result = SenseHAT_LEDSetRotation(gInstance, eSenseHAT_LEDRotation90, true);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDSetRotation(gInstance, eSenseHAT_LEDRotation90, false);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDSetRotation(NULL, eSenseHAT_LEDRotation90, true);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_LEDSetRotation(gInstance, eSenseHAT_LEDRotation180, true);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDSetRotation(gInstance, eSenseHAT_LEDRotation180, false);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDSetRotation(gInstance, eSenseHAT_LEDRotation270, true);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDSetRotation(gInstance, eSenseHAT_LEDRotation270, false);
-    CU_ASSERT_EQUAL(result, 0);   
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);   
     result = SenseHAT_LEDSetRotation(gInstance, eSenseHAT_LEDRotation0, true);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDSetRotation(gInstance, eSenseHAT_LEDRotation0, false);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDClear(gInstance, &clearColor);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
 
     // Test SenseHAT_ShowMessage
     result = SenseHAT_LEDShowMessage(gInstance, "Test 1", 0.05, &redColor, &clearColor);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDShowMessage(gInstance, "Test 2", 0.05, NULL, &clearColor);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDShowMessage(gInstance, "Test 3", 0.05, &greenColor, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDShowMessage(gInstance, "Test 4", 0.05, NULL, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDShowMessage(gInstance, "Test 5", 0.0, NULL, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDShowMessage(NULL, "Test", 0.05, &blueColor, &clearColor);
     CU_ASSERT_EQUAL(result, EINVAL);
@@ -371,11 +371,11 @@ void TestLEDFunctions (void)
 
     // Test SenseHAT_LEDLoadImage
     result = SenseHAT_LEDLoadImage(gInstance, "../../../../example/space_invader.png", false, pixels);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDLoadImage(gInstance, "../../../../example/space_invader.png", true, pixels);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDLoadImage(gInstance, "../../../../example/space_invader.png", true, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     sleep(1);
     result = SenseHAT_LEDLoadImage(NULL, "../../../../example/space_invader.png", true, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
@@ -388,13 +388,13 @@ void TestLEDFunctions (void)
 
     // Test SenseHAT_LEDGammaReset
     result = SenseHAT_LEDGammaReset(gInstance);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_LEDGammaReset(NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
         
     // Clear LED matrix
     result = SenseHAT_LEDClear(gInstance, &clearColor);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
 
     return;
 }
@@ -410,32 +410,32 @@ void TestEnvironmentalFunctions (void)
     double heading = 0.0;
     tSenseHAT_Orientation orientation;
     tSenseHAT_RawData rawData;
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
 
     // High level functions
     result = SenseHAT_GetHumidity(gInstance, &humidity);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetHumidity(NULL, &humidity);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetHumidity(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     result = SenseHAT_GetTemperature(gInstance, &temperature);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetTemperature(NULL, &temperature);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetTemperature(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     result = SenseHAT_GetPressure(gInstance, &pressure);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetPressure(NULL, &pressure);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetPressure(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     result = SenseHAT_GetCompass(gInstance, &heading);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetCompass(NULL, &heading);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetCompass(gInstance, NULL);
@@ -443,91 +443,91 @@ void TestEnvironmentalFunctions (void)
 
     // Low level functions
     result = SenseHAT_GetAccelerometer(gInstance, &orientation);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetAccelerometer(NULL, &orientation);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetAccelerometer(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
     
     result = SenseHAT_GetAccelerometerRaw(gInstance, &rawData);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetAccelerometerRaw(NULL, &rawData);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetAccelerometerRaw(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     result = SenseHAT_GetCompassRaw(gInstance, &rawData);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetCompassRaw(NULL, &rawData);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetCompassRaw(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     result = SenseHAT_GetGyroscope(gInstance, &orientation);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetGyroscope(NULL, &orientation);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetGyroscope(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     result = SenseHAT_GetGyroscopeRaw(gInstance, &rawData);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetGyroscopeRaw(NULL, &rawData);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetGyroscopeRaw(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     result = SenseHAT_GetOrientation(gInstance, &orientation);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetOrientation(NULL, &orientation);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetOrientation(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     result = SenseHAT_GetOrientationDegrees(gInstance, &orientation);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetOrientationDegrees(NULL, &orientation);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetOrientationDegrees(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     result = SenseHAT_GetOrientationRadians(gInstance, &orientation);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetOrientationRadians(NULL, &orientation);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetOrientationRadians(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     result = SenseHAT_GetTemperatureFromHumidity(gInstance, &temperature);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetTemperatureFromHumidity(NULL, &temperature);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetTemperatureFromHumidity(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     result = SenseHAT_GetTemperatureFromPressure(gInstance, &temperature);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetTemperatureFromPressure(NULL, &pressure);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetTemperatureFromPressure(gInstance, NULL);
     CU_ASSERT_EQUAL(result, EINVAL);
 
     result = SenseHAT_SetIMUConfiguration(gInstance, true, true, true);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_SetIMUConfiguration(gInstance, true, true, false);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_SetIMUConfiguration(gInstance, true, false, false);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_SetIMUConfiguration(gInstance, false, false, false);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_SetIMUConfiguration(gInstance, false, false, true);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_SetIMUConfiguration(gInstance, false, true, true);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_SetIMUConfiguration(gInstance, false, true, false);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_SetIMUConfiguration(gInstance, true, false, true);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
 
     return;
 }
@@ -537,21 +537,21 @@ void TestEnvironmentalFunctions (void)
 // =================================================================================================
 void TestEventFunctions (void)
 {
-    int32_t result = 0;
+    int32_t result = UNTHINK_SUCCESS;
     int32_t count = 0;
     tSenseHAT_JoystickEvent event;
     tSenseHAT_JoystickEvent* events = NULL;
 
     // Test SenseHAT_GetEvents
     result = SenseHAT_GetEvents(gInstance, &count, &events);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     if (events != NULL)
     {
         free((void*)events);
         events = NULL;
     }
     result = SenseHAT_GetEvents(gInstance, &count, NULL);
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, UNTHINK_SUCCESS);
     result = SenseHAT_GetEvents(NULL, &count, &events);
     CU_ASSERT_EQUAL(result, EINVAL);
     result = SenseHAT_GetEvents(gInstance, NULL, &events);
