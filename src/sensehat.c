@@ -1601,7 +1601,7 @@ int32_t SenseHAT_LEDShowMessage (const tSenseHAT_Instance instance,
                     // Check status
                     if (result == UNTHINK_SUCCESS)
                     {
-                        result = UNTHINK_CHECK_CONDITION((pTextColor == NULL), UNTHINK_FAILURE);
+                        result = UNTHINK_CHECK_CONDITION((pTextColor != NULL), UNTHINK_FAILURE);
                         if (result != UNTHINK_SUCCESS)
                             (void)Python_Error("Py_BuildValue failed!");
                     }
