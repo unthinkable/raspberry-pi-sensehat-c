@@ -58,6 +58,8 @@ function parseCUnitResults()
 	ASSERTIONS_FAILED=-1
 	MSG=""
 
+    echo "I'm alive"
+
 	while read line; do
 		if [ $SUITES_TAG_FOUND == 0 ]
 		then
