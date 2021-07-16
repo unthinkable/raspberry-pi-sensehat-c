@@ -59,6 +59,7 @@ function parseCUnitResults()
 	MSG=""
 
 	while read line; do
+        echo "$LINE"
 		if [ $SUITES_TAG_FOUND == 0 ]
 		then
             echo "***SUITES TAG NOT FOUND"
@@ -81,7 +82,7 @@ function parseCUnitResults()
 				else
 					MSG="$SUITES_COUNT CUnit test suites total."
 				fi
-				echoIt "$MSG"
+				printIt "$MSG"
 			elif [ $SUITES_COUNT != -1 ]
 			then
 				if [ $SUITES_RUN == -1 ]
@@ -94,7 +95,7 @@ function parseCUnitResults()
 					else
 						MSG="$SUITES_RUN CUnit test suites run."
 					fi
-					echoIt "$MSG"
+					printIt "$MSG"
 				fi
 			fi
 		fi
@@ -121,7 +122,7 @@ function parseCUnitResults()
 				else
 					MSG="$TEST_CASES_COUNT CUnit test cases total."
 				fi
-				echoIt "$MSG"
+				printIt "$MSG"
 			elif [ $TEST_CASES_COUNT != -1 ]
 			then
 				if [ $TEST_CASES_RUN == -1 ]
@@ -134,7 +135,7 @@ function parseCUnitResults()
 					else
 						MSG="$TEST_CASES_RUN CUnit test cases run."
 					fi
-					echoIt "$MSG"
+					printIt "$MSG"
 				elif [ $TEST_CASES_RUN != -1 ]
 				then
 					if [ $TEST_CASES_SUCCEEDED == -1 ]
@@ -147,7 +148,7 @@ function parseCUnitResults()
 						else
 							MSG="$TEST_CASES_SUCCEEDED CUnit test cases succeeded."
 						fi
-						echoSuccess "$MSG"
+						printSuccess "$MSG"
 					elif [ $TEST_CASES_SUCCEEDED != -1 ]
 					then
 						if [ $TEST_CASES_FAILED == -1 ]
@@ -162,7 +163,7 @@ function parseCUnitResults()
 							fi
 							if [ $TEST_CASES_FAILED != 0 ]
 							then
-								echoError "$MSG"
+								printError "$MSG"
 							fi
 						fi
 					fi
@@ -192,7 +193,7 @@ function parseCUnitResults()
 				else
 					MSG="$ASSERTIONS_COUNT CUnit assertions total."
 				fi
-				echoIt "$MSG"
+				printIt "$MSG"
 			elif [ $ASSERTIONS_COUNT != -1 ]
 			then
 				if [ $ASSERTIONS_RUN == -1 ]
@@ -205,7 +206,7 @@ function parseCUnitResults()
 					else
 						MSG="$ASSERTIONS_RUN CUnit assertions run."
 					fi
-					echoIt "$MSG"
+					printIt "$MSG"
 				elif [ $ASSERTIONS_RUN != -1 ]
 				then
 					if [ $ASSERTIONS_SUCCEEDED == -1 ]
@@ -218,7 +219,7 @@ function parseCUnitResults()
 						else
 							MSG="$ASSERTIONS_SUCCEEDED CUnit assertions succeeded."
 						fi
-						echoSuccess "$MSG"
+						printSuccess "$MSG"
 					elif [ $ASSERTIONS_SUCCEEDED != -1 ]
 					then
 						if [ $ASSERTIONS_FAILED == -1 ]
@@ -233,7 +234,7 @@ function parseCUnitResults()
 							fi
 							if [ $ASSERTIONS_FAILED != 0 ]
 							then
-								echoError "$MSG"
+								printError "$MSG"
 							fi
 						fi
 					fi
