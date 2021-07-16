@@ -637,7 +637,7 @@ then
 	then
 		rm -f "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG/Sense-HAT-C-Library-Unit-Test-Results.xml"
 	fi
-	./sensehat_test
+	"$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG/sensehat_test"
 	printIt "Parsing libsensehat unit test results..."
 	parseCUnitResults "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG/Sense-HAT-C-Library-Unit-Test-Results.xml"
     mv "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG/Sense-HAT-C-Library-Unit-Test-Results.xml" "$BUILD_LOGS_DIR/libsensehat_unit_test_results.xml"
