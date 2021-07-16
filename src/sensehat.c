@@ -1063,10 +1063,14 @@ int32_t SenseHAT_LEDSetPixel (const tSenseHAT_Instance instance,
                     else    // Use default values for pixel component list
                         pColor = Py_BuildValue("(lll)", 0, 0, 0);
 
-                    // Check for failure
-                    result = UNTHINK_CHECK_CONDITION((pColor != NULL), UNTHINK_FAILURE);
-                    if (result != UNTHINK_SUCCESS)
-                        (void)Python_Error("Py_BuildValue failed!");
+                    // Check status
+                    if (result == UNTHINK_SUCCESS)
+                    {
+                        // Check for failure
+                        result = UNTHINK_CHECK_CONDITION((pColor != NULL), UNTHINK_FAILURE);
+                        if (result != UNTHINK_SUCCESS)
+                            (void)Python_Error("Py_BuildValue failed!");
+                    }
 
                     // Make sure we got a color object
                     if (result == UNTHINK_SUCCESS)
