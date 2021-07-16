@@ -5,6 +5,8 @@
 #
 #   Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 #
+#	Author: Gary Woodcock
+#
 #   Supported host operating systems:
 #       *nix systems capable of running bash shell.
 #
@@ -42,6 +44,34 @@ function cmdExists () {
 	else
 		false
 	fi
+}
+
+# Function to check for bash
+function hasBash () {
+    if cmdInstalled "bash"; then
+        true
+    else
+        false
+    fi
+}
+
+# Function to get bash version
+function bashVersion () {
+    if hasBash
+    then
+        BASH_VER="$(bash --version)"
+        if stringBeginsWithSubstring "$BASH_VER" "GNU bash"
+        then
+            BASH_VER=${BASH_VER%-release*}
+            BASH_VER=${BASH_VER#*version }
+            BASH_VER=${BASH_VER%(*}
+            echo $BASH_VER
+        else
+            echo "Unknown"
+        fi
+    else
+        echo "N/A"
+    fi
 }
 
 # =================================================================================================

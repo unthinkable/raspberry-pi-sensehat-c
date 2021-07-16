@@ -5,6 +5,8 @@
 #
 #   Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 #
+#	Author: Gary Woodcock
+#
 #   Supported host operating systems:
 #       *nix systems capable of running bash shell.
 #
@@ -15,14 +17,26 @@
 
 source "./bash_console_utils.sh"
 source "./bash_string_utils.sh"
+source "./bash_misc_utils.sh"
+source "./bash_file_system_utils.sh"
 
 # Function to check for CUnit
 function hasCUnit () {
-	CUNIT_INSTALLED=$(ldconfig -p | grep libcunit)
-	if stringHasSubstring "$CUNIT_INSTALLED" "libcunit"; then
-		true
+	if hasMacPorts
+	then
+		if directoryExists "/opt/local/include/CUnit"
+		then
+			true
+		else
+			false
+		fi
 	else
-		false
+		CUNIT_INSTALLED=$(ldconfig -p | grep libcunit)
+		if stringHasSubstring "$CUNIT_INSTALLED" "libcunit"; then
+			true
+		else
+			false
+		fi
 	fi
 }
 

@@ -5,6 +5,8 @@
 #
 #   Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 #
+#	Author: Gary Woodcock
+#
 #   Supported host operating systems:
 #       *nix systems capable of running bash shell.
 #
@@ -41,7 +43,7 @@ function forceDeleteFile () {
 # Function to create directory
 function createDirectory () {
 	mkdir "$1"
-	chmod 0777 "$1"
+	chmod 0755 "$1"
 }
 
 # Function to check for existence of directory
@@ -87,6 +89,17 @@ function popPath () {
 	else
 		popd >/dev/null 
 	fi
+}
+
+# Function to get file size in bytes
+function fileSizeInBytes () {
+	if fileExists "$1"
+	then
+		FSZ=$(wc -c "$1" | awk '{print $1}' )
+	else
+		FSZ=0
+	fi
+	echo $FSZ
 }
 
 # =================================================================================================

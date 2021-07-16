@@ -5,6 +5,8 @@
 #
 #   Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 #
+#	Author: Gary Woodcock
+#
 #   Supported host operating systems:
 #       *nix systems capable of running bash shell.
 #
@@ -83,7 +85,32 @@ function resetConsoleColor () {
 # Function to print
 function printIt () {
 	resetConsoleColor
-	echo "$1"
+	printf "$1\n"
+}
+
+# Function to print with indent
+# <string> <indent>
+function printWithIndent () {
+    resetConsoleColor
+    for (( i=1; i<${2}; i++ ))
+    do
+        printf " "
+    done
+    printf "${1}"
+}
+
+# Function to print with right justification
+# <string> <width>
+function printWithRightJustification () {
+    resetConsoleColor
+    STR_LEN=`echo ${#1}`    
+    PAD_LEN=$(( ${2}-$STR_LEN ))
+    
+    for (( i=1; i<$PAD_LEN; i++ ))
+    do
+        printf " "
+    done
+    printf "${1}"
 }
 
 # Function to print color
@@ -93,7 +120,7 @@ function printColor () {
 		tput setab $NORMAL_BACKCOLOR
 		tput setaf "$1"
 	fi
-	echo "$2"
+	printf "$2\n"
 	resetConsoleColor
 }
 
@@ -140,7 +167,7 @@ function printSuccess () {
 		tput setab $NORMAL_BACKCOLOR
 		tput setaf $SUCCESS_COLOR
 	fi
-	echo "$1"
+	printf "$1\n"
 	if isShellInteractive 
 	then
 		tput sgr0
@@ -156,13 +183,12 @@ function printWarning () {
 		tput setab $NORMAL_BACKCOLOR
 		tput setaf $WARNING_COLOR
 	fi
-	echo "WARNING: $1"
+	printf "$1\n"
 	if isShellInteractive 
 	then
 		tput sgr0
 	fi
 	resetConsoleColor
-	printIt " "
 }
 
 # Function to print error
@@ -173,7 +199,7 @@ function printError () {
 		tput setab $NORMAL_BACKCOLOR
 		tput setaf $ERROR_COLOR
 	fi
-	echo "ERROR: $1"
+	printf "$1\n"
 	if isShellInteractive 
 	then
 		tput sgr0	
@@ -189,12 +215,132 @@ function printNote () {
 		tput setab $NORMAL_BACKCOLOR
 		tput setaf $NOTE_COLOR
 	fi
-	echo "NOTE: $1"
+	printf "$1\n"
 	if isShellInteractive 
 	then
 		tput sgr0	
 	fi
 	resetConsoleColor
+}
+
+# Function to print duration
+function printDuration () {	
+	DURATION=$1
+	SECONDS_PER_HOUR=3600
+	SECONDS_PER_MINUTE=60
+	HOURS=$(( $DURATION / $SECONDS_PER_HOUR ))
+	HOURS_IN_SECS=$(( $HOURS * $SECONDS_PER_HOUR ))
+	DURATION=$(( $DURATION - $HOURS_IN_SECS ))
+	MINUTES=$(( DURATION / $SECONDS_PER_MINUTE ))
+	MINUTES_IN_SECS=$(( $MINUTES * $SECONDS_PER_MINUTE ))
+	SECONDS=$(( $DURATION - $MINUTES_IN_SECS ))
+	
+    printWithRightJustification "Elapsed time: " "${2}"
+	if [ $HOURS -eq 0 ]
+	then
+		if [ $MINUTES -eq 0 ]
+		then
+			if [ $SECONDS -eq 0 ]
+			then
+				printIt "0 seconds."
+			elif [ $SECONDS -eq 1 ]
+			then
+				printIt "1 second."
+			else
+				printIt "$SECONDS seconds."
+			fi
+		elif [ $MINUTES -eq 1 ]
+		then
+			if [ $SECONDS -eq 0 ]
+			then
+				printIt "1 minute."
+			elif [ $SECONDS -eq 1 ]
+			then
+				printIt "1 minute and 1 second."
+			else
+				printIt "1 minute and $SECONDS seconds."
+			fi
+		else
+			if [ $SECONDS -eq 0 ]
+			then
+				printIt "$MINUTES minutes."
+			elif [ $SECONDS -eq 1 ]
+			then
+				printIt "$MINUTES minutes and 1 second."
+			else
+				printIt "$MINUTES minutes and $SECONDS seconds."
+			fi
+		fi
+	elif [ $HOURS -eq 1 ]
+	then
+		if [ $MINUTES -eq 0 ]
+		then
+			if [ $SECONDS -eq 0 ]
+			then
+				printIt "1 hour."
+			elif [ $SECONDS -eq 1 ]
+			then
+				printIt "1 hour and 1 second."
+			else
+				printIt "1 hour and $SECONDS seconds."
+			fi
+		elif [ $MINUTES -eq 1 ]
+		then
+			if [ $SECONDS -eq 0 ]
+			then
+				printIt "1 hour and 1 minute."
+			elif [ $SECONDS -eq 1 ]
+			then
+				printIt "1 hour, 1 minute and 1 second."
+			else
+				printIt "1 hour, 1 minute and $SECONDS seconds."
+			fi
+		else
+			if [ $SECONDS -eq 0 ]
+			then
+				printIt "1 hour and $MINUTES minutes."
+			elif [ $SECONDS -eq 1 ]
+			then
+				printIt "1 hour, $MINUTES minutes and 1 second."
+			else
+				printIt "1 hour, $MINUTES minutes and $SECONDS seconds."
+			fi
+		fi
+	else
+		if [ $MINUTES -eq 0 ]
+		then
+			if [ $SECONDS -eq 0 ]
+			then
+				printIt "$HOURS hours."
+			elif [ $SECONDS -eq 1 ]
+			then
+				printIt "$HOURS hours and 1 second."
+			else
+				printIt "$HOURS hours and $SECONDS seconds."
+			fi
+		elif [ $MINUTES -eq 1 ]
+		then
+			if [ $SECONDS -eq 0 ]
+			then
+				printIt "$HOURS hours and 1 minute."
+			elif [ $SECONDS -eq 1 ]
+			then
+				printIt "$HOURS hours, 1 minute and 1 second."
+			else
+				printIt "$HOURS hours, 1 minutes and $SECONDS seconds."
+			fi
+		else
+			if [ $SECONDS -eq 0 ]
+			then
+				printIt "$HOURS hours and $MINUTES minutes."
+			elif [ $SECONDS -eq 1 ]
+			then
+				printIt "$HOURS hours, $MINUTES minutes and 1 second."
+			else
+				printIt "$HOURS hours, $MINUTES minutes and $SECONDS seconds."
+			fi
+		fi
+	fi
 }
 
 # =================================================================================================
