@@ -197,7 +197,7 @@ function printSummary () {
 function checkHostEnvironment () {
 	printBanner "HOST ENVIRONMENT CHECK"
 
-    LABEL_WIDTH=20
+    LABEL_WIDTH=26
 
     bashCheck $LABEL_WIDTH
     clangCheck $LABEL_WIDTH
