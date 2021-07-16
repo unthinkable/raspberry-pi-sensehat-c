@@ -125,4 +125,31 @@ function scanIt () {
 	fi
 }
 
+# Function to check for valgrind
+function hasValgrind () {
+    if cmdInstalled "valgrind"; then
+        true
+    else
+        false
+    fi
+}
+
+# Function to get valgrind version
+function valgrindVersion () {
+	if hasValgrind
+	then
+		VALGRIND_VER="$(valgrind --version)"
+		if stringBeginsWithSubstring "$VALGRIND_VER" "valgrind-"
+		then
+            VALGRIND_VER=${VALGRIND_VER%.*}
+            VALGRIND_VER=${VALGRIND_VER##*-}
+			echo $VALGRIND_VER
+		else
+			echo "unknown"
+		fi
+	else
+		echo "N/A"
+	fi
+}
+
 # =================================================================================================
