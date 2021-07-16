@@ -823,7 +823,7 @@ int32_t SenseHAT_LEDSetPixels (const tSenseHAT_Instance instance,
                     if (!useDefault)
                     {
                         // No, using a user specified pixel color; check for validity
-                        result = SenseHAT_ValidateLEDPixelValue(&pixel);
+                        result = SenseHAT_ValidateLEDPixelValue((tSenseHAT_LEDPixel*)&pixel);
                         if (result == UNTHINK_SUCCESS)
                         {
                             pixel.red = pixels[index].red;
@@ -1050,7 +1050,7 @@ int32_t SenseHAT_LEDSetPixel (const tSenseHAT_Instance instance,
                     if (color != NULL)
                     {
                         // Check pixel for validity
-                        result = SenseHAT_ValidateLEDPixelValue(&color);
+                        result = SenseHAT_ValidateLEDPixelValue((tSenseHAT_LEDPixel*)color);
                         if (result == UNTHINK_SUCCESS)
                         {
                             // Convert pixel to pixel component list
@@ -1347,7 +1347,7 @@ int32_t SenseHAT_LEDClear (const tSenseHAT_Instance instance,
             if (color != NULL)
             {
                 // Check pixel validity
-                result = SenseHAT_ValidateLEDPixelValue(&color);
+                result = SenseHAT_ValidateLEDPixelValue((tSenseHAT_LEDPixel*)color);
                 if (result == UNTHINK_SUCCESS)
                 {
                     // Build the pixel color component list
@@ -1440,7 +1440,7 @@ int32_t SenseHAT_LEDShowLetter (const tSenseHAT_Instance instance,
                 // Convert text color argument
                 if (textColor != NULL)
                 {
-                    result = SenseHAT_ValidateLEDPixelValue(&textColor);
+                    result = SenseHAT_ValidateLEDPixelValue((tSenseHAT_LEDPixel*)textColor);
                     if (result == UNTHINK_SUCCESS)
                     {
                         pTextColor = Py_BuildValue("(lll)",
@@ -1466,7 +1466,7 @@ int32_t SenseHAT_LEDShowLetter (const tSenseHAT_Instance instance,
                     // Convert back color argument
                     if (backColor != NULL)
                     {
-                        result = SenseHAT_ValidateLEDPixelValue(&backColor);
+                        result = SenseHAT_ValidateLEDPixelValue((tSenseHAT_LEDPixel*)backColor);
                         if (result == UNTHINK_SUCCESS)
                         {
                             pBackColor = Py_BuildValue("(lll)",
@@ -1586,7 +1586,7 @@ int32_t SenseHAT_LEDShowMessage (const tSenseHAT_Instance instance,
                     if (textColor != NULL)
                     {
                         // Check validity
-                        result = SenseHAT_ValidateLEDPixelValue(&textColor);
+                        result = SenseHAT_ValidateLEDPixelValue((tSenseHAT_LEDPixel*)textColor);
                         if (result == UNTHINK_SUCCESS)
                         {
                             pTextColor = Py_BuildValue("(lll)",
@@ -1613,7 +1613,7 @@ int32_t SenseHAT_LEDShowMessage (const tSenseHAT_Instance instance,
                         if (backColor != NULL)
                         {
                             // Check validity
-                            result = SenseHAT_ValidateLEDPixelValue(&backColor);
+                            result = SenseHAT_ValidateLEDPixelValue((tSenseHAT_LEDPixel*)backColor);
                             if (result == UNTHINK_SUCCESS)
                             {
                                 pBackColor = Py_BuildValue("(lll)",
