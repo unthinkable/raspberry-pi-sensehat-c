@@ -615,7 +615,7 @@ then
 	then
 		rm -f "./Sense-HAT-C-Library-Unit-Test-Results.xml"
 	fi
-	./sensehat-test
+	./sensehat_test
 	printIt "Parsing libsensehat unit test results..."
 	parseCUnitResults "./Sense-HAT-C-Library-Unit-Test-Results.xml"
 	popPath $BUILD_VERBOSE
