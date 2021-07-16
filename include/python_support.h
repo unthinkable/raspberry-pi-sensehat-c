@@ -32,7 +32,7 @@
 #ifndef __PYTHONSUPPORT_H__
 #define __PYTHONSUPPORT_H__
 
-#include "unthink_types"
+#include "unthink_types.h"
 #include <Python.h>
 
 #if PY_MAJOR_VERSION == 2
