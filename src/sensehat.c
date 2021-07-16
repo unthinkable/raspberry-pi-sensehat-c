@@ -789,12 +789,8 @@ int32_t SenseHAT_LEDSetPixels (const tSenseHAT_Instance instance,
 {
 	int32_t result = UNTHINK_SUCCESS;
 
-    // Check arguments
+    // Check argument
     result = UNTHINK_CHECK_CONDITION((instance != NULL), EINVAL);
-    if (result == UNTHINK_SUCCESS)
-        result = UNTHINK_CHECK_CONDITION((pixels != NULL), EINVAL);
-
-    // Check status
     if (result == UNTHINK_SUCCESS)
     {
         // Get private data
