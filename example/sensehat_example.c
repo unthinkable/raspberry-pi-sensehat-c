@@ -86,14 +86,14 @@ static const char kShortOptions[] = { COLOR_CYCLE_EXAMPLE_SHORT_CMD,
                                       FLASH_SHORT_CMD,
                                       HEADING_SHORT_CMD,
                                       HELP_SHORT_CMD,
-                                      LOAD_IMAGE_SHORT_CMD, ":",
+                                      LOAD_IMAGE_SHORT_CMD, ':',
                                       RAINBOW_EXAMPLE_SHORT_CMD,
                                       ROTATION_EXAMPLE_SHORT_CMD,
-                                      SHOW_LETTER_SHORT_CMD, ":",
-                                      SHOW_MESSAGE_SHORT_CMD, ":",
+                                      SHOW_LETTER_SHORT_CMD, ':',
+                                      SHOW_MESSAGE_SHORT_CMD, ':',
                                       TEXT_SCROLL_EXAMPLE_SHORT_CMD,
                                       VERSION_SHORT_CMD,
-                                      WAIT_FOR_EVENT_SHORT_CMD, ":",
+                                      WAIT_FOR_EVENT_SHORT_CMD, ':',
                                       0x00 };
 
 // Interactive commands
@@ -226,7 +226,7 @@ void SimpleSignalHandler (int signo)
         case SIGINT:    // Interrupt
         {
             fprintf(stdout, "\nSIGINT received\n");
-            gAbort = true;
+            gDone = true;
             break;
         }
         case SIGQUIT:   // Quit
