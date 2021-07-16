@@ -337,8 +337,6 @@ void PrintCmdNumHelp (void)
 int main(int argc, const char * argv[])
 {
     int retValue = 0;
-    size_t optionLen = 0;
-    char* option = NULL;
 
     // Setup signal handler for interesting signals
     if (signal(SIGINT, SimpleSignalHandler) == SIG_ERR)
@@ -367,7 +365,6 @@ int main(int argc, const char * argv[])
         {
             int32_t cmdLineOption = 0;
             int32_t optionIndex = 0;
-            char* str = NULL;
 
             // Define command line options
             static struct option longOptions[] =
