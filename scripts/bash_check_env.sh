@@ -239,6 +239,7 @@ function scanBuildCheck () {
 }
 
 function senseHATPythonModuleCheck () {
+    printWithRightJustification "Sense HAT Python module: " "${1}"
     if hasPythonModule "sense_hat"
     then
         printColor $CONSOLE_GREEN "Installed"
