@@ -654,6 +654,7 @@ int32_t SenseHAT_LEDFlipHorizontal (const tSenseHAT_Instance instance,
                                                                  NULL);
                 // Check status
                 result = UNTHINK_CHECK_CONDITION((pResult != NULL), UNTHINK_FAILURE);
+                if (result == UNTHINK_SUCCESS)
                 {
                     // If the caller wants the resulting pixel array, return it
                     if (pixels != NULL)
