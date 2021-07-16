@@ -1050,7 +1050,7 @@ int32_t SenseHAT_LEDSetPixel (const tSenseHAT_Instance instance,
                     if (color != NULL)
                     {
                         // Check pixel for validity
-                        result = SenseHAT_ValidateLEDPixelValue(color);
+                        result = SenseHAT_ValidateLEDPixelValue(&color);
                         if (result == UNTHINK_SUCCESS)
                         {
                             // Convert pixel to pixel component list
@@ -1238,7 +1238,7 @@ int32_t SenseHAT_LEDLoadImage (const tSenseHAT_Instance instance,
         // Make sure file path points to a file
         bool fileExists = false;
         FILE* fp = fopen(imageFilePath, "rb");
-        result == UNTHINK_CHECK_CONDITION((fp != NULL), errno);
+        result = UNTHINK_CHECK_CONDITION((fp != NULL), errno);
         if (result == UNTHINK_SUCCESS)
         {
             // The file exists
@@ -1347,7 +1347,7 @@ int32_t SenseHAT_LEDClear (const tSenseHAT_Instance instance,
             if (color != NULL)
             {
                 // Check pixel validity
-                result = SenseHAT_ValidateLEDPixelValue(color);
+                result = SenseHAT_ValidateLEDPixelValue(&color);
                 if (result == UNTHINK_SUCCESS)
                 {
                     // Build the pixel color component list
@@ -1440,7 +1440,7 @@ int32_t SenseHAT_LEDShowLetter (const tSenseHAT_Instance instance,
                 // Convert text color argument
                 if (textColor != NULL)
                 {
-                    result = SenseHAT_ValidateLEDPixelValue(textColor);
+                    result = SenseHAT_ValidateLEDPixelValue(&textColor);
                     if (result == UNTHINK_SUCCESS)
                     {
                         pTextColor = Py_BuildValue("(lll)",
@@ -1466,7 +1466,7 @@ int32_t SenseHAT_LEDShowLetter (const tSenseHAT_Instance instance,
                     // Convert back color argument
                     if (backColor != NULL)
                     {
-                        result = SenseHAT_ValidateLEDPixelValue(backColor);
+                        result = SenseHAT_ValidateLEDPixelValue(&backColor);
                         if (result == UNTHINK_SUCCESS)
                         {
                             pBackColor = Py_BuildValue("(lll)",
@@ -1482,7 +1482,7 @@ int32_t SenseHAT_LEDShowLetter (const tSenseHAT_Instance instance,
                 // Check status
                 if (result == UNTHINK_SUCCESS)
                 {
-                    result == UNTHINK_CHECK_CONDITION((pBackColor != NULL), UNTHINK_FAILURE);
+                    result = UNTHINK_CHECK_CONDITION((pBackColor != NULL), UNTHINK_FAILURE);
                     if (result != UNTHINK_SUCCESS)
                         (void)Python_Error("Py_BuildValue failed!");
 
@@ -1586,7 +1586,7 @@ int32_t SenseHAT_LEDShowMessage (const tSenseHAT_Instance instance,
                     if (textColor != NULL)
                     {
                         // Check validity
-                        result = SenseHAT_ValidateLEDPixelValue(textColor);
+                        result = SenseHAT_ValidateLEDPixelValue(&textColor);
                         if (result == UNTHINK_SUCCESS)
                         {
                             pTextColor = Py_BuildValue("(lll)",
@@ -1613,7 +1613,7 @@ int32_t SenseHAT_LEDShowMessage (const tSenseHAT_Instance instance,
                         if (backColor != NULL)
                         {
                             // Check validity
-                            result = SenseHAT_ValidateLEDPixelValue(backColor);
+                            result = SenseHAT_ValidateLEDPixelValue(&backColor);
                             if (result == UNTHINK_SUCCESS)
                             {
                                 pBackColor = Py_BuildValue("(lll)",
@@ -1635,7 +1635,7 @@ int32_t SenseHAT_LEDShowMessage (const tSenseHAT_Instance instance,
                     }
 
                     // Check status
-                    if (result == UNTHINK_RESULT)
+                    if (result == UNTHINK_SUCCESS)
                     {
                         // Call the function
                         PyObject* pResult = PyObject_CallFunctionObjArgs(instancePrivate->showMessageFunction,
@@ -2155,7 +2155,7 @@ int32_t SenseHAT_GetOrientation (const tSenseHAT_Instance instance,
     // Check arguments
     result = UNTHINK_CHECK_CONDITION((instance != NULL), EINVAL);
     if (result == UNTHINK_SUCCESS)
-        result = UNTHINK_CHECK_CONDITION(orientation != NULL), EINVAL);
+        result = UNTHINK_CHECK_CONDITION((orientation != NULL), EINVAL);
 
     // Check status
     if (result == UNTHINK_SUCCESS)
@@ -2528,7 +2528,7 @@ int32_t SenseHAT_GetEvents (const tSenseHAT_Instance instance,
                             *events = NULL;
 
                             result = Unthink_AllocateMemory(sizeof(tSenseHAT_JoystickEvent) * numEvents,
-                                                            &list)
+                                                            (void**)&list)
                             if (result == UNTHINK_SUCCESS)
                             {
                                 uint_fast32_t i = 0;
@@ -2669,7 +2669,7 @@ int32_t SenseHAT_ValidateLEDPixelPosition (int32_t xPosition,
                 result = UNTHINK_CHECK_CONDITION((yPosition <= 7), EINVAL);
         }
     }
-    return;
+    return result;
 }
 
 // =================================================================================================
@@ -2850,7 +2850,7 @@ int32_t SenseHAT_ConvertDictToOrientation (const PyObject* dict,
     if (result == UNTHINK_SUCCESS)
     {
         // Make sure this is a dictionary
-        result = UNTHINK_CHECK_CONDITION(PyDict_Check(dict)), UNTHINK_FAILURE);
+        result = UNTHINK_CHECK_CONDITION((PyDict_Check(dict)), UNTHINK_FAILURE);
         if (result == UNTHINK_SUCCESS)
         {
             // Get the pitch item
@@ -2859,7 +2859,7 @@ int32_t SenseHAT_ConvertDictToOrientation (const PyObject* dict,
             if (result == UNTHINK_SUCCESS)
             {
                 // Make sure it's a float
-                result = UNTHINK_CHECK_CONDITION(PyFloat_Check(pValue)), UNTHINK_FAILURE);
+                result = UNTHINK_CHECK_CONDITION((PyFloat_Check(pValue)), UNTHINK_FAILURE);
                 if (result == UNTHINK_SUCCESS)
                 {
                     // Get the value
@@ -2879,7 +2879,7 @@ int32_t SenseHAT_ConvertDictToOrientation (const PyObject* dict,
                     if (result == UNTHINK_SUCCESS)
                     {
                         // Make sure it's a float
-                        result = UNTHINK_CHECK_CONDITION(PyFloat_Check(pValue)), UNTHINK_FAILURE);
+                        result = UNTHINK_CHECK_CONDITION((PyFloat_Check(pValue)), UNTHINK_FAILURE);
                         if (result == UNTHINK_SUCCESS)
                         {
                             // Get the value
@@ -2903,7 +2903,7 @@ int32_t SenseHAT_ConvertDictToOrientation (const PyObject* dict,
                     if (result == UNTHINK_SUCCESS)
                     {
                         // Make sure it's a float
-                        result = UNTHINK_CHECK_CONDITION(PyFloat_Check(pValue)), UNTHINK_FAILURE);
+                        result = UNTHINK_CHECK_CONDITION((PyFloat_Check(pValue)), UNTHINK_FAILURE);
                         if (result == UNTHINK_SUCCESS)
                         {
                             // Get the value
@@ -3024,6 +3024,7 @@ int32_t SenseHAT_ParseJoystickEvent (const PyObject* tuple,
                                      tSenseHAT_JoystickEvent* event)
 {
     int32_t result = UNTHINK_SUCCESS;
+    PyObject* tupleItem = NULL;
 
     // Check arguments
     result = UNTHINK_CHECK_CONDITION((tuple != NULL), EINVAL);
@@ -3033,11 +3034,9 @@ int32_t SenseHAT_ParseJoystickEvent (const PyObject* tuple,
     // Check status
     if (result == UNTHINK_SUCCESS)
     {
-        PyObject* tupleItem = NULL;
-
         // Get the timestamp
         tupleItem = PyTuple_GetItem((PyObject*)tuple, 0);
-        result = UNTHINK_CHECK_CONDITION(tupleItem != NULL), UNTHINK_FAILURE);
+        result = UNTHINK_CHECK_CONDITION((tupleItem != NULL), UNTHINK_FAILURE);
         if (result == UNTHINK_SUCCESS)
         {
             result = UNTHINK_CHECK_CONDITION((PyFloat_Check(tupleItem)), UNTHINK_FAILURE);
