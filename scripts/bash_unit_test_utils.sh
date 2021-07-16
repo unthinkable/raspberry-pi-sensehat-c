@@ -59,7 +59,7 @@ function parseCUnitResults()
 	MSG=""
 
 	while read line; do
-        echo "$line"
+        #echo "$line"
 		if [ $SUITES_TAG_FOUND == 0 ]
 		then
 			# SUITES_TAG="$(echo $line | grep "Suites" | awk -F">" '{print $2}' | awk -F"<" '{print $1}')"
