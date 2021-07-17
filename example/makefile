@@ -103,7 +103,7 @@ else
 COMPILE=$(CC) -Wall -pg -c -g -o "$(OBJDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=$(CC) -Wall -pg "$(CFG_LIB_INC)" -g -o "$(OUTFILE)" $(OBJ) $(CFG_LIB) 
 endif
-endir
+endif
 
 #
 # Configuration: Release
