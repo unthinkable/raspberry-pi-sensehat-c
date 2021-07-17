@@ -61,25 +61,25 @@ function checkIt () {
 			cat "$4"
 			popPath "$3"
 			printIt " "
-			printError "cppcheck of $1 generated errors!"
+			printError "\tcppcheck of $1 generated errors!"
 			printIt " "
 			exit 1
 		elif stringHasSubstring "$RL_LOG_CONTENTS" "warning"
 		then
 			cat "$4"
 			printIt " "
-			printWarning "cppcheck of $1 generated warnings!"
+			printWarning "\tcppcheck of $1 generated warnings!"
 		else
 			if [ "$3" -eq 1 ]
 			then
 				cat "$4" 
 			fi
-			printSuccess "cppcheck of $1 is good."
+			printSuccess "\tcppcheck of $1 is good."
 			printIt " "
 		fi
 		popPath "$3"
 	else
-		printWarning "cppcheck doesn't appear to be installed."
+		printWarning "\tcppcheck doesn't appear to be installed."
 	fi
 }
 
@@ -105,23 +105,23 @@ function scanIt () {
 		then
 			cat "$5"
 			printIt " "
-			handleError "clang scan-build of $1 generated errors!"
+			handleError "\tclang scan-build of $1 generated errors!"
 		elif stringHasSubstring "$LOG_CONTENTS" "warning"
 		then
 			cat "$5"
 			printIt " "
-			printWarning "clang scan-build of $1 generated warnings!"
+			printWarning "\tclang scan-build of $1 generated warnings!"
 		else
 			if [ "$4" -eq 1 ]
 			then
 				cat "$5"
 			fi
-			printSuccess "clang scan-build of $1 is good."
+			printSuccess "\tclang scan-build of $1 is good."
 			printIt " "
 		fi
 		popPath "$4"
 	else
-		printWarning "Clang doesn't appear to be installed, so scan-build is unavailable."
+		printWarning "\tClang doesn't appear to be installed, so scan-build is unavailable."
 	fi
 }
 
