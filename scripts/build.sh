@@ -243,7 +243,7 @@ function printUsage {
 	printIt " "
 	printIt "\tAll arguments are optional. With no arguments, the default behavior is:"
 	printIt " "
-	printIt "\t• Incremental debug build of libraries and programs"
+	printIt "\t• Incremental debug build of libraries and programs with static library"
 	printIt "\t• Root directory path is '$BUILD_ROOT'"
     printIt "\t• Analyze with cppcheck"
 	printIt "\t• No profiling"
