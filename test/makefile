@@ -60,6 +60,11 @@ ifndef BUILD_LIB_EXTENSION
 BUILD_LIB_EXTENSION=".a"
 endif
 
+# If no profiling is specified, profiling will be disabled
+ifndef BUILD_PROFILE
+BUILD_PROFILE=0
+endif
+
 # Define build and obj directories
 BINDIR="$(BUILD_ROOT)/$(BUILD_PRODUCTS_DIR_NAME)/$(BUILD_PRODUCTS_BIN_DIR)/$(BUILD_OPERATING_ENV)/$(BUILD_ARCH)/$(BUILD_CFG)"
 OBJDIR="$(BUILD_ROOT)/$(BUILD_PRODUCTS_DIR_NAME)/$(BUILD_PRODUCTS_OBJ_DIR)/$(BUILD_OPERATING_ENV)/$(BUILD_ARCH)/$(BUILD_CFG)"
@@ -93,16 +98,24 @@ OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 # Configuration: Debug
 #
 ifeq ($(BUILD_CFG),Debug)
+ifeq ($(BUILD_PROFILE),0)
 COMPILE=$(CC) -Wall -c -g -o "$(OBJDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=$(CC) -Wall "$(CFG_LIB_INC)" -g -o "$(OUTFILE)" $(OBJ) "$(BINDIR)/libsensehat$(BUILD_LIB_EXTENSION)" $(CFG_LIB) 
+else
+COMPILE=$(CC) -Wall -pg -c -g -o "$(OBJDIR)/$(*F).o" $(CFG_INC) "$<"
+LINK=$(CC) -Wall -pg "$(CFG_LIB_INC)" -g -o "$(OUTFILE)" $(OBJ) "$(BINDIR)/libsensehat$(BUILD_LIB_EXTENSION)" $(CFG_LIB) 
 endif
 
 #
 # Configuration: Release
 #
 ifeq ($(BUILD_CFG),Release)
+ifeq ($(BUILD_PROFILE),0)
 COMPILE=$(CC) -Wall -c -Os -DNDEBUG -o "$(OBJDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=$(CC) -Wall "$(CFG_LIB_INC)" -o "$(OUTFILE)" $(OBJ) "$(BINDIR)/libsensehat$(BUILD_LIB_EXTENSION)"
+else
+COMPILE=$(CC) -Wall -pg -c -Os -DNDEBUG -o "$(OBJDIR)/$(*F).o" $(CFG_INC) "$<"
+LINK=$(CC) -Wall -pg "$(CFG_LIB_INC)" -o "$(OUTFILE)" $(OBJ) "$(BINDIR)/libsensehat$(BUILD_LIB_EXTENSION)"
 endif
 
 # Pattern rules

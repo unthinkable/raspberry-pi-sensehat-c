@@ -327,6 +327,15 @@ function parseCommandLineArgument {
 	elif [ "$CMD_LINE_ARG" == "--help" ]
 	then
 		printUsage
+	elif [ "$CMD_LINE_ARG" == $PROFILE_CMD ]
+	then
+		if hasGprof
+		then
+			BUILD_PROFILE=1
+		else
+			BUILD_PROFILE=0
+			printWarning "gprof not available; overriding $PROFILE_CMD."
+		fi
 	elif [ "$CMD_LINE_ARG" == "--release" ]
 	then
 		BUILD_RELEASE=1
