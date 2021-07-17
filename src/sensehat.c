@@ -1,25 +1,11 @@
-// ==================================================================================================
-//
-//  sensehat.c
-//
-//  Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
-//
-//  Supported host operating systems:
-//      Raspbian Stretch or later
-//
-//  Description:
-//      This file contains private constants, function prototypes and function implementations
-//      for the Raspberry Pi Sense HAT C library.
-//
-//  Notes:
-//      1)  Requires ANSI C99 (or better) compliant compilers.
-//      2)  This library requires Python 2.x/3.x or later.
-//  
 // =================================================================================================
 //! @file sensehat.c
 //! @author Gary Woodcock (gary.woodcock@unthinkable.com)
 //! @brief This file contains private constants, function prototypes and function implementations
 //! for the Raspberry Pi Sense HAT C library.
+//! @remarks Requires ANSI C99 (or better) compliant compilers.
+//! @remarks This library requires Python 2.x/3.x or later.
+//! @remarks Supported host operating systems: Raspbian Stretch or later.
 //! @date 2019-09-25
 //! @copyright Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 //! 

@@ -35,7 +35,12 @@
 // =================================================================================================
 
 //  Success and failure codes
+//! @brief Use the UNTHINK_SUCCESS macro to indicate a successful result.
+//!
 #define UNTHINK_SUCCESS   EXIT_SUCCESS
+
+//! @brief Use the UNTHINK_FAILURE macro to indicate an uncategorized error.
+//!
 #define UNTHINK_FAILURE   -1
 
 // =================================================================================================

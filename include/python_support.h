@@ -1,25 +1,11 @@
-// ==================================================================================================
-//
-//  python_support.h
-//
-//  Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
-//
-//  Supported host operating systems:
-//      Raspbian Stretch or later
-//
-//  Description:
-//      This file contains public constants and function prototypes for the Python utility 
-//      functions.
-//
-//  Notes:
-//      1)  Requires ANSI C99 (or better) compliant compilers.
-//      2)  This library requires Python 2.x/3.x or later.
-//  
 // =================================================================================================
-//! @file python-support.h
+//! @file python_support.h
 //! @author Gary Woodcock (gary.woodcock@unthinkable.com)
 //! @brief This file contains public constants and function prototypes for the Python utility 
 //! functions.
+//! @remarks Requires ANSI C99 (or better) compliant compilers.
+//! @remarks This library requires Python 2.x/3.x or later.
+//! @remarks Supported host operating systems: Raspbian Stretch or later.
 //! @date 2019-09-25
 //! @copyright Copyright (c) 2019 Unthinkable Research LLC. All rights reserved.
 //! 
@@ -29,8 +15,8 @@
     #pragma once
 #endif
 
-#ifndef __PYTHONSUPPORT_H__
-#define __PYTHONSUPPORT_H__
+#ifndef __PYTHON_SUPPORT_H__
+#define __PYTHON_SUPPORT_H__
 
 #include "unthink_types.h"
 #include <Python.h>
@@ -64,9 +50,9 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t Python_GetFunctionReference     (const PyObject*    module,
-                                             const char*        functionName,
-                                             PyObject** const   functionReference);
+    int32_t Python_GetFunctionReference (const PyObject*  module,
+                                         const char*      functionName,
+                                         PyObject** const functionReference);
 
     //! @brief Call Python_ReleaseFunctionReference to release a Python function reference.
     //!
@@ -75,7 +61,7 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t Python_ReleaseFunctionReference (PyObject** const   functionReference);
+    int32_t Python_ReleaseFunctionReference (PyObject** const functionReference);
 
     //! @brief Call Python_Error to determine whether a Python/C API function call succeeded.
     //!
@@ -84,16 +70,16 @@ extern "C"
     //! @return int32_t A status code indicating whether the function call succeeded. A value equal 
     //! to 0 indicates success.
     //!
-    int32_t Python_Error                    (const char*        context);
+    int32_t Python_Error (const char* context);
 
     //! @brief Call Python_CloseInterpreter to close the Python interpreter.
     //!
-    void    Python_CloseInterpreter         (void);
+    void Python_CloseInterpreter (void);
 
 #ifdef __cplusplus
 }
 #endif
 
 // =================================================================================================
-#endif	// __PYTHONSUPPORT_H__
+#endif	// __PYTHON_SUPPORT_H__
 // =================================================================================================
