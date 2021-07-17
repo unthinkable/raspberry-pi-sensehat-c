@@ -602,7 +602,6 @@ then
         printIt "Checking sensehat_example color cycle example with valgrind..."
         valgrind \
             --leak-check=full \
-            --show-leak-kinds=all \
             --track-origins=yes \
             --log-file="$BUILD_LOGS_DIR/sensehat_example""$VALGRIND_LOG_PREFIX$VALGRIND_TS$LOG_POSTFIX" \
             "$PROG_DIR/sensehat_example" \
