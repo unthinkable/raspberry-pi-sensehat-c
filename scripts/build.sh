@@ -259,6 +259,7 @@ function printUsage {
 	printIt "\t$DEBUG_CMD\t\t\t\t\t\tBuilds debug version."
 	printIt "\t$DOCS_CMD\t\t\t\t\t\tBuilds documentation using Doxygen."
 	printIt "\t$HELP_CMD\t\t\t\t\t\tPrints this usage notice."
+    printIt "\t$PROFILE_CMD\t\t\t\t\tBuilds profile version."
 	printIt "\t$RELEASE_CMD\t\t\t\t\tBuilds release version."
 	printIt "\t$ROOT_DIRECTORY_PATH_CMD=<path>\t\t\tSets the path to the root directory containing the"
     printIt "\t\t\t\t\t\t\tSenseHAT C library source code directory (defaults to"
