@@ -77,7 +77,7 @@ function parseCUnitResults()
 				else
 					MSG="$SUITES_COUNT CUnit test suites total."
 				fi
-				printIt "$MSG"
+				printIt "\t$MSG"
 			elif [ $SUITES_COUNT != -1 ]
 			then
 				if [ $SUITES_RUN == -1 ]
@@ -113,7 +113,7 @@ function parseCUnitResults()
 				else
 					MSG="$TEST_CASES_COUNT CUnit test cases total."
 				fi
-				printIt "$MSG"
+				printIt "\t$MSG"
 			elif [ $TEST_CASES_COUNT != -1 ]
 			then
 				if [ $TEST_CASES_RUN == -1 ]
