@@ -391,12 +391,11 @@ BUILD_PRODUCTS_BIN_DIR="bin"
 BUILD_PRODUCTS_OBJ_DIR="obj"
 BUILD_SHARED_LIB=0
 BUILD_WITH_CONSOLE_LOGGING=0
-BUILD_LOG="/tmp/build-log.txt"
-CLEAN_LOG_PREFIX="-clean-log-"
-BUILD_LOG_PREFIX="-build-log-"
-CPPCHECK_LOG_PREFIX="-cppcheck-log-"
-SCAN_BUILD_LOG_PREFIX="-scan-build-log-"
-VALGRIND_LOG_PREFIX="-valgrind-log-"
+CLEAN_LOG_PREFIX="_clean_log_"
+BUILD_LOG_PREFIX="_build_log_"
+CPPCHECK_LOG_PREFIX="_cppcheck_log_"
+SCAN_BUILD_LOG_PREFIX="_scan_build_log_"
+VALGRIND_LOG_PREFIX="_valgrind_log_"
 LOG_POSTFIX=".txt"
 
 # If there are build arguments, check them
@@ -632,6 +631,8 @@ then
 
 	printBanner "UNIT TEST"
 
+    UNIT_TEST_TS=$(getDateTimeString)
+
 	pushPath "$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OPERATING_ENV/$BUILD_ARCH/$BUILD_CFG" $BUILD_VERBOSE
 	if fileExists "./libsensehat_unit_test-Results.xml"
 	then
@@ -640,7 +641,7 @@ then
 	"./sensehat_test"
 	printIt "Parsing libsensehat unit test results..."
 	parseCUnitResults "./libsensehat_unit_test-Results.xml"
-    mv "./libsensehat_unit_test-Results.xml" "$BUILD_LOGS_DIR/libsensehat_unit_test_results.xml"
+    mv "./libsensehat_unit_test-Results.xml" "$BUILD_LOGS_DIR/libsensehat_unit_test_results$UNIT_TEST_TS.xml"
 	popPath $BUILD_VERBOSE
 
 else
