@@ -55,6 +55,11 @@ ifndef BUILD_CFG
 BUILD_CFG=Debug
 endif
 
+# If no library extension is specified, ".a" will be used
+ifndef BUILD_LIB_EXTENSION
+BUILD_LIB_EXTENSION=".a"
+endif
+
 # Define build and obj directories
 BINDIR="$(BUILD_ROOT)/$(BUILD_PRODUCTS_DIR_NAME)/$(BUILD_PRODUCTS_BIN_DIR)/$(BUILD_OPERATING_ENV)/$(BUILD_ARCH)/$(BUILD_CFG)"
 OBJDIR="$(BUILD_ROOT)/$(BUILD_PRODUCTS_DIR_NAME)/$(BUILD_PRODUCTS_OBJ_DIR)/$(BUILD_OPERATING_ENV)/$(BUILD_ARCH)/$(BUILD_CFG)"
@@ -89,7 +94,7 @@ OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 #
 ifeq ($(BUILD_CFG),Debug)
 COMPILE=$(CC) -Wall -c -g -o "$(OBJDIR)/$(*F).o" $(CFG_INC) "$<"
-LINK=$(CC) -Wall "$(CFG_LIB_INC)" -g -o "$(OUTFILE)" $(OBJ) $(BINDIR)/libsensehat.so $(CFG_LIB) 
+LINK=$(CC) -Wall "$(CFG_LIB_INC)" -g -o "$(OUTFILE)" $(OBJ) "$(BINDIR)/libsensehat$(BUILD_LIB_EXTENSION)" $(CFG_LIB) 
 endif
 
 #
@@ -97,7 +102,7 @@ endif
 #
 ifeq ($(BUILD_CFG),Release)
 COMPILE=$(CC) -Wall -c -Os -DNDEBUG -o "$(OBJDIR)/$(*F).o" $(CFG_INC) "$<"
-LINK=$(CC) -Wall "$(CFG_LIB_INC)" -o "$(OUTFILE)" $(OBJ) $(BINDIR)/libsensehat.so $(CFG_LIB)
+LINK=$(CC) -Wall "$(CFG_LIB_INC)" -o "$(OUTFILE)" $(OBJ) "$(BINDIR)/libsensehat$(BUILD_LIB_EXTENSION)"
 endif
 
 # Pattern rules

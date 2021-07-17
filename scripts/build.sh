@@ -381,6 +381,7 @@ BUILD_CFG=Debug
 BUILD_CLEAN=0
 BUILD_DEBUG=1
 BUILD_DOCS=0
+BUILD_LIB_EXTENSION=".a"
 BUILD_PROFILE=0
 BUILD_RELEASE=0
 BUILD_TEST=0
@@ -397,7 +398,6 @@ CPPCHECK_LOG_PREFIX="-cppcheck-log-"
 SCAN_BUILD_LOG_PREFIX="-scan-build-log-"
 VALGRIND_LOG_PREFIX="-valgrind-log-"
 LOG_POSTFIX=".txt"
-LIB_EXTENSION=".a"
 
 # If there are build arguments, check them
 for var in "$@"
@@ -457,7 +457,7 @@ PROG_DIR="$BUILD_ROOT/$BUILD_PRODUCTS_DIR_NAME/$BUILD_PRODUCTS_BIN_DIR/$BUILD_OP
 # Check library file extension
 if [ $BUILD_SHARED_LIB -eq 1 ]
 then
-    LIB_EXTENSION=".so"
+    BUILD_LIB_EXTENSION=".so"
 fi
 
 # Export build environment
@@ -471,6 +471,7 @@ export BUILD_OPERATING_ENV
 export BUILD_ARCH
 export BUILD_PROFILE
 export BUILD_SHARED_LIB
+export BUILD_LIB_EXTENSION
 
 printIt " "
 
@@ -495,7 +496,7 @@ then
 		createDirectory "$BUILD_LOGS_DIR"
 	fi
 
-	cleanIt "libsensehat$LIB_EXTENSION" "../src" makefile $BUILD_VERBOSE "$BUILD_LOGS_DIR/libsensehat$CLEAN_LOG_PREFIX$CLEAN_TS$LOG_POSTFIX"
+	cleanIt "libsensehat$BUILD_LIB_EXTENSION" "../src" makefile $BUILD_VERBOSE "$BUILD_LOGS_DIR/libsensehat$CLEAN_LOG_PREFIX$CLEAN_TS$LOG_POSTFIX"
 	cleanIt "sensehat_example" "../example" makefile $BUILD_VERBOSE "$BUILD_LOGS_DIR/sensehat_example$CLEAN_LOG_PREFIX$CLEAN_TS$LOG_POSTFIX"
 	if [ $BUILD_TEST -eq 1 ]
 	then
@@ -569,7 +570,7 @@ printBanner "BUILD"
 BUILD_TS=$(getDateTimeString)
 
 # Library
-buildIt "libsensehat$LIB_EXTENSION" "../src" makefile $BUILD_VERBOSE "$BUILD_LOGS_DIR/libsensehat$BUILD_LOG_PREFIX$BUILD_TS$LOG_POSTFIX" ""
+buildIt "libsensehat$BUILD_LIB_EXTENSION" "../src" makefile $BUILD_VERBOSE "$BUILD_LOGS_DIR/libsensehat$BUILD_LOG_PREFIX$BUILD_TS$LOG_POSTFIX" ""
 
 # Example
 buildIt "sensehat_example" "../example" makefile $BUILD_VERBOSE "$BUILD_LOGS_DIR/sensehat_example$BUILD_LOG_PREFIX$BUILD_TS$LOG_POSTFIX" ""
