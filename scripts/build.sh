@@ -376,7 +376,7 @@ else
 
 # Set build defaults
 BUILD_ROOT="$HOME"
-BUILD_ANALYZE_OPTION=ANALYZE_OPTION_CPPCHECK
+BUILD_ANALYZE_OPTION="cppcheck"
 BUILD_CFG=Debug
 BUILD_CLEAN=0
 BUILD_DEBUG=1
@@ -641,7 +641,7 @@ then
 	"./sensehat_test"
 	printIt "Parsing libsensehat unit test results..."
 	parseCUnitResults "./libsensehat_unit_test-Results.xml"
-    mv "./libsensehat_unit_test-Results.xml" "$BUILD_LOGS_DIR/libsensehat_unit_test_results$UNIT_TEST_TS.xml"
+    mv "./libsensehat_unit_test-Results.xml" "$BUILD_LOGS_DIR/libsensehat_unit_test_results_$UNIT_TEST_TS.xml"
 	popPath $BUILD_VERBOSE
 
 else
