@@ -105,6 +105,7 @@ else
 COMPILE=$(CC) -Wall -pg -c -g -o "$(OBJDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=$(CC) -Wall -pg "$(CFG_LIB_INC)" -g -o "$(OUTFILE)" $(OBJ) "$(BINDIR)/libsensehat$(BUILD_LIB_EXTENSION)" $(CFG_LIB) 
 endif
+endif
 
 #
 # Configuration: Release
@@ -116,6 +117,7 @@ LINK=$(CC) -Wall "$(CFG_LIB_INC)" -o "$(OUTFILE)" $(OBJ) "$(BINDIR)/libsensehat$
 else
 COMPILE=$(CC) -Wall -pg -c -Os -DNDEBUG -o "$(OBJDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=$(CC) -Wall -pg "$(CFG_LIB_INC)" -o "$(OUTFILE)" $(OBJ) "$(BINDIR)/libsensehat$(BUILD_LIB_EXTENSION)"
+endif
 endif
 
 # Pattern rules

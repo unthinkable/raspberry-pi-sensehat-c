@@ -103,6 +103,7 @@ else
 COMPILE=$(CC) -Wall -pg -c -g -o "$(OBJDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=$(CC) -Wall -pg "$(CFG_LIB_INC)" -g -o "$(OUTFILE)" $(OBJ) $(CFG_LIB) 
 endif
+endir
 
 #
 # Configuration: Release
@@ -114,6 +115,7 @@ LINK=$(CC) -Wall "$(CFG_LIB_INC)" -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)
 else
 COMPILE=$(CC) -Wall -pg -c -Os -DNDEBUG -o "$(OBJDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=$(CC) -Wall -pg "$(CFG_LIB_INC)" -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)
+endif
 endif
 
 # Pattern rules
