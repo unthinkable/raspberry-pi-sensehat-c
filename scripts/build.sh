@@ -515,7 +515,6 @@ then
 			deleteDirectory "../docs/latex"
 		fi
 	fi
-	printIt " "
 fi
 
 # =================================================================================================
@@ -577,7 +576,6 @@ buildIt "sensehat_example" "../example" makefile $BUILD_VERBOSE "$BUILD_LOGS_DIR
 if [ $BUILD_TEST -eq 1 ]
 then
     buildIt "sensehat_test" "../test" makefile $BUILD_VERBOSE "$BUILD_LOGS_DIR/sensehat_test$BUILD_LOG_PREFIX$BUILD_TS$LOG_POSTFIX" ""
-	printIt " "
 fi
 
 # =================================================================================================
@@ -618,7 +616,6 @@ then
         else
             printWarning "\t$SUMMARY memory issues found in sensehat_example."
         fi
-        printIt " "
         popPath $BUILD_VERBOSE
     fi
 fi
@@ -642,7 +639,6 @@ then
 	parseCUnitResults "./libsensehat_unit_test-Results.xml"
     mv "./libsensehat_unit_test-Results.xml" "$BUILD_LOGS_DIR/libsensehat_unit_test_results.xml"
 	popPath $BUILD_VERBOSE
-	printIt " "
 
 else
 	printIt " "
@@ -668,7 +664,6 @@ then
 		printError "Failed to generate HTML documentation!"
 	fi
 	popPath $BUILD_VERBOSE
-	printIt " "
 else
 	printIt " "
 fi
