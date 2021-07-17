@@ -601,7 +601,6 @@ then
 
         printIt "Checking sensehat_example color cycle example with valgrind..."
         valgrind \
-            -s \
             --leak-check=full \
             --show-leak-kinds=all \
             --track-origins=yes \
