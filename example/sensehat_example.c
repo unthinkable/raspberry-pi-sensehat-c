@@ -259,7 +259,7 @@ void PrintCmdLineHelp (const char* programName)
 {
     fprintf(stdout, "\nUsage: %s <arguments>\n\n", basename((char*)programName));
     fprintf(stdout, "\tAvailable command line arguments are:\n\n");
-    fprintf(stdout, "\t-%c, --%s\t\t\t\t\tRun the color cycle example.\n", 
+    fprintf(stdout, "\t-%c, --%s\t\tRun the color cycle example.\n", 
            COLOR_CYCLE_EXAMPLE_SHORT_CMD, 
            COLOR_CYCLE_EXAMPLE_CMD);
     fprintf(stdout, "\t-%c, --%s\t\t\t\t\tRun the compass example.\n",
