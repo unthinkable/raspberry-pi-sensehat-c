@@ -526,6 +526,7 @@ then
 		then
 			deleteDirectory "../docs/latex"
 		fi
+        printIt " "
 	fi
 fi
 
@@ -651,6 +652,7 @@ then
 	parseCUnitResults "./libsensehat_unit_test-Results.xml"
     mv "./libsensehat_unit_test-Results.xml" "$BUILD_LOGS_DIR/libsensehat_unit_test_results_$UNIT_TEST_TS.xml"
 	popPath $BUILD_VERBOSE
+    printIt " "
 
 else
 	printIt " "
@@ -676,6 +678,7 @@ then
 		printError "Failed to generate HTML documentation!"
 	fi
 	popPath $BUILD_VERBOSE
+    printIt " "
 else
 	printIt " "
 fi

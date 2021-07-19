@@ -39,9 +39,9 @@ Building the binaries from source requires installing a development environment 
 
 I'll be honest, `cmake` makes my head hurt. Despite multiple attempts, I've never mastered its art and intricacies, and that's been frustrating because it seems to offer so much utility. As a consequence, I've developed a `bash`-based build system that I repurpose for use in a number of projects, and while it's not a standardized mechanism, it's made my life easier, and hopefully it won't prove too difficult for others to use.
 
-The build system automates the process of building the various versions of the library (static and shared libraries in debug or release configurations), running code quality checks, running unit tests, and building the example program. It also simplifies management of the various build configuration parameters (e.g., `Debug` vs. `Release`).
+The build system automates the process of building the various versions of the library (static and shared library in debug or release configurations), running code quality checks, running unit tests, and building the example program. It also simplifies management of the various build configuration parameters (e.g., `Debug` vs. `Release`).
 
-Begin by opening a terminal window in the `raspberry-pi-sensehat-c/build` directory and typing:
+Begin by opening a terminal window in the `raspberry-pi-sensehat-c/scripts` directory and typing:
 
     ./build.sh --help
     
@@ -50,32 +50,50 @@ Begin by opening a terminal window in the `raspberry-pi-sensehat-c/build` direct
 This will display the various options of the build system, as shown below:
 
     USAGE:  build.sh <args>
-
-            All arguments are optional. With no arguments, the default behavior is:
-
-            • Incremental debug build of libraries and programs
-            • No unit testing
-            • Minimal logging to console
-            • No documentation build
-
-            Possible argument values are:
-
-            --check-env Checks the build support on the host environment.
-            --clean     Forces a clean build instead of an incremental build.
-            --debug     Builds debug version.
-            --docs      Builds documentation using Doxygen.
-            --help      Prints this usage notice.
-            --release   Builds release version.
-            --test      Runs unit tests after build.
-            --verbose   Prints all log output to console.
-
-            Prerequisites for running this build include:
-
-            • clang or clang-tools (for scan-build, used with --debug builds)
-            • cppcheck
-            • CUnit (used with --test builds)
-            • Python (version 2 or 3)
-
+ 
+        All arguments are optional. With no arguments, the default behavior is:
+ 
+        • Incremental debug build of libraries and programs with static library
+        • Root directory path is '/home/pi'
+        • Analyze with cppcheck
+        • No profiling
+        • No unit testing
+        • Minimal logging to console
+        • No documentation build
+ 
+        Possible argument values are:
+ 
+        --analyze=<full|cppcheck|scan-build|valgrind>   Analyzes the source code with the specified tools.
+        --check-env                                     Checks the build support on the host environment.
+        --clean                                         Forces a clean build instead of an incremental build.
+        --debug                                         Builds debug version.
+        --docs                                          Builds documentation using Doxygen.
+        --help                                          Prints this usage notice.
+        --profile                                       Builds profile version.
+        --release                                       Builds release version.
+        --root-directory-path=<path>                    Sets the path to the root directory containing the
+                                                        SenseHAT C library source code directory (defaults to
+                                                        the user's home directory).
+        --test                                          Runs unit tests after build.
+        --verbose                                       Prints all log output to console.
+        --with-console-logging                          Log progress and debug information to the console.
+        --with-shared-lib                               Build and link with a shared library instead of a
+                                                        static library.
+ 
+        Prerequisites for running this build script include:
+ 
+        • bash shell
+        • clang or gcc with C99 support
+        • cppcheck
+        • CUnit (used with --test option)
+        • Doxygen
+        • gprof (used with --profile option)
+        • make
+        • Python (version 2 or 3)
+        • scan-build
+        • SenseHAT Python module
+        • valgrind
+ 
 Next, try running this command:
 
     ./build.sh --check-env
@@ -84,19 +102,28 @@ This will give you feedback on whether your Raspbian system can fully support al
 
     ******************************
     *** HOST ENVIRONMENT CHECK ***
-    ******************************
-
-    Sense HAT Python module: Installed 
-                 Python 2.x: Installed (2.7.13)
-                 Python 3.x: Installed (3.5.3)
-                       make: Installed (v4.1)
-                        gcc: Installed (v6.3.0)
-                C99 support: Available
-           clang scan-build: Installed
-                   cppcheck: Installed (v1.76.1)
-                      CUnit: Installed
-                    Doxygen: Installed (v1.8.13)
-
+    ****************************** 
+ 
+                        bash: Installed (v5.0.3)
+                       clang: Installed (v7.0.1-)
+           clang C99 support: Available
+           clang C11 support: Available
+           clang C17 support: Not available
+                    cppcheck: Installed (v1.86)
+                       CUnit: Installed
+                     Doxygen: Installed (v1.8.13)
+                         gcc: Installed (v8.3.0)
+             gcc C99 support: Available
+             gcc C11 support: Available
+             gcc C17 support: Available
+                       gprof: Installed (v2.31.1)
+                        make: Installed (v4.2.1)
+                  Python 2.x: Installed (v2.7.16)
+                  Python 3.x: Installed (v3.7.3)
+                  scan-build: Installed
+     Sense HAT Python module: Installed
+                    valgrind: Installed (v3.7)
+ 
 `make` and `gcc` with C99 must be installed, and you'll need either Python 2.x or Python 3.x installed (if you have both installed, the build system will use whatever version `python` is aliased to). If you want to run code quality checks on the sources, you'll need `scan-build` and/or `cppcheck` installed. If you want to run unit tests, you'll need `CUnit` installed. If you want to generate HTML documentation from the source code, you'll need `doxygen` installed.
 
 To build a clean debug version, run unit tests, and generate documentation, enter the following in the terminal:
@@ -107,79 +134,95 @@ While building, progress information is displayed in the console, similar to wha
 
     *********************************
     *** SENSE HAT C LIBRARY BUILD ***
-    *********************************
-
+    ********************************* 
+    
     Setting up...
-
+    
     *************
     *** CLEAN ***
-    *************
+    ************* 
+    
+    Deleting logs...
 
-    Cleaning libsensehat.so...
     Cleaning libsensehat.a...
-    Cleaning sensehat-example...
-    Cleaning sensehat-test...
+            Clean of libsensehat.a succeeded.
+
+    Cleaning sensehat_example...
+            Clean of sensehat_example succeeded.
+
+    Cleaning sensehat_test...
+            Clean of sensehat_test succeeded.
+
     Cleaning docs...
 
-    ***************
-    *** ANALYZE ***
-    ***************
-
-    Checking for clang scan-build...
-    Checking libsensehat with clang scan-build...
-    clang scan-build of libsensehat is good.
-
-    Cleaning up after clang scan-build runs...
-    Cleaning libsensehat...
-
+    ***************************************
+    *** CODE QUALITY ANALYSIS: CPPCHECK ***
+    *************************************** 
+    
     Checking for cppcheck...
-    Checking libsensehat with cppcheck...
-    cppcheck of libsensehat is good.
+            cppcheck available.
 
+    Checking src with cppcheck...
+            cppcheck of src is good.
+    
+    Checking example with cppcheck...
+            cppcheck of example is good.
+    
+    Checking test with cppcheck...
+            cppcheck of test is good.
+    
     *************
     *** BUILD ***
-    *************
-
-    Building libsensehat.so...
+    ************* 
+    
     Building libsensehat.a...
-    Building sensehat-example...
-    Building sensehat-test...
+            Build of libsensehat.a succeeded.
+
+    Building sensehat_example...
+            Build of sensehat_example succeeded.
+
+    Building sensehat_test...
+            Build of sensehat_test succeeded.
 
     *****************
     *** UNIT TEST ***
-    *****************
-
+    ***************** 
+    
     Sense HAT C library unit test has started.
     Sense HAT C library unit test has completed.
     Parsing libsensehat unit test results...
-    1 CUnit test suite total.
-    1 CUnit test suite run.
-    3 CUnit test cases total.
-    3 CUnit test cases run.
-    3 CUnit test cases succeeded.
-    669 CUnit assertions total.
-    669 CUnit assertions run.
-    669 CUnit assertions succeeded.
-
+            1 CUnit test suite total.
+            1 CUnit test suite run.
+            3 CUnit test cases total.
+            3 CUnit test cases run.
+            3 CUnit test cases succeeded.
+            669 CUnit assertions total.
+            669 CUnit assertions run.
+            669 CUnit assertions succeeded.
+    
     *********************
     *** DOCUMENTATION ***
-    *********************
-
+    ********************* 
+    
     Building HTML documentation at /home/pi/raspberry-pi-sensehat-c/docs/html...
     Opening index.html in browser...
-
+    
     *****************************************
     *** SENSE HAT C LIBRARY BUILD SUMMARY ***
-    *****************************************
-
-     Build started at: Fri Oct 18 11:47:31 CDT 2019.
-    Build finished at: Fri Oct 18 11:49:27 CDT 2019.
-         Elapsed time: 1 minute and 56 seconds.
+    ***************************************** 
+    
+     Build started at: Sun 18 Jul 2021 07:56:04 PM CDT.
+    Build finished at: Sun 18 Jul 2021 07:56:49 PM CDT.
+         Elapsed time: 45 seconds.
         Configuration: Linux armhf
-                       Debug
-                       Clean build
-                       With unit test
-                       With documentation
+                       Clean debug build with static libraries
+                       With cppcheck code quality analysis
+                       Without scan-build code quality analysis
+                       Without valgrind memory usage analysis
+                       Without profiling
+                       With unit testing
+                       With documenation
+                       Without console logging
 
 After this command completes, you'll find the resulting binaries in the `raspberry-pi-sensehat-c/bin/linux/armhf/Debug` directory, and the generated HTML documentation in the `raspberry-pi-sensehat-c/docs/html` directory.
 
@@ -201,13 +244,23 @@ To clean a particular build, enter this command:
 
 Note that if you choose to build in this manner, you'll be using the default shell values for the various build parameters. These are set as follows:
 
+    BUILD_ROOT="$(HOME)"
+    BUILD_ARCH=armhf
     BUILD_CFG=Debug
     BUILD_CLEAN=0
     BUILD_DEBUG=1
     BUILD_DOCS=0
+    BUILD_LIB_EXTENSION=".a"
+    BUILD_OPERATING_ENV=linux
+    BUILD_PRODUCTS_BIN_DIR=bin
+    BUILD_PRODUCTS_DIR_NAME=raspberry-pi-sensehat-c
+    BUILD_PRODUCTS_OBJ_DIR    
+    BUILD_PROFILE=0
     BUILD_RELEASE=0
+    BUILD_SHARED_LIB=0
     BUILD_TEST=0
     BUILD_VERBOSE=0
+    BUILD_WITH_CONSOLE_LOGGING=0
 
 With this configuration, you'll get an incremental debug build with no unit testing, and no documentation build. Of course, you can change these settings in your terminal session as needed.
 
@@ -314,3 +367,15 @@ This will create a `html` directory in the `docs` directory. Open the `index.htm
 * [The Raspberry Pi Foundation](https://www.raspberrypi.org/), for creating such a wonderful playground for tinkerers of all stripes.
 * [Steve Smith](mailto:kenobi@soresutechnologies.com), for invaluable assistance in testing the project, and in reducing the number of out-and-out distortions or misrepresentations I may have inadvertently set forth in source code and/or documentation.
 
+## Version History
+
+#### v.0.2.0 - ?
+
+* Updated build system.
+* Improved and more granular error checking.
+* Add support for profiling (gprof).
+* Add support for valgrind.
+
+#### v.0.1.0 - 11/18/19
+
+* Initial release.
