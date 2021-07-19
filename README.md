@@ -282,26 +282,26 @@ This will display an interactive console to exercise the various functions in th
 
     Choose one of the following commands:
 
-     1 - Prints this help notice.
-     2 - Get C library version.
-     3 - Color cycle example.
-     4 - Compass example.
-     5 - Rainbow example.
-     6 - Rotation example.
-     7 - Text scroll example.
-     8 - Flash LEDs.
-     9 - Load image.
-    10 - Rotate LEDs.
-    11 - Show letter.
-    12 - Show message.
-    13 - Flip LEDs horizontally.
-    14 - Flip LEDs vertically.
-    15 - Get compass heading in degrees.
-    16 - Get environmental conditions.
-    17 - Wait for event.
-    18 - Quit (default).
+            1 - Prints this help notice.
+            2 - Get C library version.
+            3 - Color cycle example.
+            4 - Compass example.
+            5 - Rainbow example.
+            6 - Rotation example.
+            7 - Text scroll example.
+            8 - Flash LEDs.
+            9 - Load image.
+            10 - Rotate LEDs.
+            11 - Show letter.
+            12 - Show message.
+            13 - Flip LEDs horizontally.
+            14 - Flip LEDs vertically.
+            15 - Get compass heading in degrees.
+            16 - Get environmental conditions.
+            17 - Wait for event.
+            18 - Quit (default).
 
-    Enter your choice:
+    Enter your choice: 
 
 Choosing an option from the above list will either execute the function, or prompt for additional input. I believe the options are fairly self-explanatory, so I won't bore you with going through each option one at a time.
 
@@ -315,23 +315,24 @@ This will display the various command line options as shown below:
     *** Raspberry Pi Sense HAT C Library Example ***
     ************************************************
 
-    Available command line arguments are:
+    Usage: sensehat_example <arguments>
 
-    --color-cycle-example                       Color cycle example.
-    --compass-example                           Compass example.
-    --environment                               Get environmental conditions.
-    --flash                                     Flash LEDs.
-    --heading                                   Get compass heading in degrees.
-    --help                                      Prints this usage notice.
-    --load-image=<path>                         Load image in file <path>.
-    --rainbow-example                           Rainbow example.
-    --rotation-example                          Rotation example.
-    --show-letter=<letter>                      Show letter.
-    --show-message=<message>                    Show message.
-    --temperature                               Get temperatures in degrees Celsius and Fahrenheit.
-    --text-scroll-example                       Text scroll example.
-    --version                                   Returns C library version.
-    --wait-for-event=<up|down|left|right|push>  Wait for event.
+            Available command line arguments are:
+
+            -c, --color-cycle-example                       Run the color cycle example.
+            -C, --compass                                   Run the compass example.
+            -e, --environment                               Get the current environmental conditions.
+            -f, --flash                                     Flash the LEDs.
+            -H, --heading                                   Get the compass heading in degrees.
+            -h, --help                                      Prints this usage notice.
+            -i, --load-image <path>                         Load an image from <path>.
+            -r, --rainbow-example                           Run the rainbow example.
+            -R, --rotation-example                          Run the rotation example.
+            -s, --show-letter <letter>                      Show a letter.
+            -S, --show-message <letter>                     Show a message.
+            -t, --text-scroll-example                       Run the text scroll example.
+            -v, --version                                   Print the version of the SenseHAT C library.
+            -w, --wait-for-event <up|down|left|right|push>  Wait for an event.
 
 The command line will only accept a single option at a time - you can't chain multiple command line options on the same command entry. Try this:
 
@@ -372,6 +373,7 @@ This will create a `html` directory in the `docs` directory. Open the `index.htm
 #### v.0.2.0 - ?
 
 * Updated build system.
+* Improved command line argument handling.
 * Improved and more granular error checking.
 * Add support for profiling (gprof).
 * Add support for valgrind.
