@@ -352,9 +352,9 @@ int main(int argc, const char * argv[])
         fprintf(stdout, "Can't catch SIGABRT.\n");
 
     // Print banner
-    fprintf(stdout, "\n ************************************************\n");
-    fprintf(stdout, " *** Raspberry Pi Sense HAT C Library Example ***\n");
-    fprintf(stdout, " ************************************************\n");
+    fprintf(stdout, "\n************************************************\n");
+    fprintf(stdout, "*** Raspberry Pi Sense HAT C Library Example ***\n");
+    fprintf(stdout, "************************************************\n");
 
     // Open an instance
     int32_t result = SenseHAT_Open(&gInstance);
