@@ -286,16 +286,16 @@ void PrintCmdLineHelp (const char* programName)
     fprintf(stdout, "\t-%c, --%s\tRun the rotation example.\n",
            ROTATION_EXAMPLE_SHORT_CMD,
            ROTATION_EXAMPLE_CMD);
-    fprintf(stdout, "\t-%c, --%s <letter>\tShow a letter.\n",
+    fprintf(stdout, "\t-%c, --%s <letter>\t\t\tShow a letter.\n",
            SHOW_LETTER_SHORT_CMD,
            SHOW_LETTER_CMD);
-    fprintf(stdout, "\t-%c, --%s <letter>\tShow a message.\n",
+    fprintf(stdout, "\t-%c, --%s <letter>\t\t\tShow a message.\n",
            SHOW_MESSAGE_SHORT_CMD,
            SHOW_MESSAGE_CMD);
-    fprintf(stdout, "\t-%c, --%s\t\t\t\tRun the text scroll example.\n",
+    fprintf(stdout, "\t-%c, --%s\t\t\tRun the text scroll example.\n",
            TEXT_SCROLL_EXAMPLE_SHORT_CMD,
            TEXT_SCROLL_EXAMPLE_CMD);
-    fprintf(stdout, "\t-%c, --%s\t\t\t\t\t\tPrint the version of the SenseHAT C library.\n",
+    fprintf(stdout, "\t-%c, --%s\t\t\t\t\tPrint the version of the SenseHAT C library.\n",
            VERSION_SHORT_CMD,
            VERSION_CMD);
     fprintf(stdout, "\t-%c, --%s <up|down|left|right|push>\tWait for an event.\n\n",
