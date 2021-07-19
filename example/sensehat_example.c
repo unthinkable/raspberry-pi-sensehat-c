@@ -262,28 +262,28 @@ void PrintCmdLineHelp (const char* programName)
     fprintf(stdout, "\t-%c, --%s\tRun the color cycle example.\n", 
            COLOR_CYCLE_EXAMPLE_SHORT_CMD, 
            COLOR_CYCLE_EXAMPLE_CMD);
-    fprintf(stdout, "\t-%c, --%s\t\t\t\t\t\tRun the compass example.\n",
+    fprintf(stdout, "\t-%c, --%s\t\t\t\t\tRun the compass example.\n",
            COMPASS_EXAMPLE_SHORT_CMD,
            COMPASS_EXAMPLE_CMD);
-    fprintf(stdout, "\t-%c, --%s\t\t\t\t\tGet the current environmental conditions.\n",
+    fprintf(stdout, "\t-%c, --%s\t\t\t\tGet the current environmental conditions.\n",
            ENVIRONMENT_SHORT_CMD,
            ENVIRONMENT_CMD);
-    fprintf(stdout, "\t-%c, --%s\t\t\t\t\t\tFlash the LEDs.\n",
+    fprintf(stdout, "\t-%c, --%s\t\t\t\t\tFlash the LEDs.\n",
            FLASH_SHORT_CMD,
            FLASH_CMD);
-    fprintf(stdout, "\t-%c, --%s\t\t\t\t\t\tGet the compass heading in degrees.\n",
+    fprintf(stdout, "\t-%c, --%s\t\t\t\t\tGet the compass heading in degrees.\n",
            HEADING_SHORT_CMD, 
            HEADING_CMD);
-    fprintf(stdout, "\t-%c, --%s\t\t\t\t\t\tPrints this usage notice.\n",
+    fprintf(stdout, "\t-%c, --%s\t\t\t\t\tPrints this usage notice.\n",
            HELP_SHORT_CMD,
            HELP_CMD);
-    fprintf(stdout, "\t-%c, --%s <path>\t\t\t\t\tLoad an image from <path>.\n",
+    fprintf(stdout, "\t-%c, --%s <path>\t\t\t\tLoad an image from <path>.\n",
            LOAD_IMAGE_SHORT_CMD,
            LOAD_IMAGE_CMD);
-    fprintf(stdout, "\t-%c, --%s\t\t\t\t\tRun the rainbow example.\n",
+    fprintf(stdout, "\t-%c, --%s\t\t\t\tRun the rainbow example.\n",
            RAINBOW_EXAMPLE_SHORT_CMD,
            RAINBOW_EXAMPLE_CMD);
-    fprintf(stdout, "\t-%c, --%s\t\t\t\t\tRun the rotation example.\n",
+    fprintf(stdout, "\t-%c, --%s\t\t\t\tRun the rotation example.\n",
            ROTATION_EXAMPLE_SHORT_CMD,
            ROTATION_EXAMPLE_CMD);
     fprintf(stdout, "\t-%c, --%s <letter>\t\t\tShow a letter.\n",
